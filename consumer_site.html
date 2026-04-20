@@ -1195,15 +1195,18 @@ function openReserveForm(){
 
   document.getElementById('rf-prod-name').textContent=cProd.name;
   document.getElementById('rf-dep-date').textContent=`${parseInt(p[1])}월 ${parseInt(p[2])}일 출발`;
-  document.getElementById('rf-pax').textContent=`${cPax}인`;
+  document.getElementById('rf-pax').textContent=`총 ${cPax}명`;
   document.getElementById('rf-season').textContent=cCal.season;
-  document.getElementById('rf-price').textContent=grand.toLocaleString()+'원';
-  document.getElementById('rf-dep-amt').textContent=dep.toLocaleString()+'원';
+  document.getElementById('rf-duration').textContent=cProd.duration;
+
+  // 금액: 1인당 × 인원수 방식
+  const perPerson=cCal.price;
+  document.getElementById('rf-price').textContent=`${perPerson.toLocaleString()}원 × ${cPax}명 = ${grand.toLocaleString()}원`;
+  document.getElementById('rf-dep-amt').textContent=`${Math.round(dep/cPax).toLocaleString()}원 × ${cPax}명 = ${dep.toLocaleString()}원`;
   document.getElementById('rf-bal-amt').textContent=(grand-dep).toLocaleString()+'원';
   document.getElementById('rf-dep-pct').textContent=cCal.depPct+'%';
   document.getElementById('rf-single-row').style.display=singleOn?'flex':'none';
   document.getElementById('rf-single-amt').textContent=sAdd.toLocaleString()+'원';
-  document.getElementById('rf-duration').textContent=cProd.duration;
 
   // 인원만큼 동행자 입력 필드 생성
   renderCompanionFields(cPax);
@@ -1212,20 +1215,25 @@ function openReserveForm(){
 function renderCompanionFields(n){
   const el=document.getElementById('rf-companions');
   if(n<=1){el.innerHTML='';return;}
-  el.innerHTML=Array.from({length:n-1},(_,i)=>`
-    <div style="padding:14px;background:#F8F6F2;border-radius:8px;margin-bottom:8px;">
-      <div style="font-size:12px;font-weight:500;color:#5A5550;margin-bottom:10px;">동행자 ${i+2}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <div>
-          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">이름</label>
-          <input class="rf-input" id="companion-name-${i}" placeholder="홍길동">
-        </div>
-        <div>
-          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">연락처 (선택)</label>
-          <input class="rf-input" id="companion-ph-${i}" placeholder="010-0000-0000">
-        </div>
-      </div>
-    </div>`).join('');
+  el.innerHTML=`
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:4px;padding-bottom:10px;border-bottom:1px solid var(--border);">동행자 정보</div>
+      <div style="font-size:12px;color:var(--gray);margin-bottom:14px;">여권 발권을 위해 동행자 이름이 필요합니다. 연락처는 선택사항입니다.</div>
+      ${Array.from({length:n-1},(_,i)=>`
+        <div style="padding:14px;background:#F8F6F2;border-radius:8px;margin-bottom:8px;">
+          <div style="font-size:12px;font-weight:500;color:#5A5550;margin-bottom:10px;">동행자 ${i+2}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">이름 *</label>
+              <input class="rf-input" id="companion-name-${i}" placeholder="홍길동" required>
+            </div>
+            <div>
+              <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">연락처 (선택)</label>
+              <input class="rf-input" id="companion-ph-${i}" placeholder="010-0000-0000">
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
 }
 
 function submitReserve(){
@@ -1241,7 +1249,14 @@ function submitReserve(){
   if(!em){alert('이메일을 입력해주세요.');document.getElementById('rf-email').focus();return;}
   if(!agree||!agree2){alert('약관에 동의해주세요.');return;}
 
-  // 예약번호 생성
+  // 동행자 정보 수집
+  const companions=[];
+  for(let i=0;i<cPax-1;i++){
+    const cname=document.getElementById(`companion-name-${i}`)?.value.trim()||'';
+    const cph=document.getElementById(`companion-ph-${i}`)?.value.trim()||'';
+    if(!cname){alert(`동행자 ${i+2}의 이름을 입력해주세요.`);return;}
+    companions.push({name:cname,ph:cph,pass:'none'});
+  }
   const existingIds=JSON.parse(localStorage.getItem('cj_reservations')||'[]').map(r=>r.id);
   const nextNum=existingIds.length+101;
   const resId=`CJ-${String(nextNum).padStart(3,'0')}`;
@@ -1259,11 +1274,12 @@ function submitReserve(){
     dep:cCal.date.replace(/-/g,'.'),
     pax:cPax, price:grand, pdep:dep, pbal:grand-dep,
     singleRoom:singleOn,
+    companions,
     st:'w', pass:'none', passName:'', passNo:'', passExp:'',
     appl:now.slice(0,10).replace(/\./g,'-'),
     memo:`소비자 사이트 신청 ${now}`,
     createdAt:now,
-    log:[{c:'dn',i:'✓',t:'예약 신청 (소비자 사이트)',m:now.slice(5,10)}]
+    log:[{c:'dn',i:'✓',t:`예약 신청 완료 — ${cProd.name} · ${cPax}명`,m:now.slice(5,10)}]
   };
 
   // localStorage에 저장 (관리자 동기화용)
@@ -1327,30 +1343,42 @@ function showMyPage(res){
   renderMyPage(res);
 }
 
+function fmtDep(dep){
+  // "2026.06.01" → "2026년 6월 1일"
+  const parts=dep.replace(/-/g,'.').split('.');
+  if(parts.length<3) return dep;
+  return `${parts[0]}년 ${parseInt(parts[1])}월 ${parseInt(parts[2])}일`;
+}
+
 function renderMyPage(res){
-  const prod = PRODUCTS.find(p=>p.id===res.prodId)||{name:res.prodId,flag:'🌍',duration:''};
+  const prod=PRODUCTS.find(p=>p.id===res.prodId)||{name:res.prodId,flag:'🌍',duration:'',visaType:'도착비자',visaCost:'현장 결제'};
+  const companions=res.companions||[];
+  const totalPax=res.pax||1;
+  const perPerson=res.price?Math.round(res.price/totalPax):0;
 
-  // 상태 단계 계산
-  const steps=[
-    {key:'apply',  label:'예약 신청', done:true},
-    {key:'deposit',label:'예약금 입금', done:res.st==='k'||res.st==='d'||res.st==='b'},
-    {key:'confirm',label:'예약 확정',  done:res.st==='k'||res.st==='d'||res.st==='b'},
-    {key:'ticket', label:'발권 완료',  done:res.tk==='d'},
-    {key:'depart', label:'출발',       done:false},
+  // 인원 구성 배열: [대표자, ...동행자]
+  const memberList=[
+    {name:res.name, role:'대표', passState:res.pass||'none'},
+    ...companions.map(c=>({name:c.name, role:'동행', passState:c.pass||'none'}))
   ];
-  const curStep = steps.filter(s=>s.done).length;
 
-  // 여권 상태
-  const passStatus={
-    none:  {label:'제출 필요',  color:'#E05C40', bg:'#FDF3F1', border:'#F5C4B8'},
-    review:{label:'검토 중',    color:'#8A6500', bg:'#FDF8EE', border:'#F0D890'},
-    ok:    {label:'확인 완료', color:'#1B6B3A', bg:'#EEF8F2', border:'#A8D8B8'},
-    bad:   {label:'재제출 필요',color:'#E05C40', bg:'#FDF3F1', border:'#F5C4B8'},
-    err:   {label:'재제출 필요',color:'#E05C40', bg:'#FDF3F1', border:'#F5C4B8'},
-  }[res.pass||'none']||{label:'제출 필요',color:'#E05C40',bg:'#FDF3F1',border:'#F5C4B8'};
+  // 여권 제출 현황
+  const passOkCount=memberList.filter(m=>m.passState==='ok').length;
+  const passPct=Math.round(passOkCount/totalPax*100);
+
+  const passLabel={none:'제출 필요',review:'검토 중',ok:'확인 완료',bad:'재제출 필요',err:'재제출 필요'};
+  const passColor={none:'#E05C40',review:'#8A6500',ok:'#1B6B3A',bad:'#E05C40',err:'#E05C40'};
+
+  const steps=[
+    {label:'예약 신청', done:true},
+    {label:'예약금 입금', done:['k','d','b'].includes(res.st)},
+    {label:'예약 확정',  done:['k','d','b'].includes(res.st)},
+    {label:'발권 완료',  done:res.tk==='d'},
+    {label:'출발',       done:false},
+  ];
 
   document.getElementById('myPage').innerHTML=`
-  <div style="padding-top:62px;max-width:720px;margin:0 auto;padding:62px 20px 60px;">
+  <div style="padding-top:62px;max-width:720px;margin:0 auto;padding:80px 20px 60px;">
 
     <!-- 헤더 -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
@@ -1361,129 +1389,191 @@ function renderMyPage(res){
       <button onclick="doMyLogout()" style="font-size:12px;color:var(--gray);background:none;border:1px solid var(--border);border-radius:5px;padding:6px 14px;cursor:pointer;font-family:var(--font-sans);">로그아웃</button>
     </div>
 
-    <!-- 예약 기본 정보 -->
+    <!-- ① 예약 기본 정보 카드 -->
     <div style="background:var(--black);border-radius:10px;padding:22px;margin-bottom:14px;">
-      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-        <div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:4px;">${prod.flag} ${prod.name}</div>
-          <div style="font-size:20px;font-weight:500;color:#fff;">${res.dep.replace(/\./g,'년 ').replace(/\./,'월 ')+'일 출발'}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px;">${res.pax}인 · ${prod.duration}</div>
-        </div>
-        <div style="font-family:monospace;font-size:15px;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.1);padding:8px 14px;border-radius:6px;border:1px solid rgba(201,168,76,0.2);">${res.id}</div>
+      <!-- 상품명 + 예약번호 -->
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:4px;gap:8px;flex-wrap:wrap;">
+        <div style="font-size:13px;font-weight:500;color:var(--gold);">${prod.flag} ${prod.name}</div>
+        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.1);padding:5px 12px;border-radius:5px;border:1px solid rgba(201,168,76,0.2);flex-shrink:0;">${res.id}</div>
+      </div>
+      <!-- 출발일 -->
+      <div style="font-size:22px;font-weight:500;color:#fff;margin-bottom:6px;">${fmtDep(res.dep)} 출발</div>
+      <!-- 인원 구성 -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+        ${memberList.map(m=>`
+          <span style="font-size:11px;padding:3px 10px;border-radius:100px;
+            ${m.role==='대표'?'background:rgba(201,168,76,0.15);color:var(--gold);':'background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);'}">
+            ${m.role==='대표'?'👤':'·'} ${m.name}
+          </span>`).join('')}
+        <span style="font-size:11px;color:rgba(255,255,255,0.3);padding:3px 6px;">총 ${totalPax}명 · ${prod.duration}</span>
       </div>
 
       <!-- 진행 단계 -->
-      <div style="display:flex;align-items:center;gap:0;">
+      <div style="display:flex;align-items:center;gap:2px;margin-bottom:16px;">
         ${steps.map((s,i)=>`
-          <div style="flex:1;text-align:center;position:relative;">
-            <div style="width:28px;height:28px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;
-              ${s.done?'background:var(--gold);color:var(--black);':'background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.08);'}">
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;
+              ${s.done?'background:var(--gold);color:var(--black);':'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.07);'}">
               ${s.done?'✓':i+1}
             </div>
-            <div style="font-size:9px;color:${s.done?'var(--gold)':'rgba(255,255,255,0.3)'};letter-spacing:.3px;">${s.label}</div>
+            <div style="font-size:9px;color:${s.done?'var(--gold)':'rgba(255,255,255,0.25)'};white-space:nowrap;">${s.label}</div>
           </div>
-          ${i<steps.length-1?`<div style="height:1px;width:20px;background:${steps[i+1].done?'rgba(201,168,76,0.5)':'rgba(255,255,255,0.08)'};flex-shrink:0;margin-bottom:14px;"></div>`:''}`
+          ${i<steps.length-1?`<div style="height:1px;flex:0 0 12px;background:${steps[i+1].done?'rgba(201,168,76,0.4)':'rgba(255,255,255,0.07)'};margin-bottom:14px;"></div>`:''}`
         ).join('')}
       </div>
+
+      <!-- 금액 요약 -->
+      <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:12px 14px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);padding:3px 0;">
+          <span>1인 상품가 × ${totalPax}명</span>
+          <span>${perPerson.toLocaleString()}원 × ${totalPax} = ${res.price.toLocaleString()}원</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);padding:3px 0;">
+          <span>납부한 예약금</span>
+          <span style="color:#A8D8B8;">${res.pdep.toLocaleString()}원</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--gold);padding:7px 0 2px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;">
+          <span>남은 잔금</span>
+          <span style="font-weight:500;">${res.pbal.toLocaleString()}원</span>
+        </div>
+      </div>
     </div>
 
-    <!-- 확인 필요 항목들 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-
-      <!-- 여권 제출 -->
-      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;" onclick="openPassportUpload()">
-        <div style="font-size:11px;color:var(--gray);margin-bottom:6px;">🛂 여권 제출</div>
-        <div style="font-size:14px;font-weight:500;color:${passStatus.color};margin-bottom:4px;">${passStatus.label}</div>
-        ${res.pass==='none'?`<div style="font-size:11px;color:var(--gray);">출발 45일 전까지 제출</div>
-          <button style="margin-top:10px;width:100%;padding:8px;background:var(--gold);color:var(--black);border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);">여권 제출하기 →</button>`
-        :`<div style="font-size:11px;color:var(--gray);">${res.pass==='ok'?'제출 완료·확인됨':'재제출이 필요합니다'}</div>`}
+    <!-- ② 여권 제출 현황 (전체 인원) -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:500;">🛂 여권 제출 현황</div>
+        <div style="font-size:12px;color:${passPct===100?'#1B6B3A':'#E05C40'};font-weight:500;">${passOkCount}/${totalPax} 완료</div>
       </div>
+      <div style="height:5px;background:#F0EDE8;border-radius:3px;overflow:hidden;margin-bottom:14px;">
+        <div style="width:${passPct}%;height:100%;background:${passPct===100?'#2E9B55':'var(--gold)'};border-radius:3px;transition:width .3s;"></div>
+      </div>
+      ${memberList.map((m,i)=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:${i<memberList.length-1?'1px solid #F5F2EC':'none'};">
+        <div style="width:32px;height:32px;border-radius:50%;background:${m.role==='대표'?'var(--black)':'#F0EDE8'};color:${m.role==='대표'?'var(--gold)':'var(--gray)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${m.name.slice(-1)}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:500;">${m.name} <span style="font-size:10px;color:var(--gray);font-weight:400;">${m.role}</span></div>
+        </div>
+        <div>
+          ${m.passState==='ok'
+            ?`<span style="font-size:11px;padding:3px 10px;border-radius:100px;background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;">✓ 확인 완료</span>`
+            :m.passState==='review'
+            ?`<span style="font-size:11px;padding:3px 10px;border-radius:100px;background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;">검토 중</span>`
+            :`<button onclick="openPassportUpload(${i})" style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--gold);color:var(--black);border:none;cursor:pointer;font-family:var(--font-sans);">제출하기 →</button>`
+          }
+        </div>
+      </div>`).join('')}
+      <div style="font-size:11px;color:var(--gray);margin-top:10px;line-height:1.8;">
+        📌 출발 45일 전까지 전원 제출 완료해야 합니다<br>
+        📌 여권 유효기간 출발일 기준 6개월 이상 필수
+      </div>
+    </div>
 
-      <!-- 잔금 납부 -->
+    <!-- ③ 확인 정보 그리드 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
       <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;">
         <div style="font-size:11px;color:var(--gray);margin-bottom:6px;">💳 잔금 납부</div>
-        <div style="font-size:14px;font-weight:500;margin-bottom:4px;">${res.pbal.toLocaleString()}원</div>
-        <div style="font-size:11px;color:var(--gray);">출발 60일 전 납부</div>
-        ${res.st==='k'?`<div style="margin-top:8px;font-size:10px;padding:3px 8px;border-radius:100px;background:#EEF8F2;color:#1B6B3A;display:inline-block;">✓ 완납</div>`:''}
+        <div style="font-size:16px;font-weight:500;margin-bottom:3px;">${res.pbal.toLocaleString()}원</div>
+        <div style="font-size:11px;color:var(--gray);">출발 60일 전까지</div>
+        ${res.st==='k'?`<div style="margin-top:8px;font-size:10px;padding:3px 9px;border-radius:100px;background:#EEF8F2;color:#1B6B3A;display:inline-block;">✓ 완납</div>`:''}
       </div>
-
-      <!-- 발권 정보 -->
       <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;">
         <div style="font-size:11px;color:var(--gray);margin-bottom:6px;">✈ 항공 발권</div>
-        ${res.tk==='d'?`
-          <div style="font-size:13px;font-weight:500;color:#1B6B3A;margin-bottom:4px;">발권 완료</div>
-          <div style="font-family:monospace;font-size:15px;font-weight:700;color:var(--black);">PNR: ${res.pnr||'—'}</div>`
-        :`<div style="font-size:13px;color:var(--gray);">준비 중</div>
-          <div style="font-size:11px;color:var(--gray);margin-top:4px;">여권 확인 후 발권 진행</div>`}
+        ${res.tk==='d'
+          ?`<div style="font-size:13px;font-weight:500;color:#1B6B3A;margin-bottom:4px;">발권 완료</div>
+            <div style="font-family:monospace;font-size:15px;font-weight:700;">PNR: ${res.pnr||'—'}</div>`
+          :`<div style="font-size:13px;color:var(--gray);">준비 중</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px;">여권 확인 후 발권 진행</div>`}
       </div>
-
-      <!-- 비자 안내 -->
       <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;">
         <div style="font-size:11px;color:var(--gray);margin-bottom:6px;">🌐 비자</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">${prod.visaType||'도착비자'}</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:3px;">${prod.visaType||'도착비자'}</div>
         <div style="font-size:11px;color:var(--gray);">${prod.visaCost||'현장 결제'}</div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:11px;color:var(--gray);margin-bottom:6px;">📅 출발 정보</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:3px;">${fmtDep(res.dep)}</div>
+        <div style="font-size:11px;color:var(--gray);">${prod.duration} · ${totalPax}명</div>
       </div>
     </div>
 
-    <!-- 입금 계좌 안내 -->
-    ${res.st==='w'||res.pdep>0?`
+    <!-- ④ 예약금 입금 안내 (미납 시) -->
+    ${!['k','d'].includes(res.st)?`
     <div style="background:#FDF8EE;border:1px solid #F0D890;border-radius:8px;padding:18px;margin-bottom:14px;">
       <div style="font-size:12px;font-weight:500;color:#8A6500;margin-bottom:10px;">💳 예약금 입금 안내</div>
-      <div style="font-size:13px;color:var(--black);line-height:2;">
-        입금 금액: <b>${res.pdep.toLocaleString()}원</b><br>
+      <div style="font-size:13px;color:var(--black);line-height:2.2;">
+        입금 금액: <b>${res.pdep.toLocaleString()}원</b>
+          <span style="font-size:11px;color:var(--gray);">(1인 ${perPerson.toLocaleString()}원 × ${totalPax}명 × ${Math.round(res.pdep/res.price*100)}%)</span><br>
         입금 계좌: <b>설정 후 자동 반영</b><br>
-        예금주: <b>설정 후 자동 반영</b><br>
-        <span style="font-size:11px;color:#9A9590;">예약금 미입금 시 3일 후 자동 취소됩니다</span>
+        예금주: <b>설정 후 자동 반영</b>
       </div>
+      <div style="font-size:11px;color:#9A9590;margin-top:8px;">⚠ 예약금 미입금 시 3일 후 자동 취소됩니다</div>
     </div>`:''}
 
-    <!-- 여권 업로드 섹션 (토글) -->
+    <!-- ⑤ 여권 업로드 패널 (토글) -->
     <div id="passport-upload-section" style="display:none;background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:14px;">
-      <div style="font-size:14px;font-weight:500;margin-bottom:14px;">🛂 여권 사진 제출</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px;">🛂 여권 제출</div>
+      <div style="font-size:12px;color:var(--gold);margin-bottom:14px;" id="passport-upload-for"></div>
       <div style="padding:12px;background:#F8F6F2;border-radius:6px;font-size:12px;color:var(--gray);line-height:1.9;margin-bottom:14px;">
-        📌 여권 정보면(사진+개인정보 페이지) 전체가 보이도록 촬영해 주세요<br>
-        📌 유효기간이 출발일 기준 6개월 이상 남아있어야 합니다<br>
-        📌 JPG, PNG, PDF 형식 · 10MB 이하
+        📌 여권 정보면(사진+개인정보 페이지) 전체 촬영<br>
+        📌 유효기간 출발일 기준 6개월 이상 필수<br>
+        📌 JPG, PNG, PDF · 10MB 이하
       </div>
-      <div style="border:2px dashed #DDD5C0;border-radius:8px;padding:32px;text-align:center;cursor:pointer;margin-bottom:12px;"
+      <div style="border:2px dashed #DDD5C0;border-radius:8px;padding:28px;text-align:center;cursor:pointer;margin-bottom:12px;"
         onclick="document.getElementById('passport-file').click()">
-        <div style="font-size:32px;margin-bottom:8px;">📷</div>
-        <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:4px;">클릭하여 파일 선택</div>
-        <div style="font-size:11px;color:var(--gray);">또는 파일을 여기에 드래그하세요</div>
+        <div style="font-size:28px;margin-bottom:6px;">📷</div>
+        <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;">클릭하여 파일 선택</div>
+        <div style="font-size:11px;color:var(--gray);">JPG · PNG · PDF</div>
         <input type="file" id="passport-file" accept="image/*,.pdf" style="display:none" onchange="handlePassportFile(this)">
       </div>
       <div id="passport-preview" style="display:none;margin-bottom:12px;text-align:center;">
-        <img id="passport-img" style="max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);" alt="여권 미리보기">
-        <div id="passport-filename" style="font-size:11px;color:var(--gray);margin-top:6px;"></div>
+        <img id="passport-img" style="max-width:100%;max-height:180px;border-radius:6px;border:1px solid var(--border);" alt="">
+        <div id="passport-filename" style="font-size:11px;color:var(--gray);margin-top:5px;"></div>
       </div>
-      <button onclick="submitPassport()" style="width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">여권 제출하기</button>
-      <button onclick="closePassportUpload()" style="width:100%;padding:10px;background:transparent;border:none;color:var(--gray);font-size:12px;cursor:pointer;margin-top:6px;font-family:var(--font-sans);">취소</button>
+      <button onclick="submitPassport()" style="width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-bottom:8px;">여권 제출하기</button>
+      <button onclick="closePassportUpload()" style="width:100%;padding:9px;background:transparent;border:none;color:var(--gray);font-size:12px;cursor:pointer;font-family:var(--font-sans);">취소</button>
     </div>
 
-    <!-- 예약 진행 로그 -->
+    <!-- ⑥ 예약 진행 로그 -->
     <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px;">
       <div style="font-size:13px;font-weight:500;margin-bottom:14px;">📋 예약 진행 내역</div>
-      <div style="display:flex;flex-direction:column;gap:0;">
-        ${(res.log||[]).map(l=>`
-        <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #F5F2EC;align-items:start;">
-          <div style="width:24px;height:24px;border-radius:50%;background:${l.c==='dn'?'#EEF8F2':l.c==='pd'?'#FDF3F1':'#EEF4FB'};color:${l.c==='dn'?'#1B6B3A':l.c==='pd'?'#C04030':'#2460A0'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">${l.i}</div>
-          <div style="flex:1;"><div style="font-size:13px;color:var(--black);">${l.t}</div><div style="font-size:11px;color:var(--gray);margin-top:2px;">${l.m}</div></div>
-        </div>`).join('')}
-      </div>
+      ${(res.log||[]).map(l=>`
+      <div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #F5F2EC;align-items:start;">
+        <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;
+          background:${l.c==='dn'?'#EEF8F2':l.c==='pd'?'#FDF3F1':'#EEF4FB'};
+          color:${l.c==='dn'?'#1B6B3A':l.c==='pd'?'#C04030':'#2460A0'};">${l.i}</div>
+        <div style="flex:1;"><div style="font-size:13px;">${l.t}</div><div style="font-size:11px;color:var(--gray);margin-top:1px;">${l.m}</div></div>
+      </div>`).join('')}
     </div>
 
     <!-- 문의 -->
     <div style="text-align:center;padding:20px 0;">
       <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">궁금한 점이 있으신가요?</div>
-      <button style="padding:12px 28px;background:#FEE500;color:#191919;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">💬 카카오로 문의하기</button>
+      <button onclick="alert('카카오 채널로 연결됩니다')" style="padding:12px 28px;background:#FEE500;color:#191919;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">💬 카카오로 문의하기</button>
     </div>
 
   </div>`;
+
+  // 여권 업로드 대상 인덱스 저장
+  window._passportUploadIdx=null;
+}
 }
 
-function openPassportUpload(){
+function openPassportUpload(memberIdx){
+  window._passportUploadIdx = memberIdx||0;
+  const saved=sessionStorage.getItem('cj_my_res');
+  if(!saved) return;
+  const res=JSON.parse(saved);
+  const companions=res.companions||[];
+  const memberList=[{name:res.name,role:'대표'},...companions.map(c=>({name:c.name,role:'동행'}))];
+  const target=memberList[memberIdx]||memberList[0];
   const sec=document.getElementById('passport-upload-section');
-  if(sec) sec.style.display=sec.style.display==='none'?'block':'none';
+  const lbl=document.getElementById('passport-upload-for');
+  if(lbl) lbl.textContent=`${target.name}님의 여권을 제출합니다`;
+  if(sec){
+    sec.style.display='block';
+    sec.scrollIntoView({behavior:'smooth',block:'center'});
+  }
 }
 function closePassportUpload(){
   const sec=document.getElementById('passport-upload-section');
@@ -1537,6 +1627,7 @@ if(!localStorage.getItem('cj_reservations')){
   localStorage.setItem('cj_reservations', JSON.stringify([
     {id:'CJ-001',country:'LK',prodId:'SL01',name:'김민준',ph:'010-1234-5678',em:'kim@email.com',
      dep:'2026.06.01',pax:2,price:10000000,pdep:1000000,pbal:9000000,
+     companions:[{name:'김영희',ph:'010-9999-8888',pass:'none'}],
      st:'k',pass:'ok',passName:'KIM MIN JUN',passNo:'M12345678',passExp:'2030.01.01',
      tk:'d',pnr:'ABCDEF',singleRoom:false,
      visaType:'도착비자 (Visa On Arrival)',visaCost:'USD 60 / 인',
