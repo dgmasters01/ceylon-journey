@@ -598,6 +598,171 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
   카카오 상담
 </button>
 
+<!-- ══════════ 예약 신청 폼 ══════════ -->
+<div id="reservePage" style="display:none;padding-top:62px;">
+<style>
+.rf-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:var(--font-sans);outline:none;color:var(--black);background:#fff;transition:border-color .2s;}
+.rf-input:focus{border-color:var(--gold);}
+.rf-label{display:block;font-size:12px;font-weight:500;color:#5A5550;margin-bottom:5px;}
+.rf-row{margin-bottom:14px;}
+.rf-section{background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:14px;}
+.rf-sec-t{font-size:14px;font-weight:500;color:var(--black);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.rf-agree-row{display:flex;align-items:start;gap:10px;padding:10px 0;border-bottom:1px solid #F5F2EC;cursor:pointer;}
+.rf-agree-row:last-child{border:none;}
+.rf-check{width:18px;height:18px;border-radius:4px;border:1.5px solid #DDD5C0;flex-shrink:0;margin-top:1px;accent-color:var(--gold);}
+.rf-agree-txt{font-size:13px;color:var(--black);line-height:1.6;}
+.rf-agree-link{color:var(--gold);text-decoration:underline;cursor:pointer;font-size:12px;}
+.submit-btn{width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:background .2s;margin-bottom:10px;}
+.submit-btn:hover{background:var(--gold-lt);}
+</style>
+
+<div style="max-width:680px;margin:0 auto;padding:40px 20px;">
+
+  <!-- 브레드크럼 -->
+  <div style="font-size:12px;color:var(--gray);margin-bottom:24px;display:flex;gap:8px;align-items:center;">
+    <a onclick="showHome()" style="cursor:pointer;color:var(--gray);text-decoration:none;">홈</a> ›
+    <a onclick="openDetail(cProd)" style="cursor:pointer;color:var(--gray);text-decoration:none;" id="rf-bread-prod">상품</a> ›
+    <span style="color:var(--black);">예약 신청</span>
+  </div>
+
+  <h1 style="font-family:var(--font-serif);font-size:28px;font-weight:400;margin-bottom:6px;">예약 신청</h1>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:28px;">정확한 정보를 입력해 주세요. 예약 확정 후 카카오로 안내드립니다.</p>
+
+  <!-- 선택 상품 요약 -->
+  <div style="background:var(--black);border-radius:8px;padding:18px 20px;margin-bottom:20px;">
+    <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:8px;">선택하신 상품</div>
+    <div style="font-size:16px;font-weight:500;color:#fff;margin-bottom:6px;" id="rf-prod-name">—</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px;">
+      <span id="rf-dep-date">—</span>
+      <span>·</span>
+      <span id="rf-pax">—</span>
+      <span>·</span>
+      <span id="rf-season">—</span>
+      <span>·</span>
+      <span id="rf-duration">—</span>
+    </div>
+    <div style="background:rgba(255,255,255,0.06);border-radius:6px;padding:12px 14px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);padding:3px 0;">
+        <span>총 상품가</span><span id="rf-price" style="color:#fff;font-weight:500;">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);padding:3px 0;" id="rf-single-row">
+        <span>싱글룸 추가금</span><span id="rf-single-amt" style="color:rgba(255,255,255,0.7);">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--gold);padding:6px 0 2px;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;font-weight:500;">
+        <span>지금 납부할 예약금 (<span id="rf-dep-pct">—</span>)</span>
+        <span id="rf-dep-amt">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.3);padding:2px 0;">
+        <span>잔금 (출발 60일 전 납부)</span><span id="rf-bal-amt">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="rf-form">
+
+    <!-- 신청자 정보 -->
+    <div class="rf-section">
+      <div class="rf-sec-t">신청자 정보</div>
+      <div class="rf-row">
+        <label class="rf-label">이름 *</label>
+        <input class="rf-input" id="rf-name" placeholder="홍길동" maxlength="20">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="rf-row">
+        <div>
+          <label class="rf-label">연락처 * <span style="font-size:10px;color:var(--gray);">(카카오 알림 수신)</span></label>
+          <input class="rf-input" id="rf-phone" placeholder="010-0000-0000" maxlength="13"
+            oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
+        </div>
+        <div>
+          <label class="rf-label">이메일 *</label>
+          <input class="rf-input" id="rf-email" placeholder="email@example.com" type="email">
+        </div>
+      </div>
+      <div class="rf-row">
+        <label class="rf-label">요청사항 <span style="font-size:10px;color:var(--gray);">(선택)</span></label>
+        <textarea class="rf-input" id="rf-memo" rows="3" placeholder="알레르기 정보, 특별 요청사항 등..." style="resize:vertical;line-height:1.7;"></textarea>
+      </div>
+    </div>
+
+    <!-- 동행자 정보 (2인 이상) -->
+    <div id="rf-companions"></div>
+
+    <!-- 약관 동의 -->
+    <div class="rf-section">
+      <div class="rf-sec-t">약관 동의</div>
+      <label class="rf-agree-row">
+        <input type="checkbox" class="rf-check" id="rf-agree">
+        <div class="rf-agree-txt">
+          <b>[필수]</b> 이용약관에 동의합니다.
+          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
+        </div>
+      </label>
+      <label class="rf-agree-row">
+        <input type="checkbox" class="rf-check" id="rf-agree2">
+        <div class="rf-agree-txt">
+          <b>[필수]</b> 개인정보 수집·이용에 동의합니다. (이름, 연락처, 이메일 — 예약 처리 목적)
+          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
+        </div>
+      </label>
+      <label class="rf-agree-row">
+        <input type="checkbox" class="rf-check" id="rf-agree3">
+        <div class="rf-agree-txt">
+          <b>[선택]</b> 여행 관련 정보·할인 혜택 수신에 동의합니다.
+        </div>
+      </label>
+    </div>
+
+    <!-- 안내 -->
+    <div style="padding:14px 16px;background:#FDF8EE;border:1px solid #F0D890;border-radius:8px;font-size:12px;color:#8A6500;line-height:1.9;margin-bottom:16px;">
+      💡 <b>예약 신청 후 진행 방법</b><br>
+      ① 예약 신청 완료 → ② 담당자 확인 후 카카오로 연락 → ③ 예약금 입금 안내 → ④ 입금 확인 후 예약 확정<br>
+      <span style="color:#9A9590;">예약금 미입금 시 3일 후 자동 취소됩니다.</span>
+    </div>
+
+    <button class="submit-btn" onclick="submitReserve()">예약 신청하기 →</button>
+    <button onclick="openDetail(cProd)" style="width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--gray);cursor:pointer;font-family:var(--font-sans);">← 상품 상세로 돌아가기</button>
+
+  </div><!-- /rf-form -->
+
+  <!-- 신청 완료 화면 -->
+  <div id="rf-complete" style="display:none;text-align:center;padding:40px 0;">
+    <div style="width:64px;height:64px;border-radius:50%;background:#EEF8F2;border:2px solid #A8D8B8;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px;">✓</div>
+    <h2 style="font-family:var(--font-serif);font-size:26px;font-weight:400;margin-bottom:8px;">예약 신청이 완료됐습니다</h2>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.8;">
+      담당자가 확인 후 카카오 메시지로 연락드립니다.<br>
+      예약번호를 꼭 저장해 두세요.
+    </p>
+    <div style="background:var(--black);border-radius:10px;padding:24px;margin-bottom:24px;text-align:left;">
+      <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:12px;">예약 정보</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.5);">예약번호</span>
+        <span style="font-family:monospace;font-size:20px;font-weight:700;color:var(--gold);" id="rf-complete-id">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.5);">신청자</span>
+        <span style="font-size:12px;color:#fff;" id="rf-complete-name">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.5);">상품·출발일</span>
+        <span style="font-size:12px;color:#fff;" id="rf-complete-dep">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);margin-top:6px;">
+        <span style="font-size:13px;color:var(--gold);">납부할 예약금</span>
+        <span style="font-size:15px;font-weight:500;color:var(--gold);" id="rf-complete-dep-amt">—</span>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--gray);margin-bottom:24px;line-height:1.9;">
+      예약번호로 언제든지 <b style="color:var(--black);">예약 조회</b>에서 진행 상황을 확인하실 수 있습니다.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="showHome()" class="btn-gold">홈으로 돌아가기</button>
+      <button onclick="showLogin()" style="padding:14px 22px;background:transparent;border:1px solid var(--border);border-radius:3px;font-size:13px;color:var(--gray);cursor:pointer;font-family:var(--font-sans);">예약 조회하기</button>
+    </div>
+  </div>
+
+</div><!-- /max-w -->
+</div><!-- /reservePage -->
+
 <script>
 // ════════════════════════════════════
 // 데이터
@@ -965,14 +1130,124 @@ function tQa(i){document.getElementById('qi'+i).classList.toggle('open');}
 
 function doReserve(){
   if(!cCal){alert('출발일을 먼저 선택해주세요.');return;}
+  openReserveForm();
+}
+
+// ══════════════════════════════════════════
+// 📝 예약 신청 폼
+// ══════════════════════════════════════════
+function openReserveForm(){
+  document.getElementById('homePage').style.display='none';
+  document.getElementById('detPage').style.display='none';
+  document.getElementById('reservePage').style.display='block';
+  clearInterval(stmr);
+  window.scrollTo(0,0);
+
+  // 선택 정보 채우기
   const p=cCal.date.split('-');
-  alert(`예약 신청 페이지로 이동합니다.\n\n상품: ${cProd.name}\n출발일: ${p[1]}월 ${p[2]}일\n인원: ${cPax}인${singleOn?'\n싱글룸: 신청':''}\n\n(예약 폼은 다음 단계에서 구현됩니다)`);
+  const nights=parseInt(cProd.duration)||7;
+  const base=cCal.price*cPax;
+  const sAdd=singleOn?(cProd.singleFee||0)*nights:0;
+  const grand=base+sAdd;
+  const dep=Math.round(grand*cCal.depPct/100);
+
+  document.getElementById('rf-prod-name').textContent=cProd.name;
+  document.getElementById('rf-dep-date').textContent=`${parseInt(p[1])}월 ${parseInt(p[2])}일 출발`;
+  document.getElementById('rf-pax').textContent=`${cPax}인`;
+  document.getElementById('rf-season').textContent=cCal.season;
+  document.getElementById('rf-price').textContent=grand.toLocaleString()+'원';
+  document.getElementById('rf-dep-amt').textContent=dep.toLocaleString()+'원';
+  document.getElementById('rf-bal-amt').textContent=(grand-dep).toLocaleString()+'원';
+  document.getElementById('rf-dep-pct').textContent=cCal.depPct+'%';
+  document.getElementById('rf-single-row').style.display=singleOn?'flex':'none';
+  document.getElementById('rf-single-amt').textContent=sAdd.toLocaleString()+'원';
+  document.getElementById('rf-duration').textContent=cProd.duration;
+
+  // 인원만큼 동행자 입력 필드 생성
+  renderCompanionFields(cPax);
+}
+
+function renderCompanionFields(n){
+  const el=document.getElementById('rf-companions');
+  if(n<=1){el.innerHTML='';return;}
+  el.innerHTML=Array.from({length:n-1},(_,i)=>`
+    <div style="padding:14px;background:#F8F6F2;border-radius:8px;margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:500;color:#5A5550;margin-bottom:10px;">동행자 ${i+2}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">이름</label>
+          <input class="rf-input" id="companion-name-${i}" placeholder="홍길동">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">연락처 (선택)</label>
+          <input class="rf-input" id="companion-ph-${i}" placeholder="010-0000-0000">
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function submitReserve(){
+  // 필수 입력 체크
+  const name=document.getElementById('rf-name').value.trim();
+  const ph=document.getElementById('rf-phone').value.trim();
+  const em=document.getElementById('rf-email').value.trim();
+  const agree=document.getElementById('rf-agree').checked;
+  const agree2=document.getElementById('rf-agree2').checked;
+
+  if(!name){alert('신청자 이름을 입력해주세요.');document.getElementById('rf-name').focus();return;}
+  if(!ph){alert('연락처를 입력해주세요.');document.getElementById('rf-phone').focus();return;}
+  if(!em){alert('이메일을 입력해주세요.');document.getElementById('rf-email').focus();return;}
+  if(!agree||!agree2){alert('약관에 동의해주세요.');return;}
+
+  // 예약번호 생성
+  const existingIds=JSON.parse(localStorage.getItem('cj_reservations')||'[]').map(r=>r.id);
+  const nextNum=existingIds.length+101;
+  const resId=`CJ-${String(nextNum).padStart(3,'0')}`;
+  const now=new Date().toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+
+  const nights=parseInt(cProd.duration)||7;
+  const base=cCal.price*cPax;
+  const sAdd=singleOn?(cProd.singleFee||0)*nights:0;
+  const grand=base+sAdd;
+  const dep=Math.round(grand*cCal.depPct/100);
+
+  const reservation={
+    id:resId, country:cProd.country, prodId:cProd.id,
+    name, ph, em,
+    dep:cCal.date.replace(/-/g,'.'),
+    pax:cPax, price:grand, pdep:dep, pbal:grand-dep,
+    singleRoom:singleOn,
+    st:'w', pass:'none', passName:'', passNo:'', passExp:'',
+    appl:now.slice(0,10).replace(/\./g,'-'),
+    memo:`소비자 사이트 신청 ${now}`,
+    createdAt:now,
+    log:[{c:'dn',i:'✓',t:'예약 신청 (소비자 사이트)',m:now.slice(5,10)}]
+  };
+
+  // localStorage에 저장 (관리자 동기화용)
+  const list=JSON.parse(localStorage.getItem('cj_reservations')||'[]');
+  list.push(reservation);
+  localStorage.setItem('cj_reservations',JSON.stringify(list));
+
+  // 완료 화면 표시
+  document.getElementById('rf-form').style.display='none';
+  document.getElementById('rf-complete').style.display='block';
+  document.getElementById('rf-complete-id').textContent=resId;
+  document.getElementById('rf-complete-name').textContent=name;
+  document.getElementById('rf-complete-dep').textContent=`${cProd.name} · ${cCal.date.slice(5).replace('-','/')} 출발`;
+  document.getElementById('rf-complete-dep-amt').textContent=dep.toLocaleString()+'원';
+  window.scrollTo(0,0);
 }
 
 function showHome(){
   document.getElementById('homePage').style.display='block';
   document.getElementById('detPage').style.display='none';
+  document.getElementById('reservePage').style.display='none';
   initHero();window.scrollTo(0,0);
+}
+
+function showLogin(){
+  alert('예약 조회: 예약번호 + 이름으로 조회합니다.\n(로그인 페이지는 다음 단계에서 구현됩니다)');
 }
 
 // 초기화
