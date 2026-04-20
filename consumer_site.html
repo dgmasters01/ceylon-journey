@@ -802,6 +802,9 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
 <!-- ══════════ 마이페이지 ══════════ -->
 <div id="myPage" style="display:none;"></div>
 
+<!-- ══════════ 출발 전 체크리스트 페이지 ══════════ -->
+<div id="checklistPage" style="display:none;padding-top:62px;"></div>
+
 <script>
 // ════════════════════════════════════
 // 데이터
@@ -1034,6 +1037,7 @@ function openDetail(prod,selDate){
   document.getElementById('reservePage').style.display='none';
   document.getElementById('loginPage').style.display='none';
   document.getElementById('myPage').style.display='none';
+  document.getElementById('checklistPage').style.display='none';
   window.scrollTo(0,0);
 
   // 히어로
@@ -1303,6 +1307,7 @@ function showHome(){
   document.getElementById('reservePage').style.display='none';
   document.getElementById('loginPage').style.display='none';
   document.getElementById('myPage').style.display='none';
+  document.getElementById('checklistPage').style.display='none';
   initHero();window.scrollTo(0,0);
 }
 
@@ -1539,8 +1544,9 @@ function renderMyPage(res){
       </div>`).join('')}
     </div>
 
-    <!-- 문의 버튼 -->
+    <!-- 체크리스트 + 문의 버튼 -->
     <div style="text-align:center;padding:16px 0 20px;">
+      <button onclick="openChecklist()" style="display:block;width:100%;max-width:400px;margin:0 auto 12px;padding:14px;background:var(--black);color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-serif);letter-spacing:1px;">📋 출발 전 체크리스트 보기 →</button>
       <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">궁금한 점이 있으신가요?<br><span style="font-size:11px;">예약번호 <b>${res.id}</b>를 알려주시면 빠르게 도와드립니다</span></div>
       <button onclick="alert('카카오 채널로 연결됩니다')" style="padding:12px 28px;background:#FEE500;color:#191919;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">💬 카카오로 문의하기</button>
     </div>
@@ -1602,9 +1608,307 @@ function submitPassport(){
   alert('여권이 제출됐습니다.\n담당자 확인 후 카카오로 안내드립니다.');
   showMyPage(res);
 }
-function doMyLogout(){
-  sessionStorage.removeItem('cj_my_res');
-  showHome();
+// ══════════════════════════════════════════
+// 📋 출발 전 체크리스트 페이지
+// ══════════════════════════════════════════
+function openChecklist(){
+  const saved=sessionStorage.getItem('cj_my_res');
+  if(!saved){showLogin();return;}
+  const res=JSON.parse(saved);
+  document.getElementById('homePage').style.display='none';
+  document.getElementById('detPage').style.display='none';
+  document.getElementById('reservePage').style.display='none';
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('myPage').style.display='none';
+  document.getElementById('checklistPage').style.display='block';
+  window.scrollTo(0,0);
+  renderChecklist(res);
+}
+
+function renderChecklist(res){
+  const prod=PRODUCTS.find(p=>p.id===res.prodId)||{name:res.prodId,flag:'🌍',duration:''};
+  const companions=res.companions||[];
+  const totalPax=res.pax||1;
+  const memberList=[
+    {name:res.name,role:'대표',passState:res.pass||'none'},
+    ...companions.map(c=>({name:c.name,role:'동행',passState:c.pass||'none'}))
+  ];
+  const depPaid=['k','d','b'].includes(res.st);
+  const ticketed=res.tk==='d';
+  const passAllOk=memberList.every(m=>m.passState==='ok');
+
+  // 각 단계 완료 여부
+  const steps=[
+    {
+      id:'deposit', icon:'💳', title:'예약금 입금',
+      subtitle:'예약을 확정하기 위한 첫 번째 단계',
+      done:depPaid,
+      imgSrc:'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=600&q=70',
+      imgAlt:'은행 입금',
+      desc:depPaid?'입금이 확인됐습니다. 예약이 확정됩니다.':'아래 계좌로 예약금을 입금해 주세요.',
+      action:depPaid?null:{label:'입금 계좌 확인',fn:'showDepositInfo()'},
+      detail:depPaid?
+        `<div style="padding:12px 14px;background:#EEF8F2;border-radius:7px;font-size:13px;color:#1B6B3A;display:flex;align-items:center;gap:8px;"><span>✅</span> 예약금 ${res.pdep.toLocaleString()}원 입금 완료</div>`
+        :`<div style="padding:14px;background:#FDF8EE;border:1px solid #F0D890;border-radius:7px;font-size:13px;color:#8A6500;line-height:2.1;">
+          입금 금액: <b>${res.pdep.toLocaleString()}원</b><br>
+          은행: <b id="cl-bank">—</b><br>
+          계좌번호: <b id="cl-acct" style="font-family:monospace;">—</b><br>
+          예금주: <b id="cl-dep">—</b>
+        </div>`,
+    },
+    {
+      id:'passport', icon:'🛂', title:'여권 사진 제출',
+      subtitle:`여행객 전원 여권을 출발 45일 전까지 제출`,
+      done:passAllOk,
+      imgSrc:'https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=600&q=70',
+      imgAlt:'여권',
+      desc:passAllOk?'전원 여권 제출이 완료됐습니다.':'아래에서 각 여행객별로 여권 사진을 제출해 주세요.',
+      action:null,
+      detail:`<div style="display:flex;flex-direction:column;gap:8px;">
+        ${memberList.map((m,i)=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#F8F6F2;border-radius:7px;border:1px solid ${m.passState==='ok'?'#A8D8B8':'#DDD5C0'};">
+          <div style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
+            ${m.role==='대표'?'background:var(--black);color:var(--gold);':'background:#E8E0D0;color:var(--gray);'}">${m.name.slice(-1)}</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;">${m.name} <span style="font-size:10px;color:var(--gray);">${m.role}</span></div>
+            <div style="font-size:11px;color:${m.passState==='ok'?'#1B6B3A':m.passState==='review'?'#8A6500':'#E05C40'};margin-top:2px;">
+              ${m.passState==='ok'?'✓ 확인 완료':m.passState==='review'?'검토 중':'제출 필요'}
+            </div>
+          </div>
+          ${m.passState!=='ok'&&m.passState!=='review'?
+            `<button onclick="openPassportUploadCL(${i})" style="padding:7px 14px;background:var(--gold);color:var(--black);border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;">제출하기 →</button>`
+            :''}
+        </div>`).join('')}
+      </div>
+      <!-- 여권 업로드 패널 -->
+      <div id="cl-passport-panel" style="display:none;margin-top:12px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">📷 여권 사진 업로드</div>
+        <div style="font-size:12px;color:var(--gold);margin-bottom:12px;" id="cl-passport-for"></div>
+        <div style="background:#F8F6F2;border-radius:6px;padding:10px 12px;font-size:12px;color:var(--gray);line-height:1.9;margin-bottom:12px;">
+          📌 여권 정보면 전체가 보이도록 촬영<br>
+          📌 유효기간 출발일 기준 6개월 이상<br>
+          📌 JPG, PNG, PDF · 10MB 이하
+        </div>
+        <div style="border:2px dashed #DDD5C0;border-radius:7px;padding:24px;text-align:center;cursor:pointer;margin-bottom:10px;" onclick="document.getElementById('cl-passport-file').click()">
+          <div style="font-size:24px;margin-bottom:5px;">📷</div>
+          <div style="font-size:13px;font-weight:500;margin-bottom:2px;">클릭하여 파일 선택</div>
+          <div style="font-size:11px;color:var(--gray);">JPG · PNG · PDF</div>
+          <input type="file" id="cl-passport-file" accept="image/*,.pdf" style="display:none" onchange="handleCLPassportFile(this)">
+        </div>
+        <div id="cl-passport-preview" style="display:none;text-align:center;margin-bottom:10px;">
+          <img id="cl-passport-img" style="max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);" alt="">
+          <div id="cl-passport-filename" style="font-size:11px;color:var(--gray);margin-top:5px;"></div>
+        </div>
+        <button onclick="submitCLPassport()" style="width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-bottom:6px;">제출하기</button>
+        <button onclick="document.getElementById('cl-passport-panel').style.display='none'" style="width:100%;padding:8px;background:transparent;border:none;color:var(--gray);font-size:12px;cursor:pointer;font-family:var(--font-sans);">취소</button>
+      </div>`,
+    },
+    {
+      id:'balance', icon:'💰', title:'잔금 납부',
+      subtitle:`출발 60일 전까지 납부`,
+      done:res.st==='k',
+      imgSrc:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=70',
+      imgAlt:'잔금 납부',
+      desc:res.st==='k'?'잔금 납부가 완료됐습니다.':'출발 60일 전까지 잔금을 납부해 주세요.',
+      action:null,
+      detail:res.st==='k'?
+        `<div style="padding:12px 14px;background:#EEF8F2;border-radius:7px;font-size:13px;color:#1B6B3A;display:flex;align-items:center;gap:8px;"><span>✅</span> 잔금 ${res.pbal.toLocaleString()}원 납부 완료</div>`
+        :`<div style="padding:14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--black);line-height:2.1;">
+          납부 금액: <b>${res.pbal.toLocaleString()}원</b><br>
+          납부 기한: <b>출발 60일 전</b><br>
+          <span style="font-size:11px;color:var(--gray);">예약금과 동일 계좌로 입금해 주세요</span>
+        </div>`,
+    },
+    {
+      id:'ticket', icon:'✈', title:'항공 발권 확인',
+      subtitle:'발권 완료 후 카카오·이메일로 안내',
+      done:ticketed,
+      imgSrc:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=70',
+      imgAlt:'항공기',
+      desc:ticketed?`발권이 완료됐습니다. PNR: ${res.pnr||'—'}`:'여권 확인 후 발권이 진행됩니다.',
+      action:null,
+      detail:ticketed?
+        `<div style="padding:14px;background:#EEF8F2;border:1px solid #A8D8B8;border-radius:7px;">
+          <div style="font-size:12px;color:#1B6B3A;margin-bottom:6px;">✈ 항공권 발권 완료</div>
+          <div style="font-family:monospace;font-size:20px;font-weight:700;color:var(--black);margin-bottom:8px;">PNR: ${res.pnr||'—'}</div>
+          <button onclick="alert('항공 바우처 다운로드')" style="padding:8px 16px;background:var(--black);color:var(--gold);border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);">✈ 바우처 다운로드</button>
+        </div>`
+        :`<div style="padding:12px 14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--gray);">여권 제출 완료 후 담당자가 발권을 진행합니다.<br>발권 완료 시 카카오와 이메일로 안내드립니다.</div>`,
+    },
+    {
+      id:'final', icon:'📋', title:'최종 안내서 확인',
+      subtitle:'출발 7일 전 발송 — 집결 장소·일정 포함',
+      done:false,
+      imgSrc:'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=70',
+      imgAlt:'여행 준비',
+      desc:'출발 7일 전에 카카오와 이메일로 최종 안내서를 발송합니다.',
+      action:null,
+      detail:`<div style="padding:12px 14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--gray);line-height:1.9;">
+        📌 집결 장소 · 시간<br>
+        📌 현지 가이드 연락처<br>
+        📌 호텔 체크인 일정<br>
+        📌 준비물 최종 체크리스트
+      </div>`,
+    },
+  ];
+
+  const doneCount=steps.filter(s=>s.done).length;
+
+  document.getElementById('checklistPage').innerHTML=`
+  <div style="max-width:680px;margin:0 auto;padding:40px 20px 80px;">
+
+    <!-- 헤더 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <button onclick="showMyPage()" style="background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer;padding:4px;">←</button>
+      <div>
+        <div style="font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:3px;">DEPARTURE CHECKLIST</div>
+        <h1 style="font-family:var(--font-serif);font-size:22px;font-weight:400;">출발 전 체크리스트</h1>
+      </div>
+    </div>
+
+    <!-- 상품 + 예약번호 요약 -->
+    <div style="background:var(--black);border-radius:10px;padding:16px 18px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:11px;color:var(--gold);">${prod.flag} ${prod.name}</div>
+        <div style="font-size:15px;font-weight:500;color:#fff;margin-top:3px;">${fmtDep(res.dep)} 출발 · ${totalPax}명</div>
+      </div>
+      <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.1);padding:6px 14px;border-radius:5px;border:1px solid rgba(201,168,76,0.2);">${res.id}</div>
+    </div>
+
+    <!-- 전체 진행률 -->
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:6px;">
+        <span>전체 완료 현황</span>
+        <span style="font-weight:500;color:${doneCount===steps.length?'#1B6B3A':'var(--black)'};">${doneCount} / ${steps.length} 완료</span>
+      </div>
+      <div style="height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden;">
+        <div style="width:${Math.round(doneCount/steps.length*100)}%;height:100%;background:${doneCount===steps.length?'#2E9B55':'var(--gold)'};border-radius:3px;transition:width .4s;"></div>
+      </div>
+    </div>
+
+    <!-- 단계별 카드 -->
+    ${steps.map((s,i)=>`
+    <div style="margin-bottom:16px;border-radius:10px;overflow:hidden;border:1.5px solid ${s.done?'#A8D8B8':'var(--border)'};">
+
+      <!-- 이미지 -->
+      <div style="height:180px;position:relative;overflow:hidden;background:#0d2416;">
+        <img src="${s.imgSrc}" alt="${s.imgAlt}" loading="lazy"
+          style="width:100%;height:100%;object-fit:cover;opacity:${s.done?0.5:0.85};"
+          onerror="this.style.display='none'">
+        <!-- 오버레이 -->
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,20,16,.85) 0%,rgba(14,20,16,.1) 60%);">
+        </div>
+        <!-- 완료 배지 -->
+        ${s.done?`<div style="position:absolute;top:14px;right:14px;background:#2E9B55;color:#fff;font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;">✓ 완료</div>`
+          :i===steps.findIndex(x=>!x.done)?`<div style="position:absolute;top:14px;right:14px;background:#E05C40;color:#fff;font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;">🔴 지금 단계</div>`
+          :`<div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.6);font-size:11px;padding:5px 12px;border-radius:100px;">대기 중</div>`}
+        <!-- 단계 번호 + 제목 -->
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;">
+          <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-bottom:4px;">STEP ${i+1} ${s.icon}</div>
+          <div style="font-size:18px;font-weight:500;color:#fff;">${s.title}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px;">${s.subtitle}</div>
+        </div>
+      </div>
+
+      <!-- 내용 -->
+      <div style="padding:16px 18px;background:#fff;">
+        <p style="font-size:13px;color:var(--black);line-height:1.7;margin-bottom:14px;">${s.desc}</p>
+        ${s.detail}
+        ${s.action&&!s.done?`<button onclick="${s.action.fn}" style="margin-top:12px;width:100%;padding:11px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">${s.action.label} →</button>`:''}
+      </div>
+    </div>`).join('')}
+
+    <!-- 마이페이지 돌아가기 -->
+    <div style="text-align:center;margin-top:8px;">
+      <button onclick="showMyPage()" style="font-size:13px;color:var(--gray);background:none;border:none;cursor:pointer;text-decoration:underline;">← 마이페이지로 돌아가기</button>
+    </div>
+  </div>`;
+
+  // 계좌 정보 채우기
+  try{
+    const cfg=JSON.parse(localStorage.getItem('cj_site_config')||'{}');
+    const bankEl=document.getElementById('cl-bank');
+    const acctEl=document.getElementById('cl-acct');
+    const depEl=document.getElementById('cl-dep');
+    if(bankEl) bankEl.textContent=cfg.bank||'설정 필요';
+    if(acctEl) acctEl.textContent=cfg.account||'설정 필요';
+    if(depEl) depEl.textContent=cfg.depositor||'설정 필요';
+  }catch(e){}
+}
+
+let _clPassportIdx=0;
+
+function openPassportUploadCL(idx){
+  _clPassportIdx=idx;
+  const saved=sessionStorage.getItem('cj_my_res');
+  if(!saved) return;
+  const res=JSON.parse(saved);
+  const companions=res.companions||[];
+  const memberList=[{name:res.name,role:'대표'},...companions.map(c=>({name:c.name,role:'동행'}))];
+  const target=memberList[idx];
+  const panel=document.getElementById('cl-passport-panel');
+  const lbl=document.getElementById('cl-passport-for');
+  if(lbl) lbl.textContent=`${target?.name}님의 여권을 업로드해 주세요`;
+  if(panel){
+    panel.style.display='block';
+    panel.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  // 미리보기 초기화
+  document.getElementById('cl-passport-preview').style.display='none';
+  document.getElementById('cl-passport-file').value='';
+}
+
+function handleCLPassportFile(input){
+  const file=input.files[0]; if(!file) return;
+  document.getElementById('cl-passport-filename').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)';
+  if(file.type.startsWith('image/')){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      document.getElementById('cl-passport-img').src=e.target.result;
+      document.getElementById('cl-passport-preview').style.display='block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    document.getElementById('cl-passport-preview').style.display='block';
+    document.getElementById('cl-passport-img').style.display='none';
+  }
+}
+
+function submitCLPassport(){
+  const file=document.getElementById('cl-passport-file').files[0];
+  if(!file){alert('파일을 선택해주세요.');return;}
+  const saved=sessionStorage.getItem('cj_my_res');
+  if(!saved) return;
+  const res=JSON.parse(saved);
+
+  // 대표 또는 동행자 상태 업데이트
+  if(_clPassportIdx===0){
+    res.pass='review';
+  } else {
+    if(!res.companions) res.companions=[];
+    if(res.companions[_clPassportIdx-1]) res.companions[_clPassportIdx-1].pass='review';
+  }
+  res.log=res.log||[];
+  const memberList=[{name:res.name},...(res.companions||[])];
+  const mName=memberList[_clPassportIdx]?.name||'';
+  res.log.push({c:'pd',i:'🛂',t:`${mName}님 여권 제출 완료 — 검토 중`,m:new Date().toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})});
+
+  sessionStorage.setItem('cj_my_res',JSON.stringify(res));
+  const list=JSON.parse(localStorage.getItem('cj_reservations')||'[]');
+  const idx=list.findIndex(r=>r.id===res.id);
+  if(idx>=0){list[idx]=res;localStorage.setItem('cj_reservations',JSON.stringify(list));}
+
+  document.getElementById('cl-passport-panel').style.display='none';
+  alert(`${mName}님 여권이 제출됐습니다.\n담당자 확인 후 카카오로 안내드립니다.`);
+  renderChecklist(res);
+}
+
+function showMyPage(){
+  const saved=sessionStorage.getItem('cj_my_res');
+  document.getElementById('checklistPage').style.display='none';
+  document.getElementById('myPage').style.display='block';
+  if(saved) renderMyPage(JSON.parse(saved));
+  window.scrollTo(0,0);
 }
 
 // 초기화
