@@ -4414,37 +4414,96 @@ function visaRow(r){
 
 function visaChgSt(id,el){
   const r=DATA.find(x=>x.id===id);if(!r)return;
-  const sts=['none','wait','pend','ok','rej'];
   const cur=r.visa?.st||'none';
-  const next=sts[(sts.indexOf(cur)+1)%sts.length];
+  const policy=VISA_POLICY.find(p=>p.country===r.country)||{};
+
+  // 도착비자·무비자 — 별도 관리 불필요 안내
+  if(policy.type==='도착비자'||policy.type==='무비자'){
+    const msg=policy.type==='무비자'?'무비자 입국 — 별도 비자 절차가 없습니다.':'도착비자는 고객이 공항에서 직접 수령합니다.\n별도 관리가 필요한 경우에만 상태를 변경하세요.';
+    if(!confirm(msg+'\n\n상태를 변경하시겠습니까?')) return;
+  }
+
+  // 상태 선택 모달
+  const opts=[
+    {st:'none',label:'해당없음',desc:'비자 불필요 또는 미확인'},
+    {st:'wait',label:'📋 신청 전',desc:'여권 확인 완료, 비자 신청 전'},
+    {st:'pend',label:'⏳ 신청완료·대기',desc:'신청 완료, 승인 대기 중'},
+    {st:'ok',  label:'✅ 비자 승인',desc:'승인 완료 — 발송 단계로 이동'},
+    {st:'rej', label:'❌ 비자 거절',desc:'거절됨, 재신청 필요'},
+  ];
+
+  showModal({
+    ico:'🌐', type:'info',
+    title:`비자 상태 변경 — ${r.name}님`,
+    desc:`현재: ${VS_LABEL[cur]||'—'} → 변경할 상태를 선택하세요`,
+    body:`<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+      ${opts.map(o=>`
+        <button onclick="doVisaChgSt('${id}','${o.st}');closeModal();"
+          style="text-align:left;padding:10px 14px;border-radius:6px;border:1px solid ${cur===o.st?'#C9A84C':'#DDD5C0'};background:${cur===o.st?'#FDF8EE':'#fff'};cursor:pointer;font-family:inherit;">
+          <div style="font-size:13px;font-weight:500;">${o.label}${cur===o.st?' ← 현재':''}</div>
+          <div style="font-size:11px;color:#9A9590;margin-top:2px;">${o.desc}</div>
+        </button>`).join('')}
+    </div>`,
+    okLabel:null,
+    action(){}
+  });
+}
+
+function doVisaChgSt(id, next){
+  const r=DATA.find(x=>x.id===id);if(!r)return;
+  const cur=r.visa?.st||'none';
+  if(cur===next) return;
   if(!r.visa)r.visa={};
+  const old_st=cur;
   r.visa.st=next;
+
+  // 승인 처리 시 승인번호 입력
+  if(next==='ok'){
+    const no=prompt(`${r.name}님 비자 승인번호 입력 (없으면 빈칸으로 확인):`,r.visa.no||'')||'';
+    r.visa.no=no;
+    r.visa.approved=nowShort();
+    r.log.push({c:'dn',i:'🌐',t:`비자 승인 완료${no?' 번호:'+no:''}`,m:nowShort()});
+  } else if(next==='pend'){
+    r.visa.applied=nowShort();
+    r.log.push({c:'ch',i:'⏳',t:'비자 신청 완료 — 승인 대기',m:nowShort()});
+  } else if(next==='rej'){
+    r.log.push({c:'pd',i:'❌',t:'비자 거절 — 재신청 필요',m:nowShort()});
+  } else if(next==='wait'){
+    r.log.push({c:'ch',i:'📋',t:'비자 신청 전 단계 설정',m:nowShort()});
+  }
+
+  addHistory('비자',`${r.name}님 비자 상태 변경`,id, VS_LABEL[old_st]||old_st, VS_LABEL[next]||next);
   T(`${r.name}님 비자 상태 → ${VS_LABEL[next]}`);
   visaRenderAll();
 }
 function visaApprove(id){
-  const r=DATA.find(x=>x.id===id);if(!r||!r.visa)return;
-  const no=prompt(`${r.name}님 비자 승인번호 입력:`,'')||'(입력 안함)';
-  r.visa.st='ok';r.visa.no=no;r.visa.approved='04.06';
-  T(`${r.name}님 비자 승인 처리 완료 — 번호: ${no}`);
-  visaRenderAll();
+  // 승인 버튼 클릭 시 바로 승인 처리 (pend 상태에서만 보임)
+  doVisaChgSt(id,'ok');
 }
 function visaSend(id,isResend){
   const r=DATA.find(x=>x.id===id);if(!r||!r.visa)return;
-  const now='04.06 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  const now=nowShort();
   const result=isResend?'resent':'sent';
   r.visa.kko=result;r.visa.email=result;
   r.visa.kkoAt=now;r.visa.emailAt=now;
   if(!r.visa.sendLogs)r.visa.sendLogs=[];
   r.visa.sendLogs.push({type:'kko',at:now,result,note:isResend?'고객 미수신 재발송':'최초 발송'});
   r.visa.sendLogs.push({type:'email',at:now,result,note:isResend?'재발송':'최초 발송'});
+  r.log.push({c:'ch',i:'📨',t:`비자 승인서 ${isResend?'재':''}발송 (카카오+이메일)`,m:now});
+  addHistory('비자',`${r.name}님 비자 승인서 ${isResend?'재':''}발송`,id);
   T(`${r.name}님 비자 승인서 ${isResend?'재':''}발송 완료 — 이력 기록됨`);
   visaRenderAll();
 }
 function visaBulkSend(dep){
   const list=DATA.filter(r=>r.dep===dep&&r.visa?.st==='ok'&&(r.visa?.kko==='unsent'||r.visa?.email==='unsent'));
-  const now='04.06 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
-  list.forEach(r=>{r.visa.kko='sent';r.visa.email='sent';r.visa.kkoAt=now;r.visa.emailAt=now;if(!r.visa.sendLogs)r.visa.sendLogs=[];r.visa.sendLogs.push({type:'kko',at:now,result:'sent',note:'일괄 발송'});});
+  const now=nowShort();
+  list.forEach(r=>{
+    r.visa.kko='sent';r.visa.email='sent';r.visa.kkoAt=now;r.visa.emailAt=now;
+    if(!r.visa.sendLogs)r.visa.sendLogs=[];
+    r.visa.sendLogs.push({type:'kko',at:now,result:'sent',note:'일괄 발송'});
+    r.log.push({c:'ch',i:'📨',t:'비자 승인서 일괄 발송',m:now});
+  });
+  addHistory('비자',`비자 승인서 일괄 발송 ${list.length}명`,dep);
   T(`${dep} 출발팀 미발송 ${list.length}명 일괄 발송 완료`);
   visaRenderAll();
 }
