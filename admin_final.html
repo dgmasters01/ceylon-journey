@@ -3697,17 +3697,14 @@ function sendMsg(id, type, channels, content, extra){
 
   // 채널 배열로 정규화
   const chs = Array.isArray(channels) ? channels : [channels];
-
-  chs.forEach(ch=>{
-    r.sendLogs.push({
-      type, ch, content: content||MSG_TYPE[type]?.label||'발송',
-      at: now, result,
-      note: extra?.note||''
-    });
-  });
-
-  // 타임라인에도 기록
   const chLabel = chs.map(c=>CH_META[c]?.label||c).join('+');
+
+  // sendLogs: 채널 묶어서 1건으로 기록 (이전: 채널마다 1행 → 중복)
+  r.sendLogs.push({
+    type, ch: chs.join('+'), content: content||MSG_TYPE[type]?.label||'발송',
+    at: now, result,
+    note: extra?.note||''
+  });
   const ico = MSG_TYPE[type]?.icon||'📨';
   r.log.push({
     c:'ch', i:ico,
@@ -3741,7 +3738,7 @@ function msgBalance(id)   { sendMsg(id,'balance', ['kko'],       '잔금 납부 
 function msgPassReq(id)   { sendMsg(id,'passport',['kko','email'],'여권 사진+정보 제출 요청 링크 발송'); }
 function msgPassRej(id,reason){ sendMsg(id,'passport',['kko','email'],`여권 재제출 요청: ${reason||'사유 입력'}`); }
 function msgTicket(id)    { sendMsg(id,'ticket',  ['kko','email'],'발권 완료 안내·PNR·바우처 첨부'); }
-function msgVisa(id)      { sendMsg(id,'visa',    ['kko','email'],'비자 승인서 발송'); }
+function msgVisa(id)      { visaSend(id,false); }  // visaSend로 통일
 function msgGuide(id)     { sendMsg(id,'guide',   ['kko','email'],'최종 출발 안내서 발송'); }
 function msgRefund(id)    { sendMsg(id,'refund',  ['kko'],        '환불 금액·처리일·계좌 안내'); }
 function msgConfirm(id)   { sendMsg(id,'confirm', ['kko','email'],'예약 확정 안내·입금 계좌·금액'); }
@@ -4379,7 +4376,7 @@ function visaRow(r){
   const policy=VISA_POLICY.find(p=>p.country===r.country)||{type:'—',cost:'—'};
   const kkoSent=v.kko==='sent'||v.kko==='resent';
   const emlSent=v.email==='sent'||v.email==='resent';
-  const reCnt=(v.sendLogs||[]).filter(l=>l.result==='resent').length;
+  const reCnt=(v.sendLogs||[]).filter(l=>l.result==='resent'&&l.type==='visa').length;
   function sendBadge(st,type){
     if(st==='na')return`<span style="font-size:11px;color:#9A9590;background:#F8F8F8;padding:2px 7px;border-radius:4px;border:1px solid #DDD5C0;">—</span>`;
     const sent=st==='sent'||st==='resent';
@@ -4484,27 +4481,55 @@ function visaSend(id,isResend){
   const r=DATA.find(x=>x.id===id);if(!r||!r.visa)return;
   const now=nowShort();
   const result=isResend?'resent':'sent';
-  r.visa.kko=result;r.visa.email=result;
-  r.visa.kkoAt=now;r.visa.emailAt=now;
-  if(!r.visa.sendLogs)r.visa.sendLogs=[];
-  r.visa.sendLogs.push({type:'kko',at:now,result,note:isResend?'고객 미수신 재발송':'최초 발송'});
-  r.visa.sendLogs.push({type:'email',at:now,result,note:isResend?'재발송':'최초 발송'});
+
+  // visa 상태 업데이트
+  r.visa.kko=result; r.visa.email=result;
+  r.visa.kkoAt=now;  r.visa.emailAt=now;
+
+  // visa.sendLogs: 1건 (카카오+이메일 묶어서 1행)
+  if(!r.visa.sendLogs) r.visa.sendLogs=[];
+  r.visa.sendLogs.push({
+    type:'visa', ch:'kko+email', at:now, result,
+    note: isResend?`재발송 (총 ${r.visa.sendLogs.filter(l=>l.result==='resent').length+1}회)`:'최초 발송'
+  });
+
+  // r.sendLogs(발송이력 탭): 1건
+  if(!r.sendLogs) r.sendLogs=[];
+  r.sendLogs.push({
+    type:'visa', ch:'kko', at:now, result,
+    content:`비자 승인서 ${isResend?'재':''}발송`,
+    note: isResend?'재발송':'최초 발송'
+  });
+
+  // 예약 타임라인 로그: 1건
   r.log.push({c:'ch',i:'📨',t:`비자 승인서 ${isResend?'재':''}발송 (카카오+이메일)`,m:now});
+
+  // 히스토리: 1건
   addHistory('비자',`${r.name}님 비자 승인서 ${isResend?'재':''}발송`,id);
-  T(`${r.name}님 비자 승인서 ${isResend?'재':''}발송 완료 — 이력 기록됨`);
+
+  T(`${r.name}님 비자 승인서 ${isResend?'재':''}발송 완료`);
+  if(document.getElementById('p-msglog')?.classList.contains('on')) renderMsgLog();
   visaRenderAll();
 }
 function visaBulkSend(dep){
   const list=DATA.filter(r=>r.dep===dep&&r.visa?.st==='ok'&&(r.visa?.kko==='unsent'||r.visa?.email==='unsent'));
+  if(!list.length){ T('발송할 대상이 없습니다'); return; }
   const now=nowShort();
   list.forEach(r=>{
-    r.visa.kko='sent';r.visa.email='sent';r.visa.kkoAt=now;r.visa.emailAt=now;
-    if(!r.visa.sendLogs)r.visa.sendLogs=[];
-    r.visa.sendLogs.push({type:'kko',at:now,result:'sent',note:'일괄 발송'});
-    r.log.push({c:'ch',i:'📨',t:'비자 승인서 일괄 발송',m:now});
+    r.visa.kko='sent'; r.visa.email='sent';
+    r.visa.kkoAt=now;  r.visa.emailAt=now;
+    // visa.sendLogs: 1건
+    if(!r.visa.sendLogs) r.visa.sendLogs=[];
+    r.visa.sendLogs.push({type:'visa',ch:'kko+email',at:now,result:'sent',note:'일괄 발송'});
+    // r.sendLogs: 1건
+    if(!r.sendLogs) r.sendLogs=[];
+    r.sendLogs.push({type:'visa',ch:'kko',at:now,result:'sent',content:'비자 승인서 일괄 발송',note:'일괄'});
+    // 타임라인
+    r.log.push({c:'ch',i:'📨',t:'비자 승인서 일괄 발송 (카카오+이메일)',m:now});
   });
   addHistory('비자',`비자 승인서 일괄 발송 ${list.length}명`,dep);
-  T(`${dep} 출발팀 미발송 ${list.length}명 일괄 발송 완료`);
+  T(`${dep} 출발팀 ${list.length}명 일괄 발송 완료`);
+  if(document.getElementById('p-msglog')?.classList.contains('on')) renderMsgLog();
   visaRenderAll();
 }
 function initVisaPage(){
