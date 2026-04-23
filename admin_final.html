@@ -828,7 +828,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
   </div>
 
   <!-- 통계 카드 -->
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;" id="visa-stats"></div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px;" id="visa-stats"></div>
 
   <!-- 긴급 알림 -->
   <div id="visa-alerts" style="display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;"></div>
@@ -4323,13 +4323,14 @@ function visaSetDep(v){visaCurDep=v;visaRenderAll();}
 function visaRenderAll(){
   const base=visaGetFiltered();
   // 통계
-  const cnt={wait:0,pend:0,ok:0,rej:0,unsent:0};
+  const cnt={none:0,wait:0,pend:0,ok:0,rej:0,unsent:0};
   base.forEach(r=>{
     const v=r.visa||{};
     if(v.st==='wait')cnt.wait++;
     else if(v.st==='pend')cnt.pend++;
     else if(v.st==='ok'){cnt.ok++;if(v.kko==='unsent'||v.email==='unsent')cnt.unsent++;}
     else if(v.st==='rej')cnt.rej++;
+    else cnt.none++;
   });
   // 비자 관리 필요 건수 (e-Visa + 대리신청만)
   const needMgmt=base.filter(r=>{
@@ -4338,6 +4339,7 @@ function visaRenderAll(){
   }).length;
   document.getElementById('visa-stats').innerHTML=`
     <div class="stat"><div class="sl">전체 대상</div><div class="sv">${base.length}명</div><div class="ss">관리필요: ${needMgmt}명</div></div>
+    <div class="stat"><div class="sl">— 해당없음</div><div class="sv" style="color:#9A9590">${cnt.none}명</div><div class="ss">도착비자·무비자</div></div>
     <div class="stat warn"><div class="sl">📋 신청 전</div><div class="sv y">${cnt.wait}명</div><div class="ss">신청 진행 필요</div></div>
     <div class="stat info"><div class="sl">⏳ 대기 중</div><div class="sv b">${cnt.pend}명</div><div class="ss">승인 대기</div></div>
     <div class="stat ok"><div class="sl">✅ 승인완료</div><div class="sv g">${cnt.ok}명</div></div>
@@ -4383,9 +4385,10 @@ function visaRenderAll(){
 
   // 비자 정책
   document.getElementById('visa-policy').innerHTML=VISA_POLICY.map(p=>`
-    <div style="display:grid;grid-template-columns:120px 140px 90px 90px 1fr 70px;align-items:center;gap:10px;padding:12px;background:#F8F6F2;border-radius:8px;border:1px solid #E8E0D0;">
+    <div style="display:grid;grid-template-columns:80px 120px 110px 90px 90px 1fr 70px;align-items:center;gap:10px;padding:12px;background:#F8F6F2;border-radius:8px;border:1px solid #E8E0D0;">
       <div style="font-size:13px;font-weight:700">${p.flag} ${p.name}</div>
-      <div style="font-size:12px;">${p.type}</div>
+      <div style="font-size:12px;font-weight:500;">${p.type}</div>
+      <div style="font-size:11px;color:#5A5550;">${p.method||'—'}</div>
       <div style="font-size:12px;color:#E05C40;font-weight:600">${p.cost}</div>
       <div><span style="font-size:11px;padding:2px 7px;border-radius:4px;${p.incl?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':'background:#F8F8F8;color:#9A9590;border:1px solid #DDD5C0;'}">${p.incl?'상품 포함':'개인 부담'}</span></div>
       <div style="font-size:11px;color:#9A9590;">${p.note}</div>
@@ -4498,6 +4501,11 @@ function doVisaChgSt(id, next){
     const no=prompt(`${r.name}님 비자 승인번호 입력 (없으면 빈칸으로 확인):`,r.visa.no||'')||'';
     r.visa.no=no;
     r.visa.approved=nowShort();
+    // 발송 전 상태로 초기화 (정책에 따라)
+    const pol=VISA_POLICY.find(p=>p.country===r.country)||{};
+    const needSend=(pol.type!=='도착비자'&&pol.type!=='무비자');
+    r.visa.kko=needSend?'unsent':'na';
+    r.visa.email=needSend?'unsent':'na';
     r.log.push({c:'dn',i:'🌐',t:`비자 승인 완료${no?' 번호:'+no:''}`,m:nowShort()});
   } else if(next==='pend'){
     r.visa.applied=nowShort();
@@ -4743,7 +4751,7 @@ function visaReject(id){
       r.visa.rejDate=nowShort();
       r.log.push({c:'pd',i:'❌',t:`비자 거절: ${reason}`,m:nowShort()});
       const chs=[kko&&'kko',email&&'email'].filter(Boolean);
-      if(chs.length) sendMsg(id,'passport',chs,`비자 거절 안내: ${reason}. 재신청 서류를 준비해주세요.`);
+      if(chs.length) sendMsg(id,'visa',chs,`비자 거절 안내: ${reason}. 재신청 서류를 준비해주세요.`);
       addHistory('비자',`${r.name}님 비자 거절`,id, old_st||'대기', '거절');
       T(`${r.name}님 비자 거절 처리 완료 — 재신청 안내 발송`);
       visaRenderAll();
@@ -4775,7 +4783,7 @@ function visaSendEvisaLink(id){
       r.visa.evisaLinkSent=nowShort();
       r.log.push({c:'ch',i:'📧',t:'e-Visa 신청 링크 발송',m:nowShort()});
       addHistory('비자',`${r.name}님 e-Visa 신청 링크 발송`,id);
-      T(`${r.name}님 e-Visa 신청 링크 카카오+이메일 발송 완료`);
+      T(`${r.name}님 e-Visa 신청 링크 발송 완료 — 고객 신청 완료 후 상태를 '신청완료·대기'로 변경해주세요`);
       visaRenderAll();
     }
   });
