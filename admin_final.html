@@ -281,13 +281,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
     <button onclick="closeHistory()" style="background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.6);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
   </div>
   <!-- 필터 -->
-  <div style="padding:12px 20px;border-bottom:1px solid #F0EDE8;display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;">
-    <select id="hist-filter-user" onchange="renderHistory()" style="padding:5px 10px;border:1px solid #DDD5C0;border-radius:5px;font-size:12px;font-family:inherit;background:#fff;">
+  <div style="padding:10px 20px;border-bottom:1px solid #F0EDE8;display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;">
+    <input id="hist-search" placeholder="🔍 검색 (이름·예약번호)" oninput="histPage=0;renderHistory()"
+      style="padding:5px 10px;border:1px solid #DDD5C0;border-radius:5px;font-size:12px;font-family:inherit;flex:1;min-width:120px;">
+    <select id="hist-filter-user" onchange="histPage=0;renderHistory()" style="padding:5px 10px;border:1px solid #DDD5C0;border-radius:5px;font-size:12px;font-family:inherit;background:#fff;">
       <option value="all">전체 계정</option>
       <option value="admin">대표님</option>
       <option value="staff">직원</option>
     </select>
-    <select id="hist-filter-type" onchange="renderHistory()" style="padding:5px 10px;border:1px solid #DDD5C0;border-radius:5px;font-size:12px;font-family:inherit;background:#fff;">
+    <select id="hist-filter-type" onchange="histPage=0;renderHistory()" style="padding:5px 10px;border:1px solid #DDD5C0;border-radius:5px;font-size:12px;font-family:inherit;background:#fff;">
       <option value="all">전체 유형</option>
       <option value="예약">예약 관리</option>
       <option value="여권">여권 처리</option>
@@ -297,8 +299,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
       <option value="발송">메시지 발송</option>
       <option value="상품">상품 관리</option>
       <option value="설정">설정 변경</option>
+      <option value="수정">수정</option>
     </select>
-    <button onclick="clearHistory()" style="padding:5px 12px;background:#FDF3F1;color:#C04030;border:1px solid #F5C4B8;border-radius:5px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:auto;">전체 삭제</button>
+    <button id="hist-del-btn" onclick="clearHistory()" style="padding:5px 12px;background:#FDF3F1;color:#C04030;border:1px solid #F5C4B8;border-radius:5px;font-size:11px;cursor:pointer;font-family:inherit;display:none;">전체 삭제</button>
   </div>
   <!-- 히스토리 목록 -->
   <div id="historyList" style="flex:1;overflow-y:auto;padding:8px 0;"></div>
@@ -2392,7 +2395,7 @@ function doRefundDone(id){
       r.refundSt = 'done';
       r.refundAmt = calc.refund;
       r.refundDate = '2026.04.06';
-      r.log.push({c:'dn',i:'💰',t:`환불 완료 ${calc.refund.toLocaleString()}원`,m:'04.06'});
+      r.log.push({c:'dn',i:'💰',t:`환불 완료 ${calc.refund.toLocaleString()}원`,m:nowShort()});
       sendMsg(id,'refund',['kko'],`환불 ${calc.refund.toLocaleString()}원 처리 완료`);
       addHistory('환불',`${r.name}님 환불처리 ${calc.refund.toLocaleString()}원`,r.id);T(`${r.name}님 환불 처리 완료 — ${calc.refund.toLocaleString()}원`);
       initCancel();
@@ -2623,11 +2626,11 @@ function confSt(e,id,ns){
         r.cancelDday=calcDday(r.dep,today);
         r.airPenalty=r.tk==='d'?(r.pax*150000):0;
         r.refundSt='pending';
-        r.log.push({c:'pd',i:'❌',t:'취소 신청 접수 — 환불 계산 대기',m:'04.06'});
+        r.log.push({c:'pd',i:'❌',t:'취소 신청 접수 — 환불 계산 대기',m:nowShort()});
         T(`${r.name}님 취소 처리 완료 — 취소·환불 탭에서 환불 금액 확인`);
       } else {
         r.st=ns;
-        r.log.push({c:'ch',i:'↩',t:`상태 변경: → ${SM[ns].l}`,m:'04.06'});
+        r.log.push({c:'ch',i:'↩',t:`상태 변경: → ${SM[ns].l}`,m:nowShort()});
         T(`${r.name}님 → [${SM[ns].l}] 변경 완료`);addHistory('예약',`${r.name}님 상태 → ${SM[ns].l}`,r.id);
       }
       renderRes(getFiltered());
@@ -2663,9 +2666,11 @@ function confTk(e,id,ntk){
     ${isBack?`<div class="m-warn">↩ 발권 상태를 되돌립니다. 기존 PNR: <b>${r.pnr||'없음'}</b> — 삭제됩니다.</div>`:''}`,
     okLabel:isBack?'되돌리기':'변경',
     action(){
-      const oldPnr=r.pnr;
+      const oldTk=r.tk; const oldPnr=r.pnr;
       r.tk=ntk;
-      if(isBack){r.pnr='';r.tkDate='';r.log.push({c:'ch',i:'↩',t:`발권 상태 되돌림${oldPnr?' (기존 PNR: '+oldPnr+')':''}`,m:'04.06'});}
+      if(isBack){r.pnr='';r.tkDate='';r.log.push({c:'ch',i:'↩',t:`발권 상태 되돌림${oldPnr?' (기존 PNR: '+oldPnr+')':''}`,m:nowShort()});
+        addHistory('발권',`${r.name}님 발권 상태 되돌림`,r.id, TKM[oldTk]?.l||oldTk, TKM[ntk]?.l||ntk);
+      }
       T(`${r.name}님 → [${TKM[ntk].l}]`);
       renderRes(getFiltered());renderTicket();
     }
@@ -2796,7 +2801,7 @@ function doTicket(saveOnly){
     voucherFile?'바우처 등록':'',
     !isSaveOnly&&(kko||email)?`고객 ${[kko&&'카카오',email&&'이메일'].filter(Boolean).join('+')} 발송`:''
   ].filter(Boolean).join(' · ');
-  r.log.push({c:'tk',i:'✈',t:logTxt,m:'04.06'});
+  r.log.push({c:'tk',i:'✈',t:logTxt,m:nowShort()});
 
   modal.classList.remove('open');
   voucherFile=null;
@@ -2818,7 +2823,7 @@ function tkResend(id){
   const now='04.06 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
   if(!r.tkSent)r.tkSent={kko:false,email:false,sentAt:''};
   r.tkSent.kko=true;r.tkSent.email=true;r.tkSent.sentAt=now;
-  r.log.push({c:'tk',i:'📨',t:`발권 정보 재발송 (카카오+이메일) PNR: ${r.pnr}`,m:'04.06'});
+  r.log.push({c:'tk',i:'📨',t:`발권 정보 재발송 (카카오+이메일) PNR: ${r.pnr}`,m:nowShort()});
   T(`${r.name}님 발권 정보 카카오+이메일 재발송 완료`);
   renderTicket();
 }
@@ -4205,8 +4210,13 @@ function passCardErr(r){
 
 function passApprove(id,name){
   const r=DATA.find(x=>x.id===id);
-  if(r){r.pass='ok';r.passApproved='04.06';r.passBy='admin';
-    r.log.push({c:'dn',i:'✓',t:'여권 확인 완료 (대표님 승인)',m:'04.06'});
+  if(r){
+    const oldPass=r.pass;
+    r.pass='ok';
+    r.passApproved=nowShort();
+    r.passBy=currentUser?.id||'admin';
+    r.log.push({c:'dn',i:'✓',t:`여권 확인 완료 (${currentUser?.name||'관리자'} 승인)`,m:nowShort()});
+    addHistory('여권',`${name}님 여권 승인`,id, oldPass==='rev'?'검토중':'미제출', '확인완료');
   }
   T(`${name}님 여권 확인 완료 — 발권 가능 상태`);
   passRenderAll();
@@ -4479,33 +4489,54 @@ function applyLoginUI(){
 // 📋 히스토리 시스템
 // ══════════════════════════════════════════
 let HISTORY = JSON.parse(localStorage.getItem('cj_history')||'[]');
+let histPage = 0;
+const HIST_PER_PAGE = 50;
 
 const HIST_ICONS = {
   '로그인':'🔑','예약':'📋','여권':'🛂','비자':'🌐','발권':'✈',
-  '취소':'❌','발송':'📨','상품':'🌍','설정':'⚙','환불':'💰','기타':'📌'
+  '취소':'❌','발송':'📨','상품':'🌍','설정':'⚙','환불':'💰','기타':'📌',
+  '수정':'✏️','삭제':'🗑️',
 };
 
-function addHistory(type, detail, targetId){
+// 실시간 시간 포맷 (하드코딩 '04.06' 대신 사용)
+function nowTs(){
+  return new Date().toLocaleString('ko-KR',{
+    year:'numeric',month:'2-digit',day:'2-digit',
+    hour:'2-digit',minute:'2-digit',second:'2-digit',
+    hour12:false
+  });
+}
+function nowShort(){
+  const d=new Date();
+  return `${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function addHistory(type, detail, targetId, before, after){
   if(!currentUser) return;
   const entry = {
     id: Date.now(),
-    ts: new Date().toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+    ts: nowTs(),
     user: currentUser.name,
     userId: currentUser.id,
     role: currentUser.role,
-    type,
-    detail,
+    type, detail,
     targetId: targetId||'',
+    before: before||'',   // 변경 전 값
+    after:  after||'',    // 변경 후 값
   };
   HISTORY.unshift(entry);
-  if(HISTORY.length > 500) HISTORY = HISTORY.slice(0,500);
+  if(HISTORY.length > 1000) HISTORY = HISTORY.slice(0,1000);
   localStorage.setItem('cj_history', JSON.stringify(HISTORY));
   if(document.getElementById('historyPanel').style.display==='flex') renderHistory();
 }
 
 function openHistory(){
+  histPage=0;
   document.getElementById('historyPanel').style.display='flex';
   document.getElementById('historyOv').style.display='block';
+  // 삭제 버튼 권한 처리
+  const delBtn=document.getElementById('hist-del-btn');
+  if(delBtn) delBtn.style.display=currentUser?.role==='admin'?'':'none';
   renderHistory();
 }
 function closeHistory(){
@@ -4516,56 +4547,92 @@ function closeHistory(){
 function renderHistory(){
   const filterUser = document.getElementById('hist-filter-user').value;
   const filterType = document.getElementById('hist-filter-type').value;
+  const filterSearch = (document.getElementById('hist-search')?.value||'').trim().toLowerCase();
+
   let list = HISTORY.filter(h=>{
     if(filterUser!=='all' && h.userId!==filterUser) return false;
     if(filterType!=='all' && !h.type.includes(filterType)) return false;
+    if(filterSearch && !h.detail.toLowerCase().includes(filterSearch) && !(h.targetId||'').toLowerCase().includes(filterSearch)) return false;
     return true;
   });
+
+  const total = list.length;
+  const totalPages = Math.ceil(total/HIST_PER_PAGE)||1;
+  if(histPage>=totalPages) histPage=totalPages-1;
+  const paged = list.slice(histPage*HIST_PER_PAGE, (histPage+1)*HIST_PER_PAGE);
+
   const el = document.getElementById('historyList');
-  if(!list.length){
+  if(!total){
     el.innerHTML='<div style="padding:40px;text-align:center;color:#9A9590;font-size:13px;">히스토리가 없습니다</div>';
     return;
   }
+
   // 날짜별 그룹핑
   const groups = {};
-  list.forEach(h=>{
-    const date = h.ts.slice(0,10);
+  paged.forEach(h=>{
+    const date = (h.ts||'').slice(0,10).replace(/\. /g,'-').replace('.','').trim()||'날짜없음';
     if(!groups[date]) groups[date]=[];
     groups[date].push(h);
   });
-  el.innerHTML = Object.entries(groups).map(([date, items])=>`
-    <div style="padding:8px 20px 4px;font-size:10px;font-weight:600;color:#9A9590;letter-spacing:1px;background:#F8F6F2;border-bottom:1px solid #F0EDE8;">
+
+  const listHtml = Object.entries(groups).map(([date, items])=>`
+    <div style="padding:7px 20px 4px;font-size:10px;font-weight:600;color:#9A9590;letter-spacing:1px;background:#F8F6F2;border-bottom:1px solid #F0EDE8;">
       ${date}
     </div>
     ${items.map(h=>`
     <div style="display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid #F8F6F2;align-items:start;">
-      <div style="font-size:18px;flex-shrink:0;margin-top:1px;">${HIST_ICONS[h.type]||'📌'}</div>
+      <div style="font-size:16px;flex-shrink:0;margin-top:2px;">${HIST_ICONS[h.type]||'📌'}</div>
       <div style="flex:1;min-width:0;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap;">
           <span style="font-size:12px;font-weight:600;color:#0E1410;">${h.detail}</span>
           ${h.targetId?`<span style="font-size:10px;color:#2460A0;background:#EEF4FB;padding:1px 6px;border-radius:3px;">${h.targetId}</span>`:''}
         </div>
-        <div style="display:flex;align-items:center;gap:8px;">
+        ${h.before||h.after?`
+        <div style="font-size:11px;color:#9A9590;margin-bottom:3px;background:#F8F6F2;padding:3px 7px;border-radius:4px;display:inline-block;">
+          ${h.before?`<span style="color:#E05C40;text-decoration:line-through;">${h.before}</span> → `:''}<span style="color:#1B6B3A;">${h.after}</span>
+        </div>`:''}
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span style="font-size:10px;padding:2px 8px;border-radius:100px;${h.role==='admin'?'background:#0E1410;color:#C9A84C;':'background:#EEF4FB;color:#2460A0;'}">${h.user}</span>
-          <span style="font-size:10px;color:#9A9590;">${h.ts.slice(11,19)}</span>
+          <span style="font-size:10px;color:#9A9590;">${(h.ts||'').slice(0,19)}</span>
           <span style="font-size:10px;color:#DDD5C0;">${h.type}</span>
         </div>
       </div>
     </div>`).join('')}
   `).join('');
+
+  // 페이지네이션
+  const pageNav = totalPages>1?`
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-top:1px solid #F0EDE8;flex-shrink:0;">
+      <button onclick="histGoPage(0)" ${histPage===0?'disabled':''} style="padding:4px 8px;font-size:11px;border:1px solid #DDD5C0;border-radius:4px;cursor:pointer;background:#fff;">처음</button>
+      <button onclick="histGoPage(${histPage-1})" ${histPage===0?'disabled':''} style="padding:4px 8px;font-size:11px;border:1px solid #DDD5C0;border-radius:4px;cursor:pointer;background:#fff;">‹</button>
+      <span style="font-size:11px;color:#9A9590;">${histPage+1} / ${totalPages} 페이지 (총 ${total}건)</span>
+      <button onclick="histGoPage(${histPage+1})" ${histPage===totalPages-1?'disabled':''} style="padding:4px 8px;font-size:11px;border:1px solid #DDD5C0;border-radius:4px;cursor:pointer;background:#fff;">›</button>
+      <button onclick="histGoPage(${totalPages-1})" ${histPage===totalPages-1?'disabled':''} style="padding:4px 8px;font-size:11px;border:1px solid #DDD5C0;border-radius:4px;cursor:pointer;background:#fff;">끝</button>
+    </div>`:'';
+
+  el.innerHTML = listHtml + pageNav;
+}
+
+function histGoPage(p){
+  histPage=p;
+  renderHistory();
+  document.getElementById('historyList').scrollTop=0;
 }
 
 function clearHistory(){
-  if(!confirm('히스토리를 전체 삭제합니까? 복구할 수 없습니다.')) return;
-  HISTORY = [];
-  localStorage.removeItem('cj_history');
+  // 대표님(admin)만 삭제 가능
+  if(currentUser?.role!=='admin'){
+    alert('히스토리 삭제는 대표님 계정만 가능합니다.');
+    return;
+  }
+  if(!confirm('히스토리를 전체 삭제합니까?\n이 작업은 복구할 수 없습니다.')) return;
+  addHistory('삭제','히스토리 전체 삭제');  // 삭제 행위 자체를 먼저 기록
+  HISTORY = HISTORY.slice(0,1);  // 삭제 기록만 남김
+  localStorage.setItem('cj_history', JSON.stringify(HISTORY));
   renderHistory();
-  T('히스토리 전체 삭제 완료');
+  T('히스토리 전체 삭제 완료 (삭제 기록은 보존됩니다)');
 }
 
-// ── 기존 T() 함수에 히스토리 연동 ──
-const _origT = window.T;
-// T 함수를 히스토리 기록용으로 래핑 (goP 등에서 호출되는 중요 액션만)
 function logAction(type, detail, targetId){
   addHistory(type, detail, targetId);
 }
