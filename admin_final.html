@@ -357,345 +357,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
 
 <!-- ════ P: DASHBOARD ════ -->
 <div id="p-dash" class="page on">
-
-  <!-- ① 날짜 헤더 -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-    <div>
-      <div style="font-size:13px;color:#9A9590;">2026년 4월 6일 (월) — 오늘 기준</div>
-      <div style="font-size:11px;color:#C9A84C;margin-top:2px;font-weight:500;">아래 빨간 항목부터 순서대로 처리하세요</div>
-    </div>
-    <button onclick="T('대시보드 새로고침 완료')" style="padding:7px 14px;background:#F0EDE8;border:none;border-radius:6px;font-size:12px;color:#5A5550;cursor:pointer;">🔄 새로고침</button>
-  </div>
-
-  <!-- ② 긴급 처리 섹션 — 가장 중요 -->
-  <div style="background:#fff;border-radius:12px;border:2px solid #E05C40;margin-bottom:14px;overflow:hidden;">
-    <div style="padding:12px 18px;background:#E05C40;display:flex;align-items:center;justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;">🚨</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#fff;">지금 당장 처리해야 할 것</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px;">오늘 기한 마감 · 고객 연락 필요 · 돈이 걸린 문제</div>
-        </div>
-      </div>
-      <div style="font-size:24px;font-weight:700;color:#fff;background:rgba(0,0,0,.2);padding:4px 16px;border-radius:20px;">7건</div>
-    </div>
-    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px;">
-
-      <!-- 오늘 기한 입금 -->
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#FFF5F4;border-radius:8px;border:1px solid #F5C4B8;">
-        <div style="width:36px;height:36px;background:#E05C40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⏰</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#C04030;">윤서연님 — 예약금 입금 기한 오늘 마감</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:3px;">CJ-007 · 2인 출발 2026.10.05 · 예약금 100만원 · 오늘까지 미입금 시 자동 취소</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn bsm" style="background:#E05C40;color:#fff;" onclick="msgDeposit('CJ-007')">📱 독촉 발송</button>
-          <button class="btn bsm" style="background:#F0EDE8;color:#5A5550;" onclick="goP('res')">상세</button>
-        </div>
-      </div>
-
-      <!-- 잔금 기한 D-7 -->
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#FFF5F4;border-radius:8px;border:1px solid #F5C4B8;">
-        <div style="width:36px;height:36px;background:#E05C40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">💳</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#C04030;">권하늘님 — 잔금 납부 기한 D-7</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:3px;">CJ-011 · 잔금 992만원 미납 · 기한 2026.04.13 · 미납 시 취소 규정 적용</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn bsm" style="background:#E05C40;color:#fff;" onclick="msgBalance('CJ-011')">📱 잔금 안내</button>
-          <button class="btn bsm" style="background:#F0EDE8;color:#5A5550;" onclick="goP('res')">상세</button>
-        </div>
-      </div>
-
-      <!-- 비자 승인 미발송 -->
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#FFF5F4;border-radius:8px;border:1px solid #F5C4B8;">
-        <div style="width:36px;height:36px;background:#E05C40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🌐</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#C04030;">이수진님 — 비자 승인 완료인데 발송을 아직 안 했어요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:3px;">CJ-002 · 비자 승인 2026.03.20 · 출발 D-57 · 고객이 비자를 못 받은 상태</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn bsm" style="background:#E05C40;color:#fff;" onclick="msgVisa('CJ-002')">📨 지금 발송</button>
-          <button class="btn bsm" style="background:#F0EDE8;color:#5A5550;" onclick="goP('visa')">상세</button>
-        </div>
-      </div>
-
-      <!-- 취소 환불 -->
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#FFF5F4;border-radius:8px;border:1px solid #F5C4B8;">
-        <div style="width:36px;height:36px;background:#E05C40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">❌</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#C04030;">홍길동님 — 취소 환불 금액 계산이 안 됐어요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:3px;">CJ-013 · D-125 취소 · 납입 예약금 248만원 · 항공 패널티 30만원 공제 후 환불 필요</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn bsm" style="background:#E05C40;color:#fff;" onclick="goP('cancel')">💰 환불 계산</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ③ 오늘 확인해야 할 것 (노란) -->
-  <div style="background:#fff;border-radius:12px;border:2px solid #D4A820;margin-bottom:14px;overflow:hidden;">
-    <div style="padding:12px 18px;background:#FDF8EE;border-bottom:1px solid #F0D890;display:flex;align-items:center;justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="font-size:18px;">⚠️</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#8A6500;">오늘 확인해야 할 것</div>
-          <div style="font-size:11px;color:#A07800;margin-top:1px;">급하지는 않지만 오늘 안에 처리하면 좋은 것들</div>
-        </div>
-      </div>
-      <div style="font-size:20px;font-weight:700;color:#8A6500;background:#FDF0C0;padding:3px 14px;border-radius:20px;">5건</div>
-    </div>
-    <div style="padding:12px 18px;display:flex;flex-direction:column;gap:7px;">
-
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
-        <div style="font-size:18px;flex-shrink:0;">🛂</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#8A6500;">박준혁님 여권 사진 — 검토가 필요해요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:2px;">CJ-003 · 2026.04.05 제출 · 확인 완료해야 항공 발권 가능</div>
-        </div>
-        <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="goP('pass')">여권 확인 →</button>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
-        <div style="font-size:18px;flex-shrink:0;">🪪</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#8A6500;">강현수님 — 여권이 아닌 사진을 보냈어요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:2px;">CJ-006 · 주민등록증 추정 · 올바른 여권 사진 재요청 필요</div>
-        </div>
-        <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="goP('pass')">재요청 발송 →</button>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
-        <div style="font-size:18px;flex-shrink:0;">✈</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#8A6500;">최영희님 — 여권 확인 끝났어요, 항공권 발권하세요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:2px;">CJ-004 · 출발 2026.08.09 · PNR 번호 입력하면 완료</div>
-        </div>
-        <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="T('최영희님 발권 처리 → PNR 입력')">발권 처리 →</button>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
-        <div style="font-size:18px;flex-shrink:0;">👥</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#8A6500;">2026.09.21 출발 — 현재 4인, 최소 6인 안 됨</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:2px;">출발 D-168 · 인원 미달 시 출발 30일 전까지 취소 통보 필요 · 추가 모집 중</div>
-        </div>
-        <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="goP('cal')">캘린더 확인 →</button>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
-        <div style="font-size:18px;flex-shrink:0;">📋</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#8A6500;">윤서연·한지민 — 여권을 아직 안 보냈어요</div>
-          <div style="font-size:11px;color:#9A9590;margin-top:2px;">CJ-007 · CJ-009 · 여권 없으면 항공 발권 불가 · 요청 발송 필요</div>
-        </div>
-        <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="goP('pass')">재요청 →</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ④ 수입 현황 + 예약 현황 + 출발팀 3단 -->
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
-
-    <!-- 수입 현황 -->
-    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:13px;font-weight:700;">💰 이번달 수입 현황</div>
-        <div style="font-size:10px;color:#9A9590;">4월 기준</div>
-      </div>
-      <div style="padding:14px 16px;">
-        <div style="margin-bottom:12px;">
-          <div style="font-size:11px;color:#9A9590;margin-bottom:4px;">예약금 수령 완료</div>
-          <div style="font-size:22px;font-weight:700;color:#C9A84C;">4,200만원</div>
-        </div>
-        <div style="margin-bottom:12px;">
-          <div style="font-size:11px;color:#9A9590;margin-bottom:4px;">잔금 수령 완료</div>
-          <div style="font-size:22px;font-weight:700;color:#1B6B3A;">2,800만원</div>
-        </div>
-        <div style="height:1px;background:#F0EDE8;margin-bottom:12px;"></div>
-        <div style="margin-bottom:12px;">
-          <div style="font-size:11px;color:#9A9590;margin-bottom:4px;">총 수령액</div>
-          <div style="font-size:24px;font-weight:700;">7,000만원</div>
-        </div>
-        <div style="padding:8px 10px;background:#FDF8EE;border-radius:6px;border:1px solid #F0D890;">
-          <div style="font-size:10px;color:#8A6500;margin-bottom:2px;">앞으로 받을 잔금</div>
-          <div style="font-size:16px;font-weight:700;color:#8A6500;">3,500만원</div>
-          <div style="font-size:10px;color:#9A9590;margin-top:1px;">잔금 미납 고객 기준</div>
-        </div>
-        <div style="margin-top:10px;">
-          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
-            <span style="color:#9A9590;">이번달 목표 (1억원)</span>
-            <span style="font-weight:600;color:#C9A84C;">70%</span>
-          </div>
-          <div style="background:#F0EDE8;height:7px;border-radius:4px;overflow:hidden;">
-            <div style="background:linear-gradient(90deg,#C9A84C,#E8C46A);height:100%;width:70%;border-radius:4px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 예약 현황 -->
-    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;">
-        <div style="font-size:13px;font-weight:700;">📋 예약 단계별 현황</div>
-      </div>
-      <div style="padding:14px 16px;">
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">입금 대기</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#E05C40;height:100%;width:25%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">3건</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">예약금 완료</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#4080C0;height:100%;width:33%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">4건</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">확정</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#2E9B55;height:100%;width:17%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">2건</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">잔금 필요</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#8060C0;height:100%;width:8%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">1건</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">잔금 완납</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#C9A84C;height:100%;width:17%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">2건</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="font-size:11px;color:#9A9590;width:70px;flex-shrink:0;">취소</div>
-            <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
-              <div style="background:#9A9590;height:100%;width:8%;border-radius:4px;"></div>
-              <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">1건</span>
-            </div>
-          </div>
-        </div>
-        <div style="padding:8px 10px;background:#F8F6F2;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:12px;color:#5A5550;">이번달 신규 예약</span>
-          <span style="font-size:16px;font-weight:700;color:#1B6B3A;">12건 <span style="font-size:11px;color:#9A9590;font-weight:400;">전월 +3건</span></span>
-        </div>
-        <div style="margin-top:8px;padding:6px 10px;background:#F5EEF8;border-radius:6px;display:flex;justify-content:space-between;align-items:center;border:1px solid #D0B8E8;">
-          <span style="font-size:12px;color:#6040A0;">💜 찜 대기 고객</span>
-          <span style="font-size:14px;font-weight:700;color:#6040A0;">8명</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 출발팀 현황 -->
-    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;">
-        <div style="font-size:13px;font-weight:700;">✈ 출발팀 현황</div>
-      </div>
-      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
-
-        <!-- 6월 1일: D-56 임박 -->
-        <div style="padding:10px 12px;background:#EEF8F2;border-radius:8px;border:1px solid #A8D8B8;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div style="font-size:12px;font-weight:700;">2026.06.01 출발</div>
-            <div style="font-size:11px;font-weight:700;color:#1B6B3A;background:#D4F0E0;padding:2px 8px;border-radius:10px;">D-56</div>
-          </div>
-          <div style="font-size:11px;color:#5A5550;margin-bottom:4px;">6인 확정 · 잔금 완납 · 발권 완료 ✓</div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;">
-            <span style="font-size:10px;background:#EEF8F2;color:#1B6B3A;padding:2px 7px;border-radius:3px;border:1px solid #A8D8B8;">여권 ✓</span>
-            <span style="font-size:10px;background:#EEF8F2;color:#1B6B3A;padding:2px 7px;border-radius:3px;border:1px solid #A8D8B8;">발권 ✓</span>
-            <span style="font-size:10px;background:#EEF8F2;color:#1B6B3A;padding:2px 7px;border-radius:3px;border:1px solid #A8D8B8;">비자 ✓</span>
-          </div>
-          <button class="btn bg2 bsm" style="margin-top:8px;width:100%;" onclick="goP('guide')">📄 최종 안내서 관리 →</button>
-        </div>
-
-        <!-- 8월 9일: 진행 중 -->
-        <div style="padding:10px 12px;background:#FDF8EE;border-radius:8px;border:1px solid #F0D890;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div style="font-size:12px;font-weight:700;">2026.08.09 출발</div>
-            <div style="font-size:11px;font-weight:700;color:#8A6500;background:#FDF0C0;padding:2px 8px;border-radius:10px;">D-125</div>
-          </div>
-          <div style="font-size:11px;color:#5A5550;margin-bottom:4px;">10인 중 4인 예약 · 발권 대기 2명</div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;">
-            <span style="font-size:10px;background:#FDF8EE;color:#8A6500;padding:2px 7px;border-radius:3px;border:1px solid #F0D890;">여권검토 중</span>
-            <span style="font-size:10px;background:#FDF8EE;color:#8A6500;padding:2px 7px;border-radius:3px;border:1px solid #F0D890;">발권대기 2명</span>
-          </div>
-        </div>
-
-        <!-- 9월 21일: 인원 부족 경고 -->
-        <div style="padding:10px 12px;background:#FDF3F1;border-radius:8px;border:1px solid #F5C4B8;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div style="font-size:12px;font-weight:700;">2026.09.21 출발</div>
-            <div style="font-size:11px;font-weight:700;color:#C04030;background:#FFE0DC;padding:2px 8px;border-radius:10px;">⚠ 인원부족</div>
-          </div>
-          <div style="font-size:11px;color:#C04030;font-weight:600;margin-bottom:4px;">현재 4인 — 최소 6인 미달</div>
-          <div style="font-size:11px;color:#9A9590;">D-168 · 출발 취소 시 D-30 전 통보 필요</div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ⑤ 전체 진행상황 한눈에 (파이프라인) -->
-  <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;padding:16px 18px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:12px;">🔄 예약자 전체 진행 파이프라인 — 지금 어디서 막혔는지 한눈에</div>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
-      <div style="text-align:center;">
-        <div style="background:#F0EDE8;border-radius:8px;padding:10px 6px;margin-bottom:6px;">
-          <div style="font-size:20px;font-weight:700;color:#E05C40;">3</div>
-          <div style="font-size:9px;color:#9A9590;margin-top:2px;">입금 대기</div>
-        </div>
-        <div style="font-size:9px;color:#9A9590;">예약신청 후<br>입금 전</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;font-size:18px;color:#DDD5C0;padding-top:0;margin-bottom:22px;">›</div>
-      <div style="text-align:center;">
-        <div style="background:#EEF4FB;border-radius:8px;padding:10px 6px;margin-bottom:6px;">
-          <div style="font-size:20px;font-weight:700;color:#4080C0;">4</div>
-          <div style="font-size:9px;color:#9A9590;margin-top:2px;">예약금 완료</div>
-        </div>
-        <div style="font-size:9px;color:#9A9590;">여권·비자<br>준비 중</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;font-size:18px;color:#DDD5C0;padding-top:0;margin-bottom:22px;">›</div>
-      <div style="text-align:center;">
-        <div style="background:#EEF8F2;border-radius:8px;padding:10px 6px;margin-bottom:6px;">
-          <div style="font-size:20px;font-weight:700;color:#2E9B55;">2</div>
-          <div style="font-size:9px;color:#9A9590;margin-top:2px;">확정</div>
-        </div>
-        <div style="font-size:9px;color:#9A9590;">발권 완료<br>여권 확인 완료</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;font-size:18px;color:#DDD5C0;padding-top:0;margin-bottom:22px;">›</div>
-      <div style="text-align:center;">
-        <div style="background:#F5EEF8;border-radius:8px;padding:10px 6px;margin-bottom:6px;">
-          <div style="font-size:20px;font-weight:700;color:#8060C0;">1</div>
-          <div style="font-size:9px;color:#9A9590;margin-top:2px;">잔금 필요</div>
-        </div>
-        <div style="font-size:9px;color:#9A9590;">잔금 납부<br>대기 중</div>
-      </div>
-    </div>
-    <div style="height:1px;background:#F0EDE8;margin:12px 0;"></div>
-    <div style="display:flex;gap:10px;justify-content:center;">
-      <div style="text-align:center;padding:8px 20px;background:#0E1410;border-radius:8px;">
-        <div style="font-size:18px;font-weight:700;color:#C9A84C;">2</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;">잔금 완납<br>출발 준비 완료</div>
-      </div>
-      <div style="text-align:center;padding:8px 20px;background:#F8F8F8;border-radius:8px;border:1px solid #E8E0D0;">
-        <div style="font-size:18px;font-weight:700;color:#9A9590;">1</div>
-        <div style="font-size:9px;color:#9A9590;margin-top:2px;">취소<br>(환불 처리 중)</div>
-      </div>
-    </div>
-  </div>
-
+  <div id="dash-root"></div>
 </div>
 
 <!-- ════ P: 예약관리 ════ -->
@@ -1553,6 +1215,25 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
       </div>
 
       <!-- 저장 버튼 -->
+      <!-- 비밀번호 변경 섹션 -->
+      <div class="sec" style="margin-bottom:14px;">
+        <div class="sec-h"><div class="sec-t">🔐 비밀번호 변경</div></div>
+        <div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div class="frow">
+            <label class="fl">현재 비밀번호</label>
+            <input class="fi" id="cfg-pw-cur" type="password" placeholder="현재 비밀번호">
+          </div>
+          <div class="frow">
+            <label class="fl">새 비밀번호</label>
+            <input class="fi" id="cfg-pw-new" type="password" placeholder="새 비밀번호 (6자 이상)">
+          </div>
+          <div class="frow">
+            <label class="fl">새 비밀번호 확인</label>
+            <input class="fi" id="cfg-pw-confirm" type="password" placeholder="새 비밀번호 다시 입력">
+          </div>
+          <button class="btn bp" style="align-self:flex-start;padding:9px 20px;" onclick="changePassword()">비밀번호 변경</button>
+        </div>
+      </div>
       <button class="btn bp" style="width:100%;padding:14px;font-size:14px;" onclick="saveSettings()">
         💾 설정 저장 — 전체 시스템에 즉시 반영
       </button>
@@ -1977,6 +1658,229 @@ function getFiltered(){
 }
 
 // 국가 탭 렌더
+// ══════════════════════════════════════════
+// 📊 대시보드 실시간 렌더링
+// ══════════════════════════════════════════
+function renderDash(){
+  const today=new Date();
+  const todayStr=today.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+  const active=DATA.filter(r=>r.st!=='x');
+  const urgent=[];
+  const warn=[];
+
+  // 1. 예약금 기한 마감
+  active.filter(r=>r.st==='w').forEach(r=>{
+    const appl=new Date((r.appl||'2026-01-01').replace(/\./g,'-'));
+    const limit=new Date(appl); limit.setDate(limit.getDate()+3);
+    const diff=Math.ceil((limit-today)/(1000*60*60*24));
+    if(diff<=1) urgent.push({icon:'⏰',title:`${r.name}님 — 예약금 기한 ${diff<=0?'초과':'오늘 마감'}`,
+      desc:`${r.id} · ${r.pax}명 · 예약금 ${r.pdep.toLocaleString()}원`,
+      actions:[{label:'📱 독촉',fn:`msgDeposit('${r.id}')`},{label:'상세',fn:`openPanel('${r.id}')`}]});
+  });
+
+  // 2. 잔금 기한 D-7
+  active.filter(r=>r.pbal>0&&r.st!=='w').forEach(r=>{
+    const dep=new Date(r.dep.replace(/\./g,'-'));
+    const lim=new Date(dep); lim.setDate(lim.getDate()-60);
+    const diff=Math.ceil((lim-today)/(1000*60*60*24));
+    if(diff<=7) urgent.push({icon:'💳',title:`${r.name}님 — 잔금 기한 ${diff<=0?'초과':'D-'+diff}`,
+      desc:`${r.id} · 잔금 ${r.pbal.toLocaleString()}원 미납`,
+      actions:[{label:'💳 잔금 안내',fn:`msgBalance('${r.id}')`},{label:'✓ 완납 처리',fn:`confirmBalanceDone('${r.id}')`},{label:'상세',fn:`openPanel('${r.id}')`}]});
+  });
+
+  // 3. 비자 미발송
+  active.filter(r=>r.visa&&r.visa.st==='ok'&&(r.visa.kko==='unsent'||r.visa.email==='unsent')).forEach(r=>{
+    urgent.push({icon:'🌐',title:`${r.name}님 — 비자 승인 완료, 발송 안 됨`,
+      desc:`${r.id} · 승인일 ${r.visa.approved||'-'}`,
+      actions:[{label:'📨 발송',fn:`visaSend('${r.id}',false)`},{label:'비자 탭',fn:`goP('visa')`}]});
+  });
+
+  // 4. 환불 대기
+  DATA.filter(r=>r.st==='x'&&(!r.refundSt||r.refundSt==='pending')).forEach(r=>{
+    urgent.push({icon:'❌',title:`${r.name}님 — 환불 처리 필요`,
+      desc:`${r.id} · 납입 ${r.pdep.toLocaleString()}원`,
+      actions:[{label:'💰 환불 계산',fn:`goP('cancel')`}]});
+  });
+
+  // 5. 여권 검토 대기
+  active.filter(r=>r.pass==='rev').forEach(r=>{
+    warn.push({icon:'🛂',title:`${r.name}님 여권 검토 필요`,
+      desc:`${r.id} · 확인 완료해야 발권 가능`,
+      action:{label:'여권 확인 →',fn:`goP('pass')`}});
+  });
+
+  // 6. 발권 가능 미처리
+  active.filter(r=>r.pass==='ok'&&['d','k'].includes(r.st)&&r.tk==='p').forEach(r=>{
+    warn.push({icon:'✈',title:`${r.name}님 — 여권 확인 완료, 발권 진행하세요`,
+      desc:`${r.id} · 출발 ${r.dep}`,
+      action:{label:'발권 처리 →',fn:`confirmTicket('${r.id}','${r.name}')`}});
+  });
+
+  // 7. 인원 미달
+  const dg={};
+  active.forEach(r=>{if(!dg[r.dep])dg[r.dep]={pax:0,prodId:r.prodId};dg[r.dep].pax+=r.pax;});
+  Object.entries(dg).forEach(([dep,g])=>{
+    const prod=PRODUCTS.find(p=>p.id===g.prodId)||{minPax:6};
+    if(g.pax<prod.minPax) warn.push({icon:'👥',title:`${dep} 출발 — ${g.pax}인 (최소 ${prod.minPax}인 미달)`,
+      desc:'인원 미달 시 D-30 전 취소 통보 필요',
+      action:{label:'캘린더 →',fn:`goP('cal')`}});
+  });
+
+  // 8. 여권 미제출 (D-45 이내)
+  active.filter(r=>r.pass==='none').forEach(r=>{
+    const dep=new Date(r.dep.replace(/\./g,'-'));
+    const dd=Math.ceil((dep-today)/(1000*60*60*24));
+    if(dd<=45) warn.push({icon:'📋',title:`${r.name}님 여권 미제출 (D-${dd})`,
+      desc:`${r.id} · 45일 전까지 제출 필요`,
+      action:{label:'요청 발송 →',fn:`passRequest('${r.id}','${r.name}')`}});
+  });
+
+  // 수입 계산
+  const depRec=active.filter(r=>r.st!=='w').reduce((s,r)=>s+(r.pdep||0),0);
+  const balRec=active.filter(r=>r.st==='k').reduce((s,r)=>s+(r.pbal===0?(r.price-r.pdep):0),0);
+  const balPend=active.filter(r=>r.st!=='k'&&r.st!=='w').reduce((s,r)=>s+(r.pbal||0),0);
+
+  // 예약 단계
+  const sc={w:0,d:0,k:0,b:0,x:0};
+  DATA.forEach(r=>{sc[r.st]=(sc[r.st]||0)+1;});
+  const total=DATA.length||1;
+
+  // 출발팀
+  const depList=[...new Set(active.map(r=>r.dep))].sort();
+
+  document.getElementById('dash-root').innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <div>
+      <div style="font-size:13px;color:#9A9590;">${todayStr} — 오늘 기준</div>
+      <div style="font-size:11px;color:#C9A84C;margin-top:2px;font-weight:500;">${urgent.length>0?'🚨 긴급 '+urgent.length+'건 — 아래부터 처리하세요':'✅ 긴급 처리 항목 없음'}</div>
+    </div>
+    <button onclick="renderDash()" style="padding:7px 14px;background:#F0EDE8;border:none;border-radius:6px;font-size:12px;color:#5A5550;cursor:pointer;">🔄 새로고침</button>
+  </div>
+
+  ${urgent.length?`
+  <div style="background:#fff;border-radius:12px;border:2px solid #E05C40;margin-bottom:14px;overflow:hidden;">
+    <div style="padding:12px 18px;background:#E05C40;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:18px;">🚨</div>
+        <div><div style="font-size:14px;font-weight:700;color:#fff;">지금 당장 처리해야 할 것</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.75);">오늘 기한 · 고객 연락 필요 · 돈이 걸린 문제</div></div>
+      </div>
+      <div style="font-size:22px;font-weight:700;color:#fff;background:rgba(0,0,0,.2);padding:4px 16px;border-radius:20px;">${urgent.length}건</div>
+    </div>
+    <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+    ${urgent.map(u=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FFF5F4;border-radius:8px;border:1px solid #F5C4B8;">
+      <div style="width:34px;height:34px;background:#E05C40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">${u.icon}</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#C04030;">${u.title}</div>
+      <div style="font-size:11px;color:#9A9590;margin-top:2px;">${u.desc}</div></div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;">
+      ${u.actions.map(a=>`<button class="btn bsm" style="background:#E05C40;color:#fff;" onclick="${a.fn}">${a.label}</button>`).join('')}
+      </div>
+    </div>`).join('')}
+    </div>
+  </div>`:`<div style="background:#EEF8F2;border-radius:10px;border:1px solid #A8D8B8;padding:14px 18px;margin-bottom:14px;text-align:center;font-size:13px;color:#1B6B3A;font-weight:500;">✅ 긴급 처리 항목 없음 — 잘 관리되고 있어요!</div>`}
+
+  ${warn.length?`
+  <div style="background:#fff;border-radius:12px;border:2px solid #D4A820;margin-bottom:14px;overflow:hidden;">
+    <div style="padding:12px 18px;background:#FDF8EE;border-bottom:1px solid #F0D890;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:18px;">⚠️</div>
+        <div><div style="font-size:14px;font-weight:700;color:#8A6500;">오늘 확인할 것</div>
+        <div style="font-size:11px;color:#A07800;">급하지 않지만 오늘 처리 권장</div></div>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:#8A6500;background:#FDF0C0;padding:3px 14px;border-radius:20px;">${warn.length}건</div>
+    </div>
+    <div style="padding:12px 16px;display:flex;flex-direction:column;gap:7px;">
+    ${warn.map(w=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FEFCF0;border-radius:7px;border:1px solid #F0D890;">
+      <div style="font-size:18px;flex-shrink:0;">${w.icon}</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#8A6500;">${w.title}</div>
+      <div style="font-size:11px;color:#9A9590;margin-top:2px;">${w.desc}</div></div>
+      <button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;flex-shrink:0;" onclick="${w.action.fn}">${w.action.label}</button>
+    </div>`).join('')}
+    </div>
+  </div>`:''}
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;font-size:13px;font-weight:700;">💰 수입 현황</div>
+      <div style="padding:14px 16px;">
+        <div style="margin-bottom:8px;"><div style="font-size:11px;color:#9A9590;margin-bottom:3px;">예약금 수령</div><div style="font-size:20px;font-weight:700;color:#C9A84C;">${depRec.toLocaleString()}원</div></div>
+        <div style="margin-bottom:8px;"><div style="font-size:11px;color:#9A9590;margin-bottom:3px;">잔금 수령</div><div style="font-size:20px;font-weight:700;color:#1B6B3A;">${balRec.toLocaleString()}원</div></div>
+        <div style="height:1px;background:#F0EDE8;margin-bottom:8px;"></div>
+        <div style="margin-bottom:8px;"><div style="font-size:11px;color:#9A9590;margin-bottom:3px;">총 수령액</div><div style="font-size:20px;font-weight:700;">${(depRec+balRec).toLocaleString()}원</div></div>
+        <div style="padding:8px 10px;background:#FDF8EE;border-radius:6px;border:1px solid #F0D890;">
+          <div style="font-size:10px;color:#8A6500;margin-bottom:2px;">앞으로 받을 잔금</div>
+          <div style="font-size:16px;font-weight:700;color:#8A6500;">${balPend.toLocaleString()}원</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;font-size:13px;font-weight:700;">📋 예약 단계별</div>
+      <div style="padding:14px 16px;">
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px;">
+        ${[{k:'w',l:'입금 대기',c:'#E05C40'},{k:'d',l:'예약금 완료',c:'#4080C0'},{k:'k',l:'잔금 완납',c:'#C9A84C'},{k:'b',l:'확정',c:'#2E9B55'},{k:'x',l:'취소',c:'#9A9590'}].map(s=>`
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="goP('res')">
+          <div style="font-size:11px;color:#9A9590;width:68px;flex-shrink:0;">${s.l}</div>
+          <div style="flex:1;background:#F0EDE8;height:20px;border-radius:4px;overflow:hidden;position:relative;">
+            <div style="background:${s.c};height:100%;width:${Math.round((sc[s.k]||0)/total*100)}%;border-radius:4px;"></div>
+            <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1A1A1A;">${sc[s.k]||0}건</span>
+          </div>
+        </div>`).join('')}
+        </div>
+        <div style="padding:8px 10px;background:#F8F6F2;border-radius:6px;display:flex;justify-content:space-between;"><span style="font-size:12px;color:#5A5550;">전체</span><span style="font-size:16px;font-weight:700;">${DATA.length}건</span></div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid #F0EDE8;font-size:13px;font-weight:700;">✈ 출발팀 현황</div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;">
+      ${depList.length===0?'<div style="text-align:center;color:#9A9590;padding:20px;">예약된 출발팀 없음</div>':
+      depList.map(dep=>{
+        const list=active.filter(r=>r.dep===dep);
+        const prod=PRODUCTS.find(p=>p.id===list[0]?.prodId)||{flag:'🌍',short:'',minPax:6};
+        const tot=list.reduce((s,r)=>s+(r.pax||0),0);
+        const depD=new Date(dep.replace(/\./g,'-'));
+        const dd=Math.ceil((depD-today)/(1000*60*60*24));
+        const pOk=list.every(r=>r.pass==='ok');
+        const tOk=list.every(r=>r.tk==='d');
+        const bOk=list.every(r=>r.st==='k');
+        const under=tot<(prod.minPax||6);
+        const bg=under?'#FDF3F1':dd<=30?'#FDF8EE':'#EEF8F2';
+        const bc=under?'#F5C4B8':dd<=30?'#F0D890':'#A8D8B8';
+        return`<div style="padding:10px 12px;background:${bg};border-radius:8px;border:1px solid ${bc};cursor:pointer;" onclick="goP('res')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+            <div style="font-size:12px;font-weight:700;">${dep}</div>
+            <div style="font-size:11px;font-weight:700;${under?'color:#C04030':dd<=30?'color:#8A6500':'color:#1B6B3A'};background:${under?'#FFE0DC':dd<=30?'#FDF0C0':'#D4F0E0'};padding:2px 8px;border-radius:10px;">${under?'⚠ 인원미달':'D-'+dd}</div>
+          </div>
+          <div style="font-size:11px;color:#5A5550;margin-bottom:5px;">${tot}인${under?' (최소 '+(prod.minPax||6)+'인 필요)':''}</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;">
+            <span style="font-size:10px;padding:2px 7px;border-radius:3px;${pOk?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':'background:#FDF3F1;color:#C04030;border:1px solid #F5C4B8;'}">여권 ${pOk?'✓':'미확인'}</span>
+            <span style="font-size:10px;padding:2px 7px;border-radius:3px;${tOk?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':'background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;'}">발권 ${tOk?'✓':'미완료'}</span>
+            <span style="font-size:10px;padding:2px 7px;border-radius:3px;${bOk?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':'background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;'}">잔금 ${bOk?'완납':'미납'}</span>
+          </div>
+        </div>`;
+      }).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#fff;border-radius:12px;border:1px solid #E8E0D0;padding:16px 18px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;">🔄 전체 진행 파이프라인 — 지금 어디서 막혔는지 한눈에</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+    ${[{k:'w',l:'입금 대기',c:'#E05C40',d:'예약 신청 후'},{k:'d',l:'예약금 완료',c:'#4080C0',d:'여권·비자 준비'},{k:'k',l:'잔금 완납',c:'#C9A84C',d:'출발 준비 완료'},{k:'b',l:'확정',c:'#2E9B55',d:'확인 중'},{k:'x',l:'취소',c:'#9A9590',d:'취소됨'}].map(p=>`
+    <div style="text-align:center;cursor:pointer;" onclick="goP('res')">
+      <div style="background:${(sc[p.k]||0)>0?p.c+'22':'#F8F6F2'};border:1.5px solid ${(sc[p.k]||0)>0?p.c:'#E8E0D0'};border-radius:10px;padding:12px 6px;margin-bottom:6px;">
+        <div style="font-size:24px;font-weight:700;color:${(sc[p.k]||0)>0?p.c:'#9A9590'};">${sc[p.k]||0}</div>
+        <div style="font-size:10px;color:${(sc[p.k]||0)>0?p.c:'#9A9590'};margin-top:2px;font-weight:500;">${p.l}</div>
+      </div>
+      <div style="font-size:9px;color:#9A9590;">${p.d}</div>
+    </div>`).join('')}
+    </div>
+  </div>`;
+}
+
 function renderCountryTabs(){
   const el=document.getElementById('country-tabs');
   if(!el)return;
@@ -2052,6 +1956,7 @@ function goP(id){
   document.getElementById('p-'+id)?.classList.add('on');
   document.querySelector(`[data-page="${id}"]`)?.classList.add('on');
   document.getElementById('pageTitle').textContent=PT[id]||id;
+  if(id==='dash')renderDash();
   if(id==='ticket'){tkRenderCountryTabs();tkRenderProdSelect();tkRenderDepSelect();renderTicket();}
   if(id==='res'){renderCountryTabs();renderProdSelect();renderDepSelect();updateFilterCounts();filterRender();}
   if(id==='pass')initPassPage();
@@ -2708,7 +2613,7 @@ function openTicketModal(id){
   document.getElementById('tkm-pnr').value=r.pnr||'';
   document.getElementById('tkm-flight-out').value=flight.out||'';
   document.getElementById('tkm-flight-in').value=flight.in||'';
-  document.getElementById('tkm-date').value='2026-04-06';
+  document.getElementById('tkm-date').value=new Date().toISOString().slice(0,10);
   document.getElementById('tkm-memo').value='';
   document.getElementById('send-kko').checked=true;
   document.getElementById('send-email').checked=true;
@@ -2848,6 +2753,36 @@ function tkResend(id){
 
 // ── DETAIL PANEL ──
 let curPanelId = null;
+function savePanelMemo(){
+  const r=DATA.find(x=>x.id===curPanelId);if(!r)return;
+  const memo=document.getElementById('panel-memo')?.value||'';
+  const old=r.memo||'';
+  r.memo=memo;
+  addHistory('예약',`${r.name}님 메모 수정`,r.id, old.slice(0,20)||'(없음)', memo.slice(0,20)||'(없음)');
+  T(`메모 저장 완료`);
+}
+
+function confirmBalanceDone(id){
+  const r=DATA.find(x=>x.id===id);if(!r)return;
+  showModal({
+    ico:'💳',type:'info',
+    title:`잔금 완납 처리 — ${r.name}님`,
+    desc:`잔금 ${r.pbal.toLocaleString()}원 입금을 확인하고 완납 처리합니다.`,
+    body:`<div style="padding:10px;background:#EEF8F2;border-radius:7px;font-size:13px;color:#1B6B3A;text-align:center;">
+      ✅ 완납 처리 시 고객 마이페이지에 잔금 완납으로 표시됩니다
+    </div>`,
+    okLabel:'✅ 잔금 완납 처리',
+    action(){
+      r.pbal=0; r.st='k';
+      r.log.push({c:'dn',i:'💳',t:'잔금 완납 확인',m:nowShort()});
+      addHistory('예약',`${r.name}님 잔금 완납 처리`,id, '잔금미납', '완납');
+      sendMsg(id,'balance',['kko'],'잔금 납부 확인되었습니다. 출발 준비가 완료됐습니다!');
+      openPanel(id);
+      T(`${r.name}님 잔금 완납 처리 완료`);
+    }
+  });
+}
+
 function openPanel(id){
   const r=DATA.find(x=>x.id===id);if(!r)return;
   curPanelId = id;
@@ -2871,17 +2806,32 @@ function openPanel(id){
       </div>
     </div>
     <div class="ds"><div class="dt">예약자 정보</div>
-      <div class="dr"><span class="dk">이름</span><span class="dv">${r.name}</span></div>
-      <div class="dr"><span class="dk">연락처</span><span class="dv" style="color:#2460A0">${r.ph}</span></div>
+      <div class="dr"><span class="dk">이름</span><span class="dv">${r.name} <span style="font-size:10px;background:#0E1410;color:#C9A84C;padding:1px 7px;border-radius:10px;">대표</span></span></div>
+      <div class="dr"><span class="dk">연락처</span><span class="dv" style="color:#2460A0"><a href="tel:${r.ph}" style="color:#2460A0;text-decoration:none;">${r.ph} 📞</a></span></div>
       <div class="dr"><span class="dk">이메일</span><span class="dv">${r.em}</span></div>
       <div class="dr"><span class="dk">신청일</span><span class="dv">${r.appl}</span></div>
+      ${(r.companions&&r.companions.length>0)?`<div style="margin-top:8px;padding:10px;background:#F8F6F2;border-radius:7px;">
+        <div style="font-size:11px;font-weight:600;color:#5A5550;margin-bottom:8px;">동행자 ${r.companions.length}명</div>
+        ${r.companions.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEE8E0;">
+          <div style="width:24px;height:24px;background:#E8E0D0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">${(c.name||'?').slice(-1)}</div>
+          <div style="flex:1;font-size:12px;font-weight:500;">${c.name||'—'}</div>
+          <span style="font-size:10px;padding:2px 7px;border-radius:100px;${c.pass==='ok'?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':c.pass==='rev'?'background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;':'background:#FDF3F1;color:#C04030;border:1px solid #F5C4B8;'}">${c.pass==='ok'?'✓ 여권확인':c.pass==='rev'?'검토중':'여권미제출'}</span>
+        </div>`).join('')}
+      </div>`:''}
     </div>
     <div class="ds"><div class="dt">예약 내역</div>
+      <div class="dr"><span class="dk">상품</span><span class="dv" style="font-weight:500;">${PRODUCTS.find(p=>p.id===r.prodId)?.name||r.prodId}</span></div>
       <div class="dr"><span class="dk">출발일</span><span class="dv">${r.dep}</span></div>
-      <div class="dr"><span class="dk">인원</span><span class="dv">${r.pax}인</span></div>
+      <div class="dr"><span class="dk">인원</span><span class="dv">${r.pax}명</span></div>
+      <div class="dr"><span class="dk">1인 상품가</span><span class="dv">${Math.round((r.price||0)/(r.pax||1)).toLocaleString()}원</span></div>
       <div class="dr"><span class="dk">총 상품가</span><span class="dv" style="font-size:15px;font-weight:700;">${fmt(r.price)}</span></div>
-      <div class="dr"><span class="dk">예약금 (20%)</span><span class="dv" style="color:#2460A0">${fmt(r.pdep)}</span></div>
-      <div class="dr"><span class="dk">잔금</span><span class="dv" style="color:${r.st==='k'?'#1B6B3A':'#C04030'}">${fmt(r.pbal)} ${r.st==='k'?'완납':'미납'}</span></div>
+      <div class="dr"><span class="dk">예약금</span><span class="dv" style="color:#2460A0">${fmt(r.pdep)} <span style="font-size:10px;color:#9A9590;">(${Math.round((r.pdep||0)/(r.price||1)*100)}%)</span></span></div>
+      <div class="dr" style="align-items:center;"><span class="dk">잔금</span>
+        <span class="dv" style="display:flex;align-items:center;gap:8px;">
+          <span style="color:${r.st==='k'?'#1B6B3A':'#C04030'};font-weight:600;">${fmt(r.pbal)} ${r.st==='k'?'✓ 완납':'미납'}</span>
+          ${r.st!=='k'&&r.st!=='x'?`<button class="btn bp bsm" onclick="confirmBalanceDone('${r.id}')">✓ 완납 처리</button>`:''}
+        </span>
+      </div>
     </div>
     <div class="ds"><div class="dt">✈ 항공 발권</div>${tkHtml}</div>
     <div class="ds"><div class="dt">여권 정보</div>${passHtml}</div>
@@ -2899,8 +2849,8 @@ function openPanel(id){
       </div>
     </div>
     <div class="ds"><div class="dt">내부 메모 (소비자 비공개)</div>
-      <textarea class="ma" placeholder="메모...">${r.memo}</textarea>
-      <button class="btn bg" style="margin-top:6px;width:100%;" onclick="T('메모 저장 완료')">저장</button>
+      <textarea class="ma" id="panel-memo" placeholder="메모...">${r.memo||''}</textarea>
+      <button class="btn bg" style="margin-top:6px;width:100%;" onclick="savePanelMemo()">저장</button>
     </div>`;
   document.getElementById('panel-ov').classList.add('open');
 }
@@ -3615,6 +3565,25 @@ function updateSignaturePreview(){
   const el=document.getElementById('signature-preview'); if(!el)return;
   const auto=sig||`문의: ${phone||'010-0000-0000'} | ${brand}\n카카오: ${kakao||'pf.kakao.com/xxxxx'}`;
   el.innerHTML='— — —<br>'+auto.replace(/\n/g,'<br>');
+}
+
+function changePassword(){
+  const cur=document.getElementById('cfg-pw-cur')?.value;
+  const nw=document.getElementById('cfg-pw-new')?.value;
+  const cf=document.getElementById('cfg-pw-confirm')?.value;
+  if(!cur||!nw||!cf){T('모든 항목을 입력해주세요');return;}
+  if(!currentUser){T('로그인이 필요합니다');return;}
+  const acct=ADMIN_ACCOUNTS[currentUser.id];
+  if(!acct){T('계정 정보를 찾을 수 없습니다');return;}
+  if(acct.pw!==cur){T('현재 비밀번호가 올바르지 않습니다');return;}
+  if(nw.length<6){T('새 비밀번호는 6자 이상이어야 합니다');return;}
+  if(nw!==cf){T('새 비밀번호가 일치하지 않습니다');return;}
+  acct.pw=nw;
+  addHistory('설정',`${currentUser.name} 비밀번호 변경`);
+  document.getElementById('cfg-pw-cur').value='';
+  document.getElementById('cfg-pw-new').value='';
+  document.getElementById('cfg-pw-confirm').value='';
+  T('✅ 비밀번호가 변경됐습니다. 다음 로그인부터 새 비밀번호를 사용하세요.');
 }
 
 function saveSettings(){
@@ -4848,6 +4817,8 @@ function applyLoginUI(){
   if(!currentUser) return;
   document.getElementById('nav-user-avatar').textContent = currentUser.avatar;
   document.getElementById('nav-user-name').textContent = currentUser.name;
+  // 로그인 후 대시보드 실시간 렌더링
+  setTimeout(()=>{ if(typeof renderDash==='function') renderDash(); }, 100);
 }
 
 // ══════════════════════════════════════════
@@ -5004,6 +4975,7 @@ function logAction(type, detail, targetId){
 
 // ── 초기화 ──
 initLogin();
+// 로그인 후 대시보드 초기 렌더링은 applyLoginUI에서 호출
 </script>
 </body>
 </html>
