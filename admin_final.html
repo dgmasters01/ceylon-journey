@@ -831,7 +831,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
   <div class="sec">
     <div class="sec-h">
       <div class="sec-t">⚙ 상품별 비자 정책</div>
-      <div class="sec-a"><button class="btn bp" onclick="T('새 비자 정책 추가')">+ 추가</button></div>
+      <div class="sec-a"><button class="btn bp" onclick="addVisaPolicy()">+ 추가</button></div>
     </div>
     <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px;" id="visa-policy"></div>
   </div>
@@ -4345,7 +4345,7 @@ function visaRenderAll(){
           </div>
         </div>
         <div style="display:flex;gap:7px;">
-          <button style="padding:6px 13px;border-radius:6px;background:#C9A84C;color:#0E1410;font-size:12px;font-weight:700;border:none;cursor:pointer;" onclick="T('${dep} 출발팀 비자 ZIP 다운로드 완료')">📦 ZIP 다운로드</button>
+          <button style="padding:6px 13px;border-radius:6px;background:#C9A84C;color:#0E1410;font-size:12px;font-weight:700;border:none;cursor:pointer;" onclick="alert('📦 ZIP 다운로드\n\n실제 비자 파일이 업로드된 후 다운로드 가능합니다.\n현재 파일 서버 연동 전 단계입니다.')">📦 ZIP 다운로드</button>
           ${unsentCnt>0?`<button style="padding:6px 13px;border-radius:6px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;border:none;cursor:pointer;" onclick="visaBulkSend('${dep}')">📨 미발송 일괄 발송</button>`:''}
         </div>
       </div>
@@ -4366,7 +4366,7 @@ function visaRenderAll(){
       <div style="font-size:12px;color:#E05C40;font-weight:600">${p.cost}</div>
       <div><span style="font-size:11px;padding:2px 7px;border-radius:4px;${p.incl?'background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;':'background:#F8F8F8;color:#9A9590;border:1px solid #DDD5C0;'}">${p.incl?'상품 포함':'개인 부담'}</span></div>
       <div style="font-size:11px;color:#9A9590;">${p.note}</div>
-      <button class="btn bg bsm" onclick="T('${p.name} 비자 정책 수정')">수정</button>
+      <button class="btn bg bsm" onclick="editVisaPolicy('${p.country}')">수정</button>
     </div>`).join('');
 }
 
@@ -4387,12 +4387,18 @@ function visaRow(r){
   return`<tr>
     <td><span style="font-size:11px;font-weight:700;color:#2460A0">${r.id}</span></td>
     <td><div style="font-weight:500">${r.name}</div><div style="font-size:11px;color:#6080C0">${r.ph}</div></td>
-    <td><span style="font-size:11px;background:#FDF8EE;color:#8A6500;padding:2px 7px;border-radius:4px;border:1px solid #F0D890;">${policy.type}</span><div style="font-size:10px;color:#E05C40;margin-top:2px;">${policy.cost}</div></td>
+    <td>
+      <span style="font-size:11px;background:#FDF8EE;color:#8A6500;padding:2px 7px;border-radius:4px;border:1px solid #F0D890;">${policy.type}</span>
+      ${policy.type==='도착비자'?`<div style="font-size:10px;color:#9A9590;margin-top:2px;">공항 현장 수령</div>`:policy.type==='무비자'?`<div style="font-size:10px;color:#1B6B3A;margin-top:2px;">절차 불필요</div>`:policy.type==='e-Visa'?`<div style="font-size:10px;color:#2460A0;margin-top:2px;">고객 직접 신청</div>`:`<div style="font-size:10px;color:#E05C40;margin-top:2px;">회사 대리</div>`}
+      <div style="font-size:10px;color:#E05C40;margin-top:1px;">${policy.cost}</div>
+    </td>
     <td>
       <span style="font-size:11px;padding:3px 9px;border-radius:100px;cursor:pointer;${VS_STYLE[v.st]||VS_STYLE.none}" onclick="visaChgSt('${r.id}',this)">
         ${VS_LABEL[v.st]||'—'} ▾
       </span>
-      ${v.st==='ok'?`<div style="font-size:10px;color:#9A9590;margin-top:2px;">승인 ${v.approved||'—'}</div>`:''}
+      ${v.st==='ok'?`<div style="font-size:10px;color:#1B6B3A;margin-top:2px;">승인일: ${v.approved||'—'}</div>`:''}
+      ${v.st==='pend'?`<div style="font-size:10px;color:#2460A0;margin-top:2px;">신청일: ${v.applied||'—'}</div>`:''}
+      ${v.st==='rej'?`<div style="font-size:10px;color:#C04030;margin-top:2px;">${v.rejReason||'사유 없음'}</div>`:''}
     </td>
     <td style="font-size:12px;font-family:monospace;color:#2460A0;">${v.no||'—'}</td>
     <td>${sendBadge(v.kko,'kko')}</td>
@@ -4400,10 +4406,13 @@ function visaRow(r){
     <td style="font-size:11px;color:#9A9590;">${reCnt>0?`<span style="background:#F5EEF8;color:#6040A0;padding:2px 7px;border-radius:3px;border:1px solid #D0B8E8;">재발송 ${reCnt}회</span>`:v.st==='ok'?'—':'—'}</td>
     <td>
       <div style="display:flex;gap:4px;flex-wrap:wrap;">
-        ${v.st==='wait'&&r.pass==='ok'?`<button class="btn by bsm" onclick="T('${r.name}님 비자 대리 신청 시작')">✈ 신청</button>`:''}
+        ${v.st==='wait'&&r.pass==='ok'?`<button class="btn by bsm" onclick="visaApplyAgency('${r.id}')">✈ 대리 신청</button>`:''}
+        ${v.st==='wait'&&r.pass!=='ok'?`<span style="font-size:10px;color:#9A9590;">여권 확인 후 신청 가능</span>`:''}
         ${v.st==='pend'?`<button class="btn bp bsm" onclick="visaApprove('${r.id}')">✅ 승인처리</button>`:''}
+        ${v.st==='pend'?`<button class="btn br bsm" onclick="visaReject('${r.id}')">❌ 거절처리</button>`:''}
         ${v.st==='ok'&&(v.kko==='unsent'||v.email==='unsent')?`<button class="btn bg2 bsm" onclick="visaSend('${r.id}',false)">📨 발송</button>`:''}
         ${(kkoSent||emlSent)?`<button class="btn bsm" style="background:#F5EEF8;color:#6040A0;border:1px solid #D0B8E8;" onclick="visaSend('${r.id}',true)">↩ 재발송</button>`:''}
+        ${v.st==='rej'?`<button class="btn bsm" style="background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;" onclick="visaApplyAgency('${r.id}')">🔄 재신청</button>`:''}
       </div>
     </td>
   </tr>`;
@@ -4532,6 +4541,186 @@ function visaBulkSend(dep){
   if(document.getElementById('p-msglog')?.classList.contains('on')) renderMsgLog();
   visaRenderAll();
 }
+
+// ── 비자 정책 수정 모달
+function editVisaPolicy(country){
+  const p=VISA_POLICY.find(x=>x.country===country);
+  if(!p)return;
+  showModal({
+    ico:'🌐',type:'info',
+    title:`${p.flag} ${p.name} 비자 정책 수정`,
+    desc:'비자 유형·비용·처리방법을 수정합니다.',
+    body:`<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">비자 유형</label>
+        <select id="ep-type" class="fsel" style="width:100%;">
+          <option ${p.type==='도착비자'?'selected':''}>도착비자</option>
+          <option ${p.type==='e-Visa'?'selected':''}>e-Visa</option>
+          <option ${p.type==='대리신청비자'?'selected':''}>대리신청비자</option>
+          <option ${p.type==='무비자'?'selected':''}>무비자</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">비자 비용</label>
+        <input id="ep-cost" class="fi" value="${p.cost}" placeholder="USD 60 / 인">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">처리 방법</label>
+        <input id="ep-method" class="fi" value="${p.method||''}" placeholder="고객 직접 / 회사 대리">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">안내 메모</label>
+        <input id="ep-note" class="fi" value="${p.note||''}" placeholder="공항 Visa On Arrival 창구...">
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;">
+        <input type="checkbox" id="ep-incl" ${p.incl?'checked':''}>
+        <span>비자비 상품가에 포함</span>
+      </label>
+    </div>`,
+    okLabel:'저장',
+    action(){
+      const type=document.getElementById('ep-type')?.value||p.type;
+      const cost=document.getElementById('ep-cost')?.value||p.cost;
+      const method=document.getElementById('ep-method')?.value||p.method;
+      const note=document.getElementById('ep-note')?.value||p.note;
+      const incl=document.getElementById('ep-incl')?.checked||false;
+      const old_type=p.type;
+      p.type=type; p.cost=cost; p.method=method; p.note=note; p.incl=incl;
+      addHistory('설정',`${p.flag}${p.name} 비자정책 수정`,country, old_type, type);
+      T(`${p.name} 비자 정책 저장 완료`);
+      visaRenderAll();
+    }
+  });
+}
+
+// ── 비자 정책 추가 모달
+function addVisaPolicy(){
+  showModal({
+    ico:'🌐',type:'info',
+    title:'새 비자 정책 추가',
+    desc:'새 국가의 비자 정책을 등록합니다.',
+    body:`<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">국가 코드 (예: JP)</label>
+          <input id="np-country" class="fi" placeholder="JP" maxlength="3">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">국기 이모지</label>
+          <input id="np-flag" class="fi" placeholder="🇯🇵" maxlength="4">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">국가명</label>
+        <input id="np-name" class="fi" placeholder="일본">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">비자 유형</label>
+        <select id="np-type" class="fsel" style="width:100%;">
+          <option>도착비자</option><option>e-Visa</option><option>대리신청비자</option><option>무비자</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">비자 비용</label>
+        <input id="np-cost" class="fi" placeholder="USD 30 / 인">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">안내 메모</label>
+        <input id="np-note" class="fi" placeholder="처리 방법 안내...">
+      </div>
+    </div>`,
+    okLabel:'추가',
+    action(){
+      const country=document.getElementById('np-country')?.value.trim().toUpperCase();
+      const flag=document.getElementById('np-flag')?.value.trim();
+      const name=document.getElementById('np-name')?.value.trim();
+      const type=document.getElementById('np-type')?.value;
+      const cost=document.getElementById('np-cost')?.value.trim();
+      const note=document.getElementById('np-note')?.value.trim();
+      if(!country||!name){T('국가 코드와 국가명은 필수입니다');return;}
+      if(VISA_POLICY.find(p=>p.country===country)){T('이미 등록된 국가 코드입니다');return;}
+      VISA_POLICY.push({country,flag,name,type,method:'',cost,incl:false,agency:false,note});
+      addHistory('설정',`비자 정책 추가: ${flag}${name}`,country);
+      T(`${name} 비자 정책 추가 완료`);
+      visaRenderAll();
+    }
+  });
+}
+
+// ── 비자 대리 신청 처리
+function visaApplyAgency(id){
+  const r=DATA.find(x=>x.id===id);if(!r)return;
+  const policy=VISA_POLICY.find(p=>p.country===r.country)||{};
+  showModal({
+    ico:'✈',type:'info',
+    title:`${r.name}님 비자 대리 신청`,
+    desc:`${policy.type||'비자'} 대리 신청을 진행합니다.`,
+    body:`<div style="font-size:13px;color:#5A5550;line-height:2;padding:8px 0;">
+      <div>👤 신청자: <b>${r.name}</b> (${r.id})</div>
+      <div>🌍 비자 유형: <b>${policy.type||'—'}</b></div>
+      <div>💰 비자 비용: <b>${policy.cost||'—'}</b></div>
+      <div>📋 여권 상태: <b>${r.pass==='ok'?'✅ 확인완료':'⚠ 미확인'}</b></div>
+      <div style="margin-top:10px;">
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">신청 메모 (선택)</label>
+        <input id="va-memo" class="fi" placeholder="신청 플랫폼, 접수번호 등...">
+      </div>
+    </div>`,
+    okLabel:'신청 완료로 표시',
+    action(){
+      const memo=document.getElementById('va-memo')?.value.trim();
+      if(!r.visa)r.visa={};
+      r.visa.applied=nowShort();
+      r.visa.st='pend';
+      r.visa.applyMemo=memo;
+      r.log.push({c:'ch',i:'✈',t:`비자 대리 신청 완료${memo?' — '+memo:''}`,m:nowShort()});
+      addHistory('비자',`${r.name}님 비자 대리 신청 처리`,id,'신청전','신청완료·대기');
+      T(`${r.name}님 비자 신청 완료 → 대기 상태로 변경`);
+      visaRenderAll();
+    }
+  });
+}
+
+// ── 비자 거절 재신청 처리
+function visaReject(id){
+  const r=DATA.find(x=>x.id===id);if(!r)return;
+  showModal({
+    ico:'❌',type:'warn',
+    title:`${r.name}님 비자 거절 처리`,
+    desc:'거절 사유를 입력하고 재신청 안내를 발송합니다.',
+    body:`<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <div>
+        <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">거절 사유</label>
+        <input id="vr-reason" class="fi" placeholder="서류 미비, 사진 불일치 등...">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+          <input type="checkbox" id="vr-kko" checked> 카카오 발송
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+          <input type="checkbox" id="vr-email" checked> 이메일 발송
+        </label>
+      </div>
+    </div>`,
+    okLabel:'거절 처리 + 안내 발송',
+    action(){
+      const reason=document.getElementById('vr-reason')?.value.trim()||'사유 미입력';
+      const kko=document.getElementById('vr-kko')?.checked;
+      const email=document.getElementById('vr-email')?.checked;
+      if(!r.visa)r.visa={};
+      const old_st=r.visa.st;
+      r.visa.st='rej';
+      r.visa.rejReason=reason;
+      r.visa.rejDate=nowShort();
+      r.log.push({c:'pd',i:'❌',t:`비자 거절: ${reason}`,m:nowShort()});
+      const chs=[kko&&'kko',email&&'email'].filter(Boolean);
+      if(chs.length) sendMsg(id,'passport',chs,`비자 거절 안내: ${reason}. 재신청 서류를 준비해주세요.`);
+      addHistory('비자',`${r.name}님 비자 거절`,id, old_st||'대기', '거절');
+      T(`${r.name}님 비자 거절 처리 완료 — 재신청 안내 발송`);
+      visaRenderAll();
+    }
+  });
+}
+
 function initVisaPage(){
   visaRenderCountryTabs();visaRenderProdSelect();visaRenderDepSelect();visaRenderAll();
 }
