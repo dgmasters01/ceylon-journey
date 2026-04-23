@@ -2668,8 +2668,13 @@ function confTk(e,id,ntk){
     action(){
       const oldTk=r.tk; const oldPnr=r.pnr;
       r.tk=ntk;
-      if(isBack){r.pnr='';r.tkDate='';r.log.push({c:'ch',i:'↩',t:`발권 상태 되돌림${oldPnr?' (기존 PNR: '+oldPnr+')':''}`,m:nowShort()});
+      if(isBack){
+        r.pnr='';r.tkDate='';
+        r.log.push({c:'ch',i:'↩',t:`발권 상태 되돌림${oldPnr?' (기존 PNR: '+oldPnr+')':''}`,m:nowShort()});
         addHistory('발권',`${r.name}님 발권 상태 되돌림`,r.id, TKM[oldTk]?.l||oldTk, TKM[ntk]?.l||ntk);
+      } else {
+        r.log.push({c:'ch',i:'⏳',t:`발권 상태 변경: ${TKM[oldTk]?.l||oldTk} → ${TKM[ntk]?.l||ntk}`,m:nowShort()});
+        addHistory('발권',`${r.name}님 발권 상태 변경`,r.id, TKM[oldTk]?.l||oldTk, TKM[ntk]?.l||ntk);
       }
       T(`${r.name}님 → [${TKM[ntk].l}]`);
       renderRes(getFiltered());renderTicket();
