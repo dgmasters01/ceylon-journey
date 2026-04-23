@@ -340,7 +340,7 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
 </nav>
 
 <!-- ════════════════ 홈 페이지 ════════════════ -->
-<div id="homePage">
+<div id="homePage" style="display:block;">
 
 <!-- 히어로 -->
 <div class="hero">
@@ -764,7 +764,7 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
 </div><!-- /reservePage -->
 
 <!-- ══════════ 로그인 / 예약 조회 ══════════ -->
-<div id="loginPage" style="display:none;padding-top:62px;min-height:80vh;display:none;align-items:center;justify-content:center;">
+<div id="loginPage" style="display:none;padding-top:62px;min-height:80vh;">
   <div style="max-width:440px;margin:0 auto;padding:60px 20px;">
     <div style="text-align:center;margin-bottom:36px;">
       <div style="font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;">MY PAGE</div>
@@ -1032,12 +1032,7 @@ function openDetail(prod,selDate){
   if(!prod)return;
   cProd=prod;cPax=2;singleOn=false;cCal=null;
   clearInterval(stmr);
-  document.getElementById('homePage').style.display='none';
-  document.getElementById('detPage').style.display='block';
-  document.getElementById('reservePage').style.display='none';
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('myPage').style.display='none';
-  document.getElementById('checklistPage').style.display='none';
+  showOnly('detPage');
   window.scrollTo(0,0);
 
   // 히어로
@@ -1183,10 +1178,8 @@ function doReserve(){
 // 📝 예약 신청 폼
 // ══════════════════════════════════════════
 function openReserveForm(){
-  document.getElementById('homePage').style.display='none';
-  document.getElementById('detPage').style.display='none';
-  document.getElementById('reservePage').style.display='block';
   clearInterval(stmr);
+  showOnly('reservePage');
   window.scrollTo(0,0);
 
   // 선택 정보 채우기
@@ -1302,21 +1295,12 @@ function submitReserve(){
 }
 
 function showHome(){
-  document.getElementById('homePage').style.display='block';
-  document.getElementById('detPage').style.display='none';
-  document.getElementById('reservePage').style.display='none';
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('myPage').style.display='none';
-  document.getElementById('checklistPage').style.display='none';
-  initHero();window.scrollTo(0,0);
+  showOnly('homePage');
+  initHero();
 }
 
 function showLogin(){
-  document.getElementById('homePage').style.display='none';
-  document.getElementById('detPage').style.display='none';
-  document.getElementById('reservePage').style.display='none';
-  document.getElementById('loginPage').style.display='block';
-  document.getElementById('myPage').style.display='none';
+  showOnly('loginPage');
   clearInterval(stmr);
   // 폼 초기화
   document.getElementById('lp-id').value='';
@@ -1337,14 +1321,12 @@ function doMyLogin(){
   const res  = list.find(r=>r.id===resId && r.name===name);
   if(!res){errEl.textContent='예약 정보를 찾을 수 없습니다. 예약번호와 이름을 확인해주세요.';errEl.style.display='block';return;}
 
-  sessionStorage.setItem('cj_my_res', JSON.stringify(res));
-  showMyPage(res);
+  showMyPageWithRes(res);
 }
 
-function showMyPage(res){
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('myPage').style.display='block';
-  window.scrollTo(0,0);
+function showMyPageWithRes(res){
+  sessionStorage.setItem('cj_my_res', JSON.stringify(res));
+  showOnly('myPage');
   renderMyPage(res);
 }
 
@@ -1615,12 +1597,7 @@ function openChecklist(){
   const saved=sessionStorage.getItem('cj_my_res');
   if(!saved){showLogin();return;}
   const res=JSON.parse(saved);
-  document.getElementById('homePage').style.display='none';
-  document.getElementById('detPage').style.display='none';
-  document.getElementById('reservePage').style.display='none';
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('myPage').style.display='none';
-  document.getElementById('checklistPage').style.display='block';
+  showOnly('checklistPage');
   window.scrollTo(0,0);
   renderChecklist(res);
 }
@@ -1905,9 +1882,22 @@ function submitCLPassport(){
 
 function showMyPage(){
   const saved=sessionStorage.getItem('cj_my_res');
-  document.getElementById('checklistPage').style.display='none';
-  document.getElementById('myPage').style.display='block';
+  showOnly('myPage');
   if(saved) renderMyPage(JSON.parse(saved));
+}
+
+function doMyLogout(){
+  sessionStorage.removeItem('cj_my_res');
+  showHome();
+}
+
+// ── 페이지 전환 통합 헬퍼 ──
+const ALL_PAGES=['homePage','detPage','reservePage','loginPage','myPage','checklistPage'];
+function showOnly(pageId){
+  ALL_PAGES.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=(id===pageId?'block':'none');
+  });
   window.scrollTo(0,0);
 }
 
