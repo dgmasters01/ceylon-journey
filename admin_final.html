@@ -804,18 +804,27 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
 <!-- ════ P: 비자관리 ════ -->
 <div id="p-visa" class="page">
 
-  <!-- 국가·상품 필터 -->
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+  <!-- 필터 바 -->
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
     <div style="font-size:12px;font-weight:500;color:#5A5550;flex-shrink:0;">국가:</div>
     <div id="visa-country-tabs" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
-    <div style="font-size:12px;font-weight:500;color:#5A5550;flex-shrink:0;margin-left:8px;">상품:</div>
-    <select id="visa-prod-select" class="fsel" style="width:auto;min-width:180px;padding:6px 10px;font-size:12px;" onchange="visaSetProd(this.value)">
+    <div style="font-size:12px;font-weight:500;color:#5A5550;flex-shrink:0;margin-left:4px;">상품:</div>
+    <select id="visa-prod-select" class="fsel" style="width:auto;min-width:160px;padding:6px 10px;font-size:12px;" onchange="visaSetProd(this.value)">
       <option value="all">전체 상품</option>
     </select>
     <div style="font-size:12px;font-weight:500;color:#5A5550;">출발일:</div>
-    <select id="visa-dep-select" class="fsel" style="width:auto;min-width:130px;padding:6px 10px;font-size:12px;" onchange="visaSetDep(this.value)">
+    <select id="visa-dep-select" class="fsel" style="width:auto;min-width:120px;padding:6px 10px;font-size:12px;" onchange="visaSetDep(this.value)">
       <option value="all">전체 출발일</option>
     </select>
+  </div>
+  <!-- 비자 상태 탭 -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+    <button class="itab on" id="vst-all"  onclick="visaSetVst('all',this)">전체</button>
+    <button class="itab"    id="vst-wait" onclick="visaSetVst('wait',this)">📋 신청 전</button>
+    <button class="itab"    id="vst-pend" onclick="visaSetVst('pend',this)">⏳ 대기 중</button>
+    <button class="itab"    id="vst-ok"   onclick="visaSetVst('ok',this)">✅ 승인완료</button>
+    <button class="itab"    id="vst-rej"  onclick="visaSetVst('rej',this)">❌ 거절</button>
+    <button class="itab"    id="vst-none" onclick="visaSetVst('none',this)">— 해당없음</button>
   </div>
 
   <!-- 통계 카드 -->
@@ -4271,14 +4280,16 @@ const VS_STYLE={
   ok:'background:#EEF8F2;color:#1B6B3A;border:2px solid #2E9B55;font-weight:700;',
   rej:'background:#FDF3F1;color:#C04030;border:1px solid #F5C4B8;',
 };
-let visaCurCountry='all',visaCurProd='all',visaCurDep='all';
+let visaCurCountry='all',visaCurProd='all',visaCurDep='all',visaCurVst='all';
 
 function visaGetFiltered(){
   return DATA.filter(r=>{
-    if(r.st==='x')return false; // 취소 제외
+    if(r.st==='x')return false;
     if(visaCurCountry!=='all'&&r.country!==visaCurCountry)return false;
     if(visaCurProd!=='all'&&r.prodId!==visaCurProd)return false;
     if(visaCurDep!=='all'&&r.dep!==visaCurDep)return false;
+    // 비자 상태 필터
+    if(visaCurVst!=='all'&&(r.visa?.st||'none')!==visaCurVst)return false;
     return true;
   });
 }
@@ -4300,6 +4311,12 @@ function visaRenderDepSelect(){
   el.innerHTML=`<option value="all">전체 출발일</option>`+deps.map(d=>`<option value="${d}">${d}</option>`).join('');
 }
 function visaSetCountry(c){visaCurCountry=c;visaCurProd='all';visaCurDep='all';visaRenderCountryTabs();visaRenderProdSelect();visaRenderDepSelect();visaRenderAll();}
+function visaSetVst(vst,el){
+  visaCurVst=vst;
+  document.querySelectorAll('[id^="vst-"]').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  visaRenderAll();
+}
 function visaSetProd(v){visaCurProd=v;visaCurDep='all';visaRenderDepSelect();visaRenderAll();}
 function visaSetDep(v){visaCurDep=v;visaRenderAll();}
 
@@ -4314,12 +4331,18 @@ function visaRenderAll(){
     else if(v.st==='ok'){cnt.ok++;if(v.kko==='unsent'||v.email==='unsent')cnt.unsent++;}
     else if(v.st==='rej')cnt.rej++;
   });
+  // 비자 관리 필요 건수 (e-Visa + 대리신청만)
+  const needMgmt=base.filter(r=>{
+    const p=VISA_POLICY.find(x=>x.country===r.country)||{};
+    return p.type!=='도착비자'&&p.type!=='무비자';
+  }).length;
   document.getElementById('visa-stats').innerHTML=`
-    <div class="stat warn"><div class="sl">신청 전</div><div class="sv y">${cnt.wait}명</div><div class="ss">여권 확인 완료 후 신청</div></div>
-    <div class="stat info"><div class="sl">신청완료·대기중</div><div class="sv b">${cnt.pend}명</div><div class="ss">대사관 처리 중</div></div>
-    <div class="stat ok"><div class="sl">비자 승인 완료</div><div class="sv g">${cnt.ok}명</div></div>
-    <div class="stat ${cnt.unsent>0?'urg':''}"><div class="sl">미발송 (승인 후)</div><div class="sv ${cnt.unsent>0?'r':''}">${cnt.unsent}명</div><div class="ss">${cnt.unsent>0?'발송 필요':''}</div></div>
-    <div class="stat ${cnt.rej>0?'urg':''}"><div class="sl">비자 거절</div><div class="sv ${cnt.rej>0?'r':''}">${cnt.rej}명</div></div>`;
+    <div class="stat"><div class="sl">전체 대상</div><div class="sv">${base.length}명</div><div class="ss">관리필요: ${needMgmt}명</div></div>
+    <div class="stat warn"><div class="sl">📋 신청 전</div><div class="sv y">${cnt.wait}명</div><div class="ss">신청 진행 필요</div></div>
+    <div class="stat info"><div class="sl">⏳ 대기 중</div><div class="sv b">${cnt.pend}명</div><div class="ss">승인 대기</div></div>
+    <div class="stat ok"><div class="sl">✅ 승인완료</div><div class="sv g">${cnt.ok}명</div></div>
+    <div class="stat ${cnt.unsent>0?'urg':''}"><div class="sl">📨 미발송</div><div class="sv ${cnt.unsent>0?'r':''}">${cnt.unsent}명</div><div class="ss">${cnt.unsent>0?'발송 필요':''}</div></div>
+    <div class="stat ${cnt.rej>0?'urg':''}"><div class="sl">❌ 거절</div><div class="sv ${cnt.rej>0?'r':''}">${cnt.rej}명</div></div>`;
 
   // 알림
   const alerts=[];
@@ -4406,8 +4429,15 @@ function visaRow(r){
     <td style="font-size:11px;color:#9A9590;">${reCnt>0?`<span style="background:#F5EEF8;color:#6040A0;padding:2px 7px;border-radius:3px;border:1px solid #D0B8E8;">재발송 ${reCnt}회</span>`:v.st==='ok'?'—':'—'}</td>
     <td>
       <div style="display:flex;gap:4px;flex-wrap:wrap;">
-        ${v.st==='wait'&&r.pass==='ok'?`<button class="btn by bsm" onclick="visaApplyAgency('${r.id}')">✈ 대리 신청</button>`:''}
-        ${v.st==='wait'&&r.pass!=='ok'?`<span style="font-size:10px;color:#9A9590;">여권 확인 후 신청 가능</span>`:''}
+        ${(policy.type==='도착비자'||policy.type==='무비자')&&v.st==='none'
+          ? `<span style="font-size:10px;color:#9A9590;padding:3px 8px;background:#F8F8F8;border-radius:4px;border:1px solid #DDD5C0;">${policy.type==='무비자'?'관리 불필요':'현장 수령'}</span>`
+          : policy.type==='e-Visa'&&v.st==='wait'
+          ? `<button class="btn by bsm" onclick="visaSendEvisaLink('${r.id}')">📧 신청 링크 발송</button>${r.pass!=='ok'?'<span style="font-size:10px;color:#E05C40;">여권확인 필요</span>':''}`
+          : v.st==='wait'&&r.pass==='ok'
+          ? `<button class="btn by bsm" onclick="visaApplyAgency('${r.id}')">✈ 대리 신청</button>`
+          : v.st==='wait'&&r.pass!=='ok'
+          ? `<span style="font-size:10px;color:#9A9590;">여권 확인 후 신청 가능</span>`
+          : ''}
         ${v.st==='pend'?`<button class="btn bp bsm" onclick="visaApprove('${r.id}')">✅ 승인처리</button>`:''}
         ${v.st==='pend'?`<button class="btn br bsm" onclick="visaReject('${r.id}')">❌ 거절처리</button>`:''}
         ${v.st==='ok'&&(v.kko==='unsent'||v.email==='unsent')?`<button class="btn bg2 bsm" onclick="visaSend('${r.id}',false)">📨 발송</button>`:''}
@@ -4716,6 +4746,36 @@ function visaReject(id){
       if(chs.length) sendMsg(id,'passport',chs,`비자 거절 안내: ${reason}. 재신청 서류를 준비해주세요.`);
       addHistory('비자',`${r.name}님 비자 거절`,id, old_st||'대기', '거절');
       T(`${r.name}님 비자 거절 처리 완료 — 재신청 안내 발송`);
+      visaRenderAll();
+    }
+  });
+}
+
+// e-Visa 신청 링크 카카오+이메일 발송
+function visaSendEvisaLink(id){
+  const r=DATA.find(x=>x.id===id);if(!r)return;
+  const policy=VISA_POLICY.find(p=>p.country===r.country)||{};
+  showModal({
+    ico:'📧',type:'info',
+    title:`${r.name}님 e-Visa 신청 링크 발송`,
+    desc:`${policy.type||'e-Visa'} 온라인 신청 링크와 방법을 안내합니다.`,
+    body:`<div style="font-size:13px;line-height:2;color:#5A5550;padding:8px 0;">
+      <div>👤 수신자: <b>${r.name}</b> (${r.id})</div>
+      <div>💰 비자 비용: <b>${policy.cost||'—'}</b> (고객 직접 결제)</div>
+      <div>📋 여권 상태: <b>${r.pass==='ok'?'✅ 확인완료':'⚠ 미확인 — 여권 확인 후 발송 권장'}</b></div>
+      <div style="margin-top:8px;padding:10px;background:#EEF4FB;border-radius:6px;font-size:12px;color:#2460A0;">
+        📌 발송 내용: 비자 신청 공식 링크 + 사진 규격 + 처리 기간 안내
+      </div>
+    </div>`,
+    okLabel:'카카오+이메일 발송',
+    action(){
+      sendMsg(id,'passport',['kko','email'],`e-Visa 신청 안내: 온라인에서 직접 신청해주세요. 비용 ${policy.cost||''} (처리 기간 3~5 영업일)`);
+      if(!r.visa)r.visa={};
+      r.visa.st='wait';
+      r.visa.evisaLinkSent=nowShort();
+      r.log.push({c:'ch',i:'📧',t:'e-Visa 신청 링크 발송',m:nowShort()});
+      addHistory('비자',`${r.name}님 e-Visa 신청 링크 발송`,id);
+      T(`${r.name}님 e-Visa 신청 링크 카카오+이메일 발송 완료`);
       visaRenderAll();
     }
   });
