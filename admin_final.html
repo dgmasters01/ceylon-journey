@@ -2350,14 +2350,15 @@ function calcDday(dep, cancelDate){
 // 취소 처리 — 예약 상태를 'x'로 변경 + 취소 정보 기록
 function doCancel(id){
   const r = DATA.find(x=>x.id===id); if(!r) return;
-  const today = '2026.04.06';
-  const dday = calcDday(r.dep, today);
+  const today = nowTs().slice(0,10);
+  const dday = calcDday(r.dep, today.replace(/\./g,'.'));
   r.st = 'x';
   r.cancelDate = today;
   r.cancelDday = dday;
-  r.airPenalty = r.tk==='d' ? (r.pax * 150000) : 0; // 발권 후면 인당 15만 기본
+  r.airPenalty = r.tk==='d' ? (r.pax * 150000) : 0;
   r.refundSt = 'pending';
-  r.log.push({c:'pd',i:'❌',t:'취소 신청 접수',m:today.slice(5)});
+  r.log.push({c:'pd',i:'❌',t:'취소 신청 접수',m:nowShort()});
+  addHistory('취소',`${r.name}님 예약 취소 처리`,id,'확정','취소');
   T(`${r.name}님 취소 처리 완료 — 환불 계산 탭 확인`);
   renderRes(getFiltered());
   initCancel();
@@ -2419,9 +2420,9 @@ function undoRefundDone(id){
       r.refundSt = 'pending';
       r.refundAmt = 0;
       r.refundDate = '';
-      // 마지막 환불 완료 로그 제거
       const idx = [...r.log].reverse().findIndex(l=>l.i==='💰');
       if(idx>=0) r.log.splice(r.log.length-1-idx, 1);
+      addHistory('환불',`${r.name}님 환불 처리 취소 (되돌리기)`,r.id,'환불완료','계산대기');
       T(`${r.name}님 환불 처리 취소 — 계산 대기 상태로 되돌림`);
       initCancel();
     }
@@ -2436,7 +2437,9 @@ function editAirPenalty(id){
   if(v===null) return;
   const n = parseInt(v.replace(/,/g,''),10);
   if(isNaN(n)||n<0){ T('올바른 금액을 입력하세요'); return; }
+  const oldPenalty = r.airPenalty||0;
   r.airPenalty = n;
+  addHistory('취소',`${r.name}님 항공수수료 수정`,r.id, oldPenalty.toLocaleString()+'원', n.toLocaleString()+'원');
   T(`항공 수수료 ${n.toLocaleString()}원으로 수정 완료`);
   initCancel();
 }
@@ -2829,6 +2832,7 @@ function tkResend(id){
   if(!r.tkSent)r.tkSent={kko:false,email:false,sentAt:''};
   r.tkSent.kko=true;r.tkSent.email=true;r.tkSent.sentAt=now;
   r.log.push({c:'tk',i:'📨',t:`발권 정보 재발송 (카카오+이메일) PNR: ${r.pnr}`,m:nowShort()});
+  addHistory('발권',`${r.name}님 발권정보 재발송 (카카오+이메일)`,id);
   T(`${r.name}님 발권 정보 카카오+이메일 재발송 완료`);
   renderTicket();
 }
@@ -2904,7 +2908,12 @@ function closeReject(){document.getElementById('reject-modal').classList.remove(
 function doReject(){
   const id=document.getElementById('reject-modal').dataset.id;
   const txt=document.getElementById('rej-txt')?.value||'재제출 요청';
-  if(id) sendMsg(id,'passport',['kko','email'],`여권 재제출 요청: ${txt}`);
+  if(id){
+    const r=DATA.find(x=>x.id===id);
+    if(r){ r.pass='bad'; r.log.push({c:'pd',i:'❌',t:`여권 반려: ${txt}`,m:nowShort()}); }
+    sendMsg(id,'passport',['kko','email'],`여권 재제출 요청: ${txt}`);
+    addHistory('여권',`${r?.name||id}님 여권 반려`,id,'검토중','재제출요청');
+  }
   closeReject();
 }
 
@@ -3193,12 +3202,13 @@ function doCalSave(){
   if(existing){
     // 수정
     Object.assign(existing, {price, pax, depAmt, depPct, season, status, memo});
+    addHistory('상품',`출발일 수정: ${dateVal.replace(/-/g,'.')}`,calCurProdId);
     T(`${dateVal.replace(/-/g,'.')} 출발일 수정 완료`);
   } else {
-    // 신규
     const reserved = DATA.filter(r=>r.dep===dateVal.replace(/-/g,'.')&&r.prodId===calCurProdId&&r.st!=='x')
                          .reduce((s,r)=>s+r.pax,0);
     CAL_DATA.push({prodId:calCurProdId, date:dateVal, price, pax, depPct, depAmt, season, status, memo, reserved});
+    addHistory('상품',`출발일 추가: ${dateVal.replace(/-/g,'.')} ${price.toLocaleString()}원`,calCurProdId);
     T(`${dateVal.replace(/-/g,'.')} 출발일 추가 완료 — 소비자 사이트 반영`);
   }
   closeCalM();
@@ -3222,6 +3232,7 @@ function doCalDelete(){
     action(){
       const idx = CAL_DATA.findIndex(d=>d.prodId===calCurProdId&&d.date===calEditDate);
       if(idx>=0) CAL_DATA.splice(idx,1);
+      addHistory('상품',`출발일 삭제: ${calEditDate.replace(/-/g,'.')}`,calCurProdId);
       T(`${calEditDate.replace(/-/g,'.')} 출발일 삭제 완료`);
       closeCalM();
       renderCal();
@@ -3396,7 +3407,13 @@ function doSaveProd(){
     });
   }
 
-  addHistory('상품',`상품 등록: ${name}`,newId);T(`✅ "${name}" 상품 등록 완료 — ID: ${newId}`);
+  if(window._editingProdId){
+    addHistory('상품',`상품 수정: ${name}`,window._editingProdId,'수정전',name);
+    T(`✅ "${name}" 상품 수정 완료`);
+  } else {
+    addHistory('상품',`상품 등록: ${name}`,newId);T(`✅ "${name}" 상품 등록 완료 — ID: ${newId}`);
+  }
+  window._editingProdId = null;
   resetProdForm();
   goP('prods');
   renderProds();
@@ -3404,6 +3421,7 @@ function doSaveProd(){
 
 // 폼 초기화
 function resetProdForm(){
+  window._editingProdId = null;
   ['pa-name','pa-price','pa-minpax','pa-flight-out','pa-flight-in',
    'pa-airline','pa-short','pa-desc','pa-incl','pa-excl','pa-visa-cost','pa-visa-note'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
@@ -3496,6 +3514,7 @@ function toggleProdPublic(id){
 // 상품 수정 (폼으로 이동 후 값 채우기)
 function editProd(id){
   const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  window._editingProdId = id;
   resetProdForm();
   goP('prod-add');
   setTimeout(()=>{
@@ -3699,8 +3718,9 @@ function sendMsg(id, type, channels, content, extra){
   // 뱃지 업데이트
   updateMsgBadge();
 
-  // 토스트
+  // 히스토리 기록
   const ch1 = chs.map(c=>CH_META[c]?.label||c).join('+');
+  addHistory('발송',`${r.name}님 ${MSG_TYPE[type]?.label||type} ${isResend?'재':''}발송 (${ch1})`,id);
   T(`${r.name}님 ${MSG_TYPE[type]?.label||type} ${ch1} ${isResend?'재':''}발송 완료`);
 
   // 발송이력 탭이 열려있으면 갱신
@@ -3710,13 +3730,9 @@ function sendMsg(id, type, channels, content, extra){
 // 일괄 발송 (여러 예약자)
 function sendMsgBulk(ids, type, channels, content){
   ids.forEach(id=> sendMsg(id, type, channels, content));
+  addHistory('발송',`일괄 발송: ${MSG_TYPE[type]?.label||type} ${ids.length}명`,'');
   updateMsgBadge();
   if(document.getElementById('p-msglog')?.classList.contains('on')) renderMsgLog();
-}
-
-function nowTs(){
-  const d=new Date();
-  return `2026.04.06 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
 // ── 편의 함수 (각 버튼에서 호출) ──
@@ -3905,7 +3921,9 @@ function renderMsgSummary(){
 
 function sendMsgBulkType(id, types){
   types.forEach(type=> sendMsg(id, type, ['kko','email'], MSG_TYPE[type]?.label||type));
-  T(`${DATA.find(r=>r.id===id)?.name}님 누락 발송 ${types.length}건 일괄 발송 완료`);
+  const rName=DATA.find(r=>r.id===id)?.name||id;
+  addHistory('발송',`${rName}님 누락발송 ${types.length}건 일괄처리`,id);
+  T(`${rName}님 누락 발송 ${types.length}건 일괄 발송 완료`);
 }
 
 function resetMsgFilter(){
@@ -4077,8 +4095,9 @@ function renderPassTab(){
 
 function passRequest(id,name){
   const r=DATA.find(x=>x.id===id);
-  if(r){r.reqCnt=(r.reqCnt||0)+1;r.lastReq='04.06';}
+  if(r){r.reqCnt=(r.reqCnt||0)+1;r.lastReq=nowShort();}
   sendMsg(id,'passport',['kko','email'],'여권 사진+정보 제출 요청');
+  addHistory('여권',`${name}님 여권 제출 요청 발송`,id);
   renderPassTab();
 }
 
