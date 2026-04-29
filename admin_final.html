@@ -277,6 +277,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
 .cl-desc{font-size:12px;color:#5A5550;line-height:1.7;}
 .cl-reason{font-size:11px;color:#9A9590;margin-top:4px;font-style:italic;}
 .cl-files{font-size:11px;color:#6040A0;margin-top:4px;}
+/* Before/After Compare */
+.cl-compare{margin-top:12px;border:1px solid #E8E0D0;border-radius:8px;overflow:hidden;}
+.cl-compare-tabs{display:flex;border-bottom:1px solid #E8E0D0;}
+.cl-compare-tab{flex:1;padding:8px 0;text-align:center;font-size:11px;font-weight:600;cursor:pointer;background:#FAF8F4;color:#9A9590;transition:all .15s;border:none;font-family:inherit;}
+.cl-compare-tab.on{background:#0E1410;color:#C9A84C;}
+.cl-compare-tab:first-child{border-right:1px solid #E8E0D0;}
+.cl-compare-body{position:relative;background:#f5f0e8;}
+.cl-compare-img{width:100%;display:block;}
+.cl-compare-slider{display:flex;overflow:hidden;}
+.cl-compare-slider>div{flex:1;min-width:100%;transition:transform .3s;}
 </style>
 </head>
 <body>
@@ -5281,29 +5291,70 @@ function initPageGallery() { renderPageGallery(); }
 // ── MODULE 4: Changelog ──
 const CHANGELOG_DATA = [
   {
+    date: '2026-04-30',
+    entries: [
+      { title: 'Page Gallery 새 창 열기 + 자동 로그인', desc: '페이지 열기 버튼 클릭 시 새 탭에서 로그인 없이 해당 페이지 바로 표시. localStorage 세션 공유 + URL hash 라우팅 적용', reason: '시크릿 모드에서도 새 창 열 때 로그인 화면이 뜨는 문제 해결', files: 'admin_final.html', before: null, after: null },
+      { title: 'Page Gallery HD 미리보기', desc: '미리보기 스크린샷을 1440px JPEG 92% 고화질로 교체. 관리자 18개 + 소비자 1개 = 19개 페이지 HD 캡처', reason: '미리보기 이미지가 흐렸던 문제 해결', files: 'admin_final.html', before: null, after: null },
+    ]
+  },
+  {
     date: '2026-04-29',
     entries: [
-      { title: 'TW Standard System v1 적용', desc: 'Business Docs / Page Gallery / 작업 기록 / 검증 워크플로 / 자율 작업 큐 5개 모듈을 admin_final.html에 통합', reason: 'TW B2B에서 검증된 프로젝트 표준 시스템을 CEYLON JOURNEY에도 적용하여 작업 방식 통일', files: 'admin_final.html, BUSINESS.md, DECISIONS.md, USER_JOURNEY.md, BACKLOG.md, CHANGELOG.md, SOLO_WORK_QUEUE.md' },
-      { title: '브랜드 변경 — 여행능력자들 → CEYLON JOURNEY', desc: '소비자 상품 페이지를 여행능력자들 브랜딩에서 CEYLON JOURNEY 독립 브랜드로 전면 재설계', reason: '프리미엄 스리랑카 패키지에 맞는 독자적 브랜드 정체성 확립', files: 'consumer_site.html' },
-      { title: '상품 페이지 재설계', desc: '블로그 형태 → 프리미엄 여행사 수준 상품 상세 페이지로 완전 재구축. 시기리아/나인아치/갈레 등 장소별 이미지+매력 설명, 7일 전일정 상세화', reason: '기존 페이지가 구매 전환에 부적합', files: 'consumer_site.html (sri-lanka-tour.html로 재작성)' },
+      { title: 'TW Standard System v1 적용', desc: 'Business Docs / Page Gallery / 작업 기록 3개 모듈을 admin_final.html에 통합', reason: 'TW B2B에서 검증된 프로젝트 표준 시스템을 CEYLON JOURNEY에도 적용', files: 'admin_final.html, BUSINESS.md, DECISIONS.md, USER_JOURNEY.md, BACKLOG.md, CHANGELOG.md, SOLO_WORK_QUEUE.md', before: null, after: null },
+      { title: '브랜드 변경 — 여행능력자들 → CEYLON JOURNEY', desc: '소비자 상품 페이지를 여행능력자들 브랜딩에서 CEYLON JOURNEY 독립 브랜드로 전면 재설계', reason: '프리미엄 스리랑카 패키지에 맞는 독자적 브랜드 정체성 확립', files: 'consumer_site.html', before: null, after: null },
+      { title: '상품 페이지 재설계', desc: '블로그 형태 → 프리미엄 여행사 수준 상품 상세 페이지로 완전 재구축', reason: '기존 페이지가 구매 전환에 부적합', files: 'consumer_site.html', before: null, after: null },
     ]
   }
 ];
+
+let _clCompareState = {};
+function toggleCompare(entryId, mode) {
+  _clCompareState[entryId] = mode;
+  const tabs = document.querySelectorAll(`[data-compare-id="${entryId}"] .cl-compare-tab`);
+  tabs.forEach(t => t.classList.toggle('on', t.dataset.mode === mode));
+  const beforeEl = document.getElementById(`cl-before-${entryId}`);
+  const afterEl = document.getElementById(`cl-after-${entryId}`);
+  if(beforeEl) beforeEl.style.display = mode === 'before' ? 'block' : 'none';
+  if(afterEl) afterEl.style.display = mode === 'after' ? 'block' : 'none';
+}
 
 function renderChangelog(filter) {
   const body = document.getElementById('cl-body');
   const q = (filter || '').toLowerCase();
   let html = '';
+  let eidx = 0;
   CHANGELOG_DATA.forEach(day => {
     const entries = q ? day.entries.filter(e => (e.title+e.desc+e.reason+e.files).toLowerCase().includes(q)) : day.entries;
     if (!entries.length) return;
     html += `<div style="margin:0 0 0 20px;padding:8px 0 4px 0;font-size:15px;font-weight:700;color:#0E1410;">${day.date}</div>`;
     entries.forEach(e => {
+      const eid = 'cl-e-' + eidx++;
+      const hasCompare = e.before || e.after;
+      let compareHtml = '';
+      if(hasCompare) {
+        compareHtml = `<div class="cl-compare" data-compare-id="${eid}">
+          <div class="cl-compare-tabs">
+            <button class="cl-compare-tab on" data-mode="before" onclick="toggleCompare('${eid}','before')">📸 수정 전 (BEFORE)</button>
+            <button class="cl-compare-tab" data-mode="after" onclick="toggleCompare('${eid}','after')">📸 수정 후 (AFTER)</button>
+          </div>
+          <div class="cl-compare-body">
+            <div id="cl-before-${eid}" style="display:block;">
+              ${e.before ? `<img src="${e.before}" class="cl-compare-img" alt="수정 전">` : '<div style="padding:40px;text-align:center;color:#9A9590;font-size:12px;">수정 전 스크린샷 없음</div>'}
+            </div>
+            <div id="cl-after-${eid}" style="display:none;">
+              ${e.after ? `<img src="${e.after}" class="cl-compare-img" alt="수정 후">` : '<div style="padding:40px;text-align:center;color:#9A9590;font-size:12px;">수정 후 스크린샷 없음</div>'}
+            </div>
+          </div>
+        </div>`;
+      } else {
+        compareHtml = `<div style="margin-top:8px;padding:8px 12px;background:#FAF8F4;border-radius:6px;font-size:11px;color:#9A9590;">📸 다음 수정부터 BEFORE / AFTER 스크린샷이 자동 기록됩니다</div>`;
+      }
       html += `<div class="cl-entry">
         <div class="cl-title">${e.title}</div>
         <div class="cl-desc">${e.desc}</div>
         <div class="cl-reason">💡 이유: ${e.reason}</div>
         <div class="cl-files">📁 ${e.files}</div>
+        ${compareHtml}
       </div>`;
     });
   });
