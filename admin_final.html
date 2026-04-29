@@ -5205,7 +5205,7 @@ function renderPageGallery() {
         <div class="pg-card-desc">${p.purpose}</div>
         <div class="pg-card-actions">
           ${p.status === 'live' ? `<button onclick="window.open('${liveUrl}','_blank')">🔗 라이브 보기</button>` : '<button disabled style="opacity:.4;">🔗 미배포</button>'}
-          ${p.status === 'live' ? `<button onclick="previewPG('${liveUrl}','${p.name}')">👁 미리보기</button>` : '<button disabled style="opacity:.4;">👁 미리보기</button>'}
+          ${p.status === 'live' ? `<button onclick="previewPG('${liveUrl}','${p.name}',${p.thumb ? "'" + p.thumb + "'" : 'null'})">👁 미리보기</button>` : '<button disabled style="opacity:.4;">👁 미리보기</button>'}
         </div>
       </div>`;
     });
@@ -5213,16 +5213,32 @@ function renderPageGallery() {
   grid.innerHTML = html;
 }
 
-function previewPG(url, name) {
+function previewPG(url, name, thumb) {
   const m = document.createElement('div');
-  m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;';
-  m.innerHTML = `<div style="width:90vw;height:85vh;background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
-    <div style="padding:12px 20px;background:#0E1410;color:#C9A84C;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-      <span style="font-size:14px;font-weight:600;">${name}</span>
-      <button onclick="this.closest('div[style*=fixed]').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">✕</button>
-    </div>
-    <iframe src="${url}" style="flex:1;border:none;width:100%;"></iframe>
-  </div>`;
+  m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;';
+  m.onclick = function(e) { if(e.target === m) m.remove(); };
+
+  // Admin pages: show screenshot image. Consumer pages: use iframe
+  const isAdmin = url.includes('admin_final');
+  if (isAdmin && thumb) {
+    m.innerHTML = `<div style="width:90vw;max-width:1200px;max-height:90vh;background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;cursor:default;" onclick="event.stopPropagation()">
+      <div style="padding:12px 20px;background:#0E1410;color:#C9A84C;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <span style="font-size:14px;font-weight:600;">${name}</span>
+        <button onclick="this.closest('div[style*=fixed]').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">✕</button>
+      </div>
+      <div style="flex:1;overflow:auto;padding:0;background:#f5f0e8;display:flex;justify-content:center;">
+        <img src="${thumb}" style="width:100%;height:auto;display:block;">
+      </div>
+    </div>`;
+  } else {
+    m.innerHTML = `<div style="width:90vw;height:85vh;background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;cursor:default;" onclick="event.stopPropagation()">
+      <div style="padding:12px 20px;background:#0E1410;color:#C9A84C;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <span style="font-size:14px;font-weight:600;">${name}</span>
+        <button onclick="this.closest('div[style*=fixed]').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">✕</button>
+      </div>
+      <iframe src="${url}" style="flex:1;border:none;width:100%;"></iframe>
+    </div>`;
+  }
   document.body.appendChild(m);
 }
 
