@@ -382,6 +382,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:#F0EDE8;color:#1A1A1A;font
 
 <!-- ════ MAIN ════ -->
 <div class="main">
+<div id="gallery-breadcrumb" style="display:none;padding:8px 18px;background:#C9A84C18;border-bottom:1px solid #C9A84C40;">
+  <a href="javascript:goP('page-gallery')" style="font-size:12px;color:#C9A84C;text-decoration:none;font-weight:600;">← Page Gallery로 돌아가기</a>
+</div>
 <div class="topbar">
   <div class="tb-title" id="pageTitle">대시보드</div>
   <div class="tb-right">
@@ -2044,12 +2047,19 @@ function fmt(n){return n.toLocaleString()+'원';}
 
 // ── PAGE NAV ──
 const PT={'dash':'대시보드','res':'예약 관리','pass':'여권 관리','visa':'비자 관리','ticket':'항공 발권','cancel':'취소·환불','msglog':'📨 메시지 발송 이력','guide':'출발 최종 안내서','cal':'출발일·가격 관리','prods':'상품 목록','prod-add':'상품 등록','coupon':'쿠폰 관리','review':'후기 관리','staff':'권한 관리','settings':'사이트 설정','biz-docs':'Business Docs','page-gallery':'Page Gallery','changelog':'작업 기록'};
+let _fromGallery = false;
 function goP(id){
+  const wasGallery = document.getElementById('p-page-gallery')?.classList.contains('on');
+  if(wasGallery && id !== 'page-gallery') _fromGallery = true;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.s-item').forEach(i=>i.classList.remove('on'));
   document.getElementById('p-'+id)?.classList.add('on');
   document.querySelector(`[data-page="${id}"]`)?.classList.add('on');
   document.getElementById('pageTitle').textContent=PT[id]||id;
+  // Show back-to-gallery breadcrumb
+  const bc = document.getElementById('gallery-breadcrumb');
+  if(bc) bc.style.display = (_fromGallery && id !== 'page-gallery') ? 'block' : 'none';
+  if(id === 'page-gallery') _fromGallery = false;
   if(id==='dash')renderDash();
   if(id==='ticket'){tkRenderCountryTabs();tkRenderProdSelect();tkRenderDepSelect();renderTicket();}
   if(id==='res'){renderCountryTabs();renderProdSelect();renderDepSelect();updateFilterCounts();filterRender();}
@@ -5215,7 +5225,7 @@ function renderPageGallery() {
         <div class="pg-card-desc">${p.purpose}</div>
         <div class="pg-card-actions">
           ${isAdminPage ?
-            `<button onclick="window.open('/admin_final.html#p-${pid}','_blank')">🔗 페이지 열기</button>` :
+            `<button onclick="goP('${pid}')">🔗 페이지 열기</button>` :
             (p.status === 'live' ? `<button onclick="window.open('${liveUrl}','_blank')">🔗 새 탭 열기</button>` : '<button disabled style="opacity:.4;">🔗 미배포</button>')
           }
           ${p.thumb ?
