@@ -5195,21 +5195,23 @@ function renderPageGallery() {
                           '<span class="pg-b pg-b-plan">⚪ 계획</span>';
       const liveUrl = p.path.startsWith('/admin') ? 'https://ceylon-journey-three.vercel.app/admin_final.html' : 'https://ceylon-journey-three.vercel.app' + p.path;
       const thumbHtml = p.thumb ? `<div style="width:100%;aspect-ratio:16/9;background:url('${p.thumb}') center/cover no-repeat;background-size:cover;border-bottom:1px solid #F0EDE6;"></div>` : `<div style="width:100%;aspect-ratio:16/9;background:#F5F0E8;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #F0EDE6;color:#9A9590;font-size:12px;">📸 스크린샷 없음</div>`;
-      const cardClick = p.access === 'adm' && p.path.includes('#p-') ?
-        `onclick="goP('${p.path.split('#p-')[1]}')" style="cursor:pointer;"` :
+      const isAdminPage = p.access === 'adm' && p.path.includes('#p-');
+      const pid = isAdminPage ? p.path.split('#p-')[1] : '';
+      const cardClick = isAdminPage ?
+        `onclick="goP('${pid}')" style="cursor:pointer;"` :
         (p.status === 'live' ? `onclick="window.open('${liveUrl}','_blank')" style="cursor:pointer;"` : '');
       html += `<div class="pg-card" ${cardClick}>
         ${thumbHtml}
         <div class="pg-card-head">
           <h4>${p.name}</h4>
-          <div class="pg-card-path">${p.path}</div>
+          <div class="pg-card-path">${isAdminPage ? '관리자 → ' + p.name : p.path}</div>
           <div class="pg-badges" style="margin-top:8px;">${accessBadge}${statusBadge}</div>
         </div>
         <div class="pg-card-desc">${p.purpose}</div>
-        <div class="pg-card-actions">
-          ${p.access === 'adm' && p.path.includes('#p-') ?
-            `<button onclick="event.stopPropagation();goP('${p.path.split('#p-')[1]}')" style="flex:2;background:#0E1410;color:#C9A84C;border-color:#0E1410;">📌 바로가기</button>` :
-            (p.status === 'live' ? `<button onclick="event.stopPropagation();window.open('${liveUrl}','_blank')">🔗 새 탭에서 보기</button>` : '<button disabled style="opacity:.4;">🔗 미배포</button>')
+        <div style="padding:10px 16px;border-top:1px solid #F0EDE6;text-align:center;">
+          ${isAdminPage ?
+            `<span style="font-size:11px;color:#C9A84C;font-weight:600;">카드 클릭 → 바로 이동</span>` :
+            (p.status === 'live' ? `<span style="font-size:11px;color:#1B6B3A;font-weight:600;">카드 클릭 → 새 탭에서 열기</span>` : `<span style="font-size:11px;color:#9A9590;">미배포</span>`)
           }
         </div>
       </div>`;
