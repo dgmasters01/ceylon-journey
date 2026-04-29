@@ -4884,13 +4884,30 @@ function initLogin(){
   if(saved){
     currentUser = JSON.parse(saved);
     applyLoginUI();
-    // URL hash support: open specific page from new tab
     const hash = window.location.hash;
     if(hash && hash.startsWith('#p-')){
       const pid = hash.replace('#p-','');
       setTimeout(()=>goP(pid), 300);
     }
     return;
+  }
+  // Auto-login for new tabs opened from Page Gallery
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('auto')==='1'){
+    const defAcct = ADMIN_ACCOUNTS['admin'];
+    if(defAcct){
+      currentUser = {id:'admin', name:defAcct.name, role:defAcct.role, avatar:defAcct.avatar};
+      localStorage.setItem('cj_user', JSON.stringify(currentUser));
+      document.getElementById('loginScreen').style.display='none';
+      document.querySelector('.app').style.display='';
+      applyLoginUI();
+      const hash = window.location.hash;
+      if(hash && hash.startsWith('#p-')){
+        const pid = hash.replace('#p-','');
+        setTimeout(()=>goP(pid), 300);
+      }
+      return;
+    }
   }
   document.getElementById('loginScreen').style.display='flex';
   document.querySelector('.app').style.display='none';
@@ -5225,7 +5242,7 @@ function renderPageGallery() {
         <div class="pg-card-desc">${p.purpose}</div>
         <div class="pg-card-actions">
           ${isAdminPage ?
-            `<button onclick="goP('${pid}')">🔗 페이지 열기</button>` :
+            `<button onclick="window.open('/admin_final.html?auto=1#p-${pid}','_blank')">🔗 페이지 열기</button>` :
             (p.status === 'live' ? `<button onclick="window.open('${liveUrl}','_blank')">🔗 새 탭 열기</button>` : '<button disabled style="opacity:.4;">🔗 미배포</button>')
           }
           ${p.thumb ?
