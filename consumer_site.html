@@ -2,1940 +2,1648 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CEYLON JOURNEY — 프리미엄 소그룹 패키지</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEYLON JOURNEY — 스리랑카 프리미엄 6박 7일 패키지</title>
+<meta name="description" content="전일정 5성급 호텔, 소규모 20인, 3식 풀보드. 시기리아 락, 나인아치 브릿지, 갈레 포트 — 스리랑카의 모든 것을 담은 프리미엄 6박 7일 패키지.">
+<meta name="keywords" content="스리랑카 여행, 스리랑카 패키지, 스리랑카 투어, Ceylon Journey, 시기리아, 캔디, 갈레, 엘라, 누와라엘리야, 5성급 호텔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CEYLON JOURNEY — 스리랑카 프리미엄 6박 7일">
+<meta property="og:description" content="8개 유네스코 세계유산, 야생 코끼리 사파리, 구름 위 열차 — 전일정 5성급으로 만나는 스리랑카의 모든 것.">
+<meta property="og:url" content="https://ceylon-journey-three.vercel.app/">
+<meta property="og:site_name" content="CEYLON JOURNEY">
+<meta name="robots" content="index, follow">
 <style>
-:root{
-  --black:#0E1410;--gold:#C9A84C;--gold-lt:#E8D08A;
-  --cream:#F8F4EE;--gray:#9A9590;--border:#E8E0D0;
-  --font-serif:'Cormorant Garamond',serif;
-  --font-sans:'Noto Sans KR',sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --gold: #C8A45C;
+  --gold-light: #F5EDD6;
+  --dark: #1A1A1A;
+  --darker: #0D0D0D;
+  --warm: #2C2620;
+  --cream: #FAF8F4;
+  --sand: #F0EDE6;
+  --text: #333;
+  --text-light: #6B6560;
+  --accent: #2D6A4F;
+  --accent-light: #E8F5EE;
+  --coral: #D4654A;
+  --blue-deep: #1B4965;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:hidden;}
 
-/* ─── NAV ─── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:62px;background:rgba(14,20,16,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12);}
-.nav-logo{font-family:var(--font-serif);font-size:18px;font-weight:600;color:var(--gold);letter-spacing:3px;cursor:pointer;border:none;background:none;font-family:var(--font-serif);}
-.nav-links{display:flex;align-items:center;gap:2px;}
-.nav-link{padding:8px 14px;font-size:12px;color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;font-family:var(--font-sans);transition:color .2s;}
-.nav-link:hover{color:rgba(255,255,255,.9);}
-.nav-cta{margin-left:8px;padding:8px 18px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:3px;font-size:12px;color:var(--gold);cursor:pointer;font-family:var(--font-sans);transition:all .2s;}
-.nav-cta:hover{background:rgba(201,168,76,.22);}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* ─── HERO ─── */
-.hero{position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:flex-end;}
-.hero-slides{position:absolute;inset:0;}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-size:cover;background-position:center;}
-.hero-slide.on{opacity:1;}
-.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(14,20,16,.92) 0%,rgba(14,20,16,.4) 50%,rgba(14,20,16,.1) 100%);}
-.hero-content{position:relative;z-index:2;padding:0 40px 72px;max-width:720px;transition:opacity .4s,transform .4s;}
-.hero-content.fade{opacity:0;transform:translateY(10px);}
-.hero-eye{font-size:10px;letter-spacing:5px;color:var(--gold);margin-bottom:14px;text-transform:uppercase;}
-.hero-title{font-family:var(--font-serif);font-size:clamp(36px,5vw,58px);font-weight:400;color:#fff;line-height:1.22;margin-bottom:12px;}
-.hero-title em{font-style:italic;color:var(--gold-lt);}
-.hero-sub{font-size:14px;color:rgba(255,255,255,.52);line-height:1.9;margin-bottom:22px;}
-.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
-.hero-tag{font-size:11px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.55);}
-.hero-btns{display:flex;gap:10px;align-items:center;}
-/* 좌우 화살표 */
-.hero-arr{position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.hero-arr:hover{background:rgba(255,255,255,.16);color:#fff;}
-.hero-arr.prev{left:20px;}.hero-arr.next{right:20px;}
-/* 하단 도트 + 상품명 탭 */
-.hero-bottom{position:absolute;bottom:0;left:0;right:0;z-index:3;display:flex;align-items:flex-end;justify-content:space-between;padding:0 40px 28px;}
-.hero-dots{display:flex;gap:6px;align-items:center;}
-.hero-dot{width:28px;height:2px;background:rgba(255,255,255,.22);border:none;cursor:pointer;transition:all .3s;}
-.hero-dot.on{background:var(--gold);width:40px;}
-.hero-prod-tabs{display:flex;gap:6px;}
-.hero-prod-tab{padding:7px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.3);backdrop-filter:blur(6px);font-size:11px;color:rgba(255,255,255,.5);cursor:pointer;font-family:var(--font-sans);transition:all .2s;}
-.hero-prod-tab.on{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.12);}
+html { scroll-behavior: smooth; }
 
-/* ─── BUTTONS ─── */
-.btn-gold{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--gold);color:var(--black);border:none;border-radius:3px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);letter-spacing:.3px;transition:all .2s;}
-.btn-gold:hover{background:var(--gold-lt);}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;background:transparent;color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.18);border-radius:3px;font-size:13px;cursor:pointer;font-family:var(--font-sans);transition:all .2s;}
-.btn-ghost:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-/* ─── BRAND BAR ─── */
-.brand-bar{background:var(--black);display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(201,168,76,.1);}
-.brand-item{padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.04);}
-.brand-item:last-child{border:none;}
-.brand-ico{font-size:20px;margin-bottom:6px;}
-.brand-lbl{font-size:12px;font-weight:500;color:#fff;margin-bottom:2px;}
-.brand-sub{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px;}
+.serif { font-family: 'Playfair Display', serif; }
 
-/* ─── SECTION ─── */
-.sec{padding:88px 40px;}
-.sec-inner{max-width:1100px;margin:0 auto;}
-.sec-eye{font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;text-transform:uppercase;}
-.sec-t{font-family:var(--font-serif);font-size:clamp(28px,3.5vw,42px);font-weight:400;line-height:1.25;margin-bottom:10px;}
-.sec-s{font-size:14px;color:var(--gray);line-height:1.8;}
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  max-height: 1000px;
+  overflow: hidden;
+}
 
-/* ─── PROD CARDS ─── */
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-top:52px;}
-.prod-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;}
-.prod-card:hover{transform:translateY(-5px);box-shadow:0 20px 56px rgba(0,0,0,.1);}
-.prod-thumb{height:240px;position:relative;overflow:hidden;background:#0d2416;}
-.prod-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
-.prod-card:hover .prod-thumb img{transform:scale(1.05);}
-.prod-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:72px;opacity:.25;}
-.prod-badge{position:absolute;top:14px;left:14px;font-size:10px;padding:4px 10px;border-radius:100px;background:var(--gold);color:var(--black);font-weight:500;}
-.prod-seat-tag{position:absolute;top:14px;right:14px;font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(224,92,64,.85);color:#fff;}
-.prod-ctag{position:absolute;bottom:14px;left:14px;font-size:10px;padding:4px 10px;border-radius:100px;background:rgba(14,20,16,.7);color:rgba(255,255,255,.75);backdrop-filter:blur(4px);}
-.prod-body{padding:24px;}
-.prod-dur{font-size:11px;color:var(--gray);letter-spacing:.5px;margin-bottom:4px;}
-.prod-name{font-family:var(--font-serif);font-size:22px;font-weight:500;margin-bottom:6px;line-height:1.3;}
-.prod-desc-txt{font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:14px;}
-.prod-deps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.dep{font-size:11px;padding:4px 11px;border-radius:100px;}
-.dep-n{background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;}
-.dep-p{background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;}
-.dep-f{background:#F0EDE8;color:#9A9590;border:1px solid #DDD5C0;text-decoration:line-through;}
-.prod-foot{display:flex;align-items:flex-end;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);}
-.prod-from{font-size:10px;color:var(--gray);margin-bottom:2px;}
-.prod-price{font-family:var(--font-serif);font-size:26px;font-weight:600;color:var(--gold);}
-.prod-psub{font-size:10px;color:var(--gray);margin-top:2px;}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.pexels.com/photos/13391116/pexels-photo-13391116.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover;
+}
 
-/* ─── STORY / WHY ─── */
-.story-sec{background:var(--black);padding:88px 40px;}
-.story-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
-.mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:210px 210px;gap:6px;}
-.mosaic-cell{border-radius:4px;overflow:hidden;position:relative;}
-.mosaic-cell:first-child{grid-row:1/3;}
-.mosaic-cell img{width:100%;height:100%;object-fit:cover;}
-.mosaic-lbl{position:absolute;bottom:10px;left:10px;font-size:9px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;}
-.why-list{display:flex;flex-direction:column;gap:12px;}
-.why-row{display:flex;gap:14px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:5px;}
-.why-ico{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.why-t{font-size:13px;font-weight:500;color:#fff;margin-bottom:2px;}
-.why-d{font-size:12px;color:rgba(255,255,255,.35);line-height:1.6;}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.85) 100%);
+}
 
-/* ─── PROCESS ─── */
-.proc-sec{background:var(--cream);padding:88px 40px;}
-.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:52px;}
-.proc-item{text-align:center;padding:0 12px;}
-.proc-num{width:48px;height:48px;border-radius:50%;background:var(--black);color:var(--gold);font-family:var(--font-serif);font-size:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
-.proc-t{font-size:14px;font-weight:500;margin-bottom:7px;}
-.proc-d{font-size:12px;color:var(--gray);line-height:1.8;}
+.hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 5% 60px;
+  color: #fff;
+}
 
-/* ─── REVIEWS ─── */
-.rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:52px;}
-.rev-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:26px;}
-.rev-stars{color:var(--gold);font-size:13px;margin-bottom:12px;}
-.rev-txt{font-family:var(--font-serif);font-size:16px;line-height:1.75;margin-bottom:14px;font-style:italic;}
-.rev-meta{font-size:11px;color:var(--gray);}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200,164,92,0.25);
+  border: 1px solid rgba(200,164,92,0.5);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--gold-light);
+  margin-bottom: 24px;
+  backdrop-filter: blur(6px);
+}
 
-/* ─── CTA ─── */
-.cta-sec{background:var(--black);padding:64px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
-.cta-eye{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:8px;}
-.cta-title{font-family:var(--font-serif);font-size:clamp(24px,3vw,36px);font-weight:400;color:#fff;margin-bottom:6px;}
-.cta-info{font-size:13px;color:rgba(255,255,255,.38);}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.4);
+}
 
-/* ─── FOOTER ─── */
-.footer{background:#0a0e0c;padding:52px 40px 32px;}
-.ft-inner{max-width:1100px;margin:0 auto;}
-.ft-top{display:grid;grid-template-columns:240px 1fr;gap:56px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:24px;}
-.ft-logo{font-family:var(--font-serif);font-size:20px;color:var(--gold);letter-spacing:3px;margin-bottom:10px;}
-.ft-tagline{font-size:12px;color:rgba(255,255,255,.25);line-height:1.9;}
-.ft-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.ft-col-t{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:2px;margin-bottom:14px;text-transform:uppercase;}
-.ft-link{display:block;font-size:12px;color:rgba(255,255,255,.25);margin-bottom:9px;cursor:pointer;text-decoration:none;transition:color .2s;}
-.ft-link:hover{color:rgba(255,255,255,.55);}
-.ft-bottom{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.15);flex-wrap:wrap;gap:8px;}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
 
-/* ─── 카카오 플로팅 (항상 고정) ─── */
-.kk-float{position:fixed;bottom:28px;right:28px;z-index:9999;background:#FEE500;color:#191919;border:none;border-radius:100px;padding:13px 22px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(0,0,0,.22);transition:transform .2s,box-shadow .2s;}
-.kk-float:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.28);}
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 600px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 32px;
+}
 
-/* ══════════════════════════════════
-   상품 상세 페이지
-══════════════════════════════════ */
-.det-page{display:none;}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
 
-/* 상세 히어로 */
-.det-hero{height:520px;position:relative;overflow:hidden;background:#0d2416;}
-.det-hero img{width:100%;height:100%;object-fit:cover;}
-.det-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(14,20,16,.9) 0%,rgba(14,20,16,.25) 55%,rgba(14,20,16,.08) 100%);}
-.det-hero-ct{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:44px 40px;}
-.det-bread{font-size:11px;color:rgba(255,255,255,.38);margin-bottom:12px;display:flex;gap:8px;align-items:center;}
-.det-bread a{color:rgba(255,255,255,.38);cursor:pointer;text-decoration:none;transition:color .2s;}
-.det-bread a:hover{color:rgba(255,255,255,.7);}
-.det-eye{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;}
-.det-title{font-family:var(--font-serif);font-size:clamp(30px,4vw,52px);font-weight:400;color:#fff;line-height:1.2;margin-bottom:10px;}
-.det-sub{font-size:14px;color:rgba(255,255,255,.48);}
+.hero-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+}
 
-/* 모바일 상단 가격 바 */
-.det-price-bar{display:none;position:sticky;top:62px;z-index:100;background:rgba(14,20,16,.97);padding:14px 20px;border-bottom:1px solid rgba(201,168,76,.12);}
-.det-pb-inner{display:flex;align-items:center;justify-content:space-between;}
-.det-pb-price{font-family:var(--font-serif);font-size:20px;color:var(--gold);}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
-/* 본문 레이아웃 */
-.det-body{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:56px;padding:60px 40px;align-items:start;}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  background: var(--gold);
+  color: var(--darker);
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+}
 
-/* 상세 섹션 공통 */
-.det-sec{margin-bottom:52px;}
-.det-sec-t{font-family:var(--font-serif);font-size:24px;font-weight:500;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:22px;}
+.btn-primary:hover { background: #D4B06A; transform: translateY(-1px); }
 
-/* 요약 뱃지 */
-.summary-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;}
-.sum-badge{font-size:11px;padding:6px 14px;border-radius:100px;background:var(--cream);border:1px solid var(--border);color:var(--black);}
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  background: transparent;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+}
 
-/* 포함/불포함 */
-.incl-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
-.incl-col-t{font-size:12px;font-weight:500;letter-spacing:.5px;margin-bottom:14px;}
-.incl-item{display:flex;gap:10px;font-size:13px;padding:9px 0;border-bottom:1px solid #f5f2ec;align-items:start;line-height:1.6;}
-.incl-item:last-child{border:none;}
-.i-chk{font-size:13px;flex-shrink:0;margin-top:1px;}
+.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
 
-/* 일정표 */
-.itin-list{display:flex;flex-direction:column;}
-.itin-row{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--border);}
-.itin-row:last-child{border:none;}
-.itin-day{width:58px;height:58px;border-radius:5px;background:var(--black);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;text-align:center;line-height:1.4;}
-.itin-t{font-size:14px;font-weight:500;margin-bottom:5px;margin-top:3px;}
-.itin-d{font-size:13px;color:var(--gray);line-height:1.75;}
-.itin-h{font-size:11px;color:var(--gold);margin-top:5px;}
+.hero-scroll {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  text-align: center;
+  animation: bounce 2s infinite;
+}
 
-/* 호텔 */
-.hotel-list{display:flex;flex-direction:column;gap:10px;}
-.hotel-row{display:grid;grid-template-columns:90px 1fr;gap:14px;padding:14px 16px;background:var(--cream);border-radius:6px;border:1px solid var(--border);align-items:center;}
-.hotel-range{font-size:11px;color:var(--gold);font-weight:500;text-align:center;}
-.hotel-name{font-size:14px;font-weight:500;margin-bottom:3px;}
-.hotel-loc{font-size:11px;color:var(--gray);}
-.hotel-star{font-size:11px;color:var(--gold);margin-top:2px;}
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
 
-/* WHY */
-.why-grid-det{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.why-card{padding:18px;background:var(--cream);border-radius:6px;border:1px solid var(--border);}
-.why-card-ico{font-size:22px;margin-bottom:8px;}
-.why-card-t{font-size:13px;font-weight:500;margin-bottom:4px;}
-.why-card-d{font-size:12px;color:var(--gray);line-height:1.6;}
+/* ===== STICKY NAV ===== */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+  transition: box-shadow 0.3s;
+}
 
-/* 비자 */
-.visa-panel{background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:22px;}
-.visa-badge{display:inline-block;font-size:11px;padding:5px 14px;border-radius:100px;background:var(--gold);color:var(--black);font-weight:500;margin-bottom:12px;}
-.visa-cost{font-size:18px;font-weight:500;color:#E05C40;margin-bottom:10px;}
-.visa-note{font-size:13px;line-height:1.8;}
-.visa-tip{margin-top:12px;padding:12px;background:#FDF8EE;border:1px solid #F0D890;border-radius:5px;font-size:12px;color:#8A6500;line-height:1.7;}
+.sticky-nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
 
-/* Q&A */
-.qa-item{border-bottom:1px solid var(--border);}
-.qa-q{width:100%;text-align:left;padding:18px 0;font-size:14px;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-sans);gap:12px;}
-.qa-arr{font-size:14px;color:var(--gray);transition:transform .25s;flex-shrink:0;}
-.qa-item.open .qa-arr{transform:rotate(180deg);}
-.qa-a{display:none;padding:0 0 18px;font-size:13px;color:var(--gray);line-height:1.9;}
-.qa-item.open .qa-a{display:block;}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+}
 
-/* 취소 약관 */
-.pol-table{width:100%;border-collapse:collapse;font-size:13px;}
-.pol-table th{padding:11px 16px;background:var(--black);color:rgba(255,255,255,.55);font-weight:400;font-size:11px;letter-spacing:.5px;text-align:left;}
-.pol-table td{padding:13px 16px;border-bottom:1px solid var(--border);}
-.pol-table tr:last-child td{border:none;}
+.nav-brand {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--dark);
+  letter-spacing: -0.5px;
+}
 
-/* 유의사항 */
-.notice-ul{list-style:none;}
-.notice-ul li{font-size:13px;color:var(--gray);padding:7px 0;border-bottom:1px solid #f5f2ec;display:flex;gap:10px;line-height:1.7;}
-.notice-ul li::before{content:'·';color:var(--gold);flex-shrink:0;}
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
 
-/* ─── 예약 사이드바 ─── */
-.booking-box{background:var(--black);border-radius:8px;padding:26px;border:1px solid rgba(201,168,76,.15);position:sticky;top:82px;}
-.bb-t{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;text-transform:uppercase;}
-/* 캘린더 그리드 */
-.cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px;max-height:280px;overflow-y:auto;}
-.cal-cell{padding:11px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.07);cursor:pointer;transition:all .18s;text-align:center;}
-.cal-cell:hover:not(.full){border-color:rgba(201,168,76,.35);}
-.cal-cell.sel{border-color:var(--gold);background:rgba(201,168,76,.1);}
-.cal-cell.peak{background:rgba(255,193,7,.04);}
-.cal-cell.full{opacity:.35;cursor:default;}
-.cc-dt{font-size:12px;font-weight:500;color:#fff;}
-.cc-sea{font-size:9px;color:rgba(255,255,255,.28);margin-top:2px;}
-.cc-pr{font-size:12px;color:var(--gold);margin-top:3px;}
-.cc-st{font-size:9px;color:rgba(255,255,255,.22);margin-top:2px;}
-/* 선택 요약 */
-.sel-box{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);border-radius:5px;padding:13px;margin-bottom:14px;display:none;}
-.sel-date{font-size:14px;font-weight:500;color:#fff;margin-bottom:2px;}
-.sel-info{font-size:11px;color:rgba(255,255,255,.38);}
-/* 인원 */
-.pax-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.pax-lbl{font-size:12px;color:rgba(255,255,255,.5);}
-.pax-ctrl{display:flex;align-items:center;gap:10px;}
-.pax-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.pax-btn:hover{background:rgba(255,255,255,.14);}
-.pax-val{font-size:14px;color:#fff;min-width:20px;text-align:center;}
-/* 싱글룸 */
-.single-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid rgba(255,255,255,.05);margin-bottom:12px;}
-.single-lbl{font-size:12px;color:rgba(255,255,255,.45);}
-.tog-btn{width:36px;height:20px;border-radius:100px;background:rgba(255,255,255,.12);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
-.tog-btn.on{background:var(--gold);}
-.tog-btn::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;}
-.tog-btn.on::after{left:19px;}
-/* 가격 내역 */
-.price-bk{margin-bottom:16px;}
-.pr-row{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.42);padding:5px 0;}
-.pr-total{display:flex;justify-content:space-between;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:4px;}
-.pr-total-lbl{font-size:13px;color:rgba(255,255,255,.55);}
-.pr-total-val{font-family:var(--font-serif);font-size:24px;color:var(--gold);}
-.pr-dep-note{font-size:11px;color:rgba(255,255,255,.22);margin-top:4px;text-align:right;line-height:1.6;}
-/* 버튼 */
-.res-btn{width:100%;padding:15px;background:var(--gold);color:var(--black);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-bottom:9px;transition:background .2s;}
-.res-btn:hover:not(:disabled){background:var(--gold-lt);}
-.res-btn:disabled{opacity:.4;cursor:default;}
-.kk-consult{width:100%;padding:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;font-size:12px;color:rgba(255,255,255,.42);cursor:pointer;font-family:var(--font-sans);transition:all .2s;}
-.kk-consult:hover{border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.7);}
-.bb-note{font-size:10px;color:rgba(255,255,255,.18);text-align:center;margin-top:12px;line-height:2;}
+.nav-links a {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
 
-/* 모바일 하단 고정 */
-.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:14px 20px;background:rgba(14,20,16,.96);backdrop-filter:blur(10px);border-top:1px solid rgba(201,168,76,.12);}
-.mob-bar-inner{display:flex;align-items:center;gap:12px;}
-.mob-price-wrap{flex:1;}
-.mob-price-from{font-size:10px;color:var(--gold);}
-.mob-price-val{font-family:var(--font-serif);font-size:20px;color:#fff;}
-.mob-res-btn{padding:12px 24px;background:var(--gold);color:var(--black);border:none;border-radius:4px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--dark);
+  background: var(--sand);
+}
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:900px){
-  .nav{padding:0 20px;}.nav-link{display:none;}
-  .hero-content{padding:0 20px 56px;}
-  .hero-arr{display:none;}
-  .hero-bottom{padding:0 20px 20px;}
-  .hero-prod-tabs{display:none;}
-  .brand-bar{grid-template-columns:1fr 1fr;}
-  .sec{padding:60px 20px;}
-  .story-sec{padding:60px 20px;}
-  .story-inner{grid-template-columns:1fr;}
-  .mosaic{height:220px;grid-template-rows:1fr;grid-template-columns:repeat(3,1fr);}
-  .mosaic-cell:first-child{grid-row:1;}
-  .proc-grid{grid-template-columns:1fr 1fr;gap:20px;}
-  .proc-sec{padding:60px 20px;}
-  .cta-sec{flex-direction:column;text-align:center;padding:52px 20px;}
-  .footer{padding:44px 20px 28px;}
-  .ft-top{grid-template-columns:1fr;}
-  .ft-links{grid-template-columns:1fr 1fr;}
-  .det-body{grid-template-columns:1fr;padding:36px 20px;}
-  .booking-box{display:none;}
-  .det-price-bar{display:block;}
-  .mob-bar{display:block;}
-  .incl-wrap{grid-template-columns:1fr;}
-  .why-grid-det{grid-template-columns:1fr 1fr;}
-  .det-hero-ct{padding:28px 20px;}
-  .kk-float{bottom:80px;}
+.nav-cta {
+  padding: 10px 24px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: #333; }
+
+/* ===== SECTION ===== */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.section-sm { padding: 60px 24px; }
+
+.full-bleed {
+  width: 100%;
+  max-width: none;
+  padding: 80px 0;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+/* ===== QUICK STATS ===== */
+.stats-bar {
+  background: var(--darker);
+  color: #fff;
+}
+
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 0 24px;
+}
+
+.stat-item {
+  padding: 28px 20px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+}
+
+/* ===== WHY SRI LANKA ===== */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.why-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: default;
+}
+
+.why-card-img {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s ease;
+}
+
+.why-card:hover .why-card-img { transform: scale(1.05); }
+
+.why-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%);
+}
+
+.why-card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px;
+  color: #fff;
+}
+
+.why-card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.why-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.why-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+}
+
+/* ===== HIGHLIGHTS ===== */
+.highlight-section { background: var(--cream); }
+
+.hl-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hl-grid.reverse { direction: rtl; }
+.hl-grid.reverse > * { direction: ltr; }
+
+.hl-img {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.hl-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+
+.hl-img:hover img { transform: scale(1.03); }
+
+.hl-text-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hl-text h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+.hl-text p {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.hl-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.hl-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-light);
+  background: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+}
+
+.hl-detail-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* ===== DAY-BY-DAY ITINERARY ===== */
+.itinerary { background: #fff; }
+
+.day-card {
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: 0 24px;
+}
+
+.day-item {
+  display: grid;
+  grid-template-columns: 80px 1fr 420px;
+  gap: 32px;
+  padding: 48px 0;
+  border-bottom: 1px solid #eee;
+  align-items: start;
+}
+
+.day-item:last-child { border-bottom: none; }
+
+.day-num {
+  text-align: right;
+  padding-top: 4px;
+}
+
+.day-num-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.day-num-label {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.day-content h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.day-content .day-route {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.day-content p {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.day-spots {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.day-spot {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--cream);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+}
+
+.day-spot-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.day-spot-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 3px;
+}
+
+.day-spot-info p {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.day-meals {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.day-meal {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.day-hotel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--sand);
+  border-radius: 8px;
+}
+
+.day-hotel-star { color: var(--gold); font-size: 11px; }
+
+.day-hotel-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.day-hotel-class {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.day-img {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.day-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== HOTEL ===== */
+.hotel-section { background: var(--darker); color: #fff; }
+
+.hotel-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.hotel-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.hotel-card-img {
+  aspect-ratio: 16/10;
+  background-size: cover;
+  background-position: center;
+}
+
+.hotel-card-body { padding: 20px; }
+
+.hotel-card-stars {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.hotel-card h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.hotel-card .hotel-en {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 10px;
+}
+
+.hotel-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+}
+
+.hotel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.hotel-amenity {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+}
+
+/* ===== PRICING ===== */
+.pricing-section { background: var(--cream); }
+
+.price-card {
+  max-width: 800px;
+  margin: 48px auto 0;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+}
+
+.price-header {
+  background: var(--darker);
+  color: #fff;
+  padding: 32px 40px;
+  text-align: center;
+}
+
+.price-header .price-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.price-header .price-per {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4px;
+}
+
+.price-body { padding: 36px 40px; }
+
+.price-includes h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.inc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.inc-check {
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.inc-x {
+  color: var(--coral);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.exc-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.price-cta {
+  text-align: center;
+  padding: 24px 40px 36px;
+  border-top: 1px solid #eee;
+}
+
+.price-cta .btn-primary {
+  width: 100%;
+  justify-content: center;
+  padding: 18px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+/* ===== CTA BANNER ===== */
+.cta-banner {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.cta-banner-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover;
+}
+
+.cta-banner-ov {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.cta-banner-content {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-banner-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.cta-banner-content p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--darker);
+  color: rgba(255,255,255,0.5);
+  padding: 48px 24px 24px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.footer p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.footer h5 {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.footer a {
+  display: block;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.footer a:hover { color: var(--gold); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  .stats-inner { grid-template-columns: repeat(3, 1fr); }
+  .stat-item:nth-child(4), .stat-item:nth-child(5) { display: none; }
+  .why-grid { grid-template-columns: 1fr; gap: 16px; }
+  .why-card { aspect-ratio: 16/9; }
+  .hl-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hl-grid.reverse { direction: ltr; }
+  .day-item { grid-template-columns: 60px 1fr; gap: 20px; }
+  .day-img { display: none; }
+  .hotel-grid { grid-template-columns: 1fr; }
+  .inc-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero { min-height: 600px; }
+  .hero-content { padding: 0 20px 40px; }
+  .stats-inner { grid-template-columns: repeat(3, 1fr); }
+  .section { padding: 60px 20px; }
+  .day-item { grid-template-columns: 1fr; }
+  .day-num { text-align: left; display: flex; align-items: baseline; gap: 10px; }
+  .price-body { padding: 24px 20px; }
+  .footer-inner { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <button class="nav-logo" onclick="showHome()">CEYLON JOURNEY</button>
-  <div class="nav-links">
-    <button class="nav-link" onclick="goSection('products')">상품</button>
-    <button class="nav-link" onclick="goSection('why')">여행 소개</button>
-    <button class="nav-link" onclick="goSection('process')">예약 방법</button>
-    <button class="nav-link" onclick="goSection('reviews')">후기</button>
-    <button class="nav-cta" onclick="showLogin()">예약 조회 / 마이페이지</button>
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">PREMIUM PACKAGE 2025</div>
+    <h1 class="hero-title">
+      인도양의 보석,<br><em>Sri Lanka</em>
+    </h1>
+    <p class="hero-sub">
+      8개의 유네스코 세계유산, 야생 코끼리 사파리, 구름 위를 달리는 열차,
+      인도양 위의 석양 — 6박 7일, 전 일정 5성급으로 만나는 스리랑카의 모든 것.
+    </p>
+    <div class="hero-chips">
+      <span class="hero-chip">✈ 직항 · 6박 7일</span>
+      <span class="hero-chip">★ 전일정 5성급</span>
+      <span class="hero-chip">🍽 3식 풀보드</span>
+      <span class="hero-chip">👤 소규모 20인</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="#pricing" class="btn-primary">출발가 확인하기</a>
+      <a href="#itinerary" class="btn-outline">전일정 보기</a>
+    </div>
+  </div>
+  <div class="hero-scroll">SCROLL ▾</div>
+</section>
+
+<!-- ===== STICKY NAV ===== -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="nav-inner">
+    <div class="nav-brand">CEYLON JOURNEY</div>
+    <ul class="nav-links">
+      <li><a href="#why">스리랑카란?</a></li>
+      <li><a href="#highlights">여행 포인트</a></li>
+      <li><a href="#itinerary">전일정</a></li>
+      <li><a href="#hotels">호텔</a></li>
+      <li><a href="#pricing">요금</a></li>
+    </ul>
+    <a href="#pricing" class="nav-cta">예약 문의</a>
   </div>
 </nav>
 
-<!-- ════════════════ 홈 페이지 ════════════════ -->
-<div id="homePage" style="display:block;">
-
-<!-- 히어로 -->
-<div class="hero">
-  <div class="hero-slides" id="heroSlides"></div>
-  <button class="hero-arr prev" onclick="moveSlide(-1)">&#8249;</button>
-  <button class="hero-arr next" onclick="moveSlide(1)">&#8250;</button>
-  <!-- 텍스트 (JS로 업데이트) -->
-  <div class="hero-content" id="heroContent">
-    <div class="hero-eye" id="hEye"></div>
-    <h1 class="hero-title" id="hTitle"></h1>
-    <p class="hero-sub" id="hSub"></p>
-    <div class="hero-tags" id="hTags"></div>
-    <div class="hero-btns" id="hBtns"></div>
-  </div>
-  <!-- 하단 도트 + 상품 탭 -->
-  <div class="hero-bottom">
-    <div class="hero-dots" id="heroDots"></div>
-    <div class="hero-prod-tabs" id="heroProdTabs"></div>
-  </div>
-</div>
-
-<!-- 브랜드 특징 바 -->
-<div class="brand-bar">
-  <div class="brand-item"><div class="brand-ico">👥</div><div class="brand-lbl">소수 정예 소그룹</div><div class="brand-sub">SMALL GROUP TOUR</div></div>
-  <div class="brand-item"><div class="brand-ico">🏨</div><div class="brand-lbl">5성급 전일정</div><div class="brand-sub">LUXURY HOTEL ONLY</div></div>
-  <div class="brand-item"><div class="brand-ico">✈</div><div class="brand-lbl">왕복 항공 포함</div><div class="brand-sub">FLIGHT INCLUDED</div></div>
-  <div class="brand-item"><div class="brand-ico">🛡</div><div class="brand-lbl">여행자보험 포함</div><div class="brand-sub">INSURANCE INCLUDED</div></div>
-</div>
-
-<!-- 상품 목록 -->
-<div class="sec" id="products">
-  <div class="sec-inner">
-    <div class="sec-eye">Our Products</div>
-    <h2 class="sec-t">출발 예정 상품</h2>
-    <p class="sec-s">전 상품 항공 · 5성급 호텔 · 한국인 가이드 · 여행자보험 포함</p>
-    <div class="prod-grid" id="prodGrid"></div>
-  </div>
-</div>
-
-<!-- 여행 스토리 -->
-<div class="story-sec" id="why">
-  <div class="story-inner sec-inner">
-    <div class="mosaic" id="mosaic"></div>
-    <div>
-      <div class="sec-eye" style="color:var(--gold)">Why Ceylon Journey</div>
-      <h2 class="sec-t" style="color:#fff">왜 CEYLON JOURNEY인가요</h2>
-      <p class="sec-s" style="color:rgba(255,255,255,.4);margin-bottom:32px">대형 버스 40인 단체가 아닙니다.<br>소수 정예로 진짜 여행을 경험하세요.</p>
-      <div class="why-list" id="whyList"></div>
+<!-- ===== STATS BAR ===== -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">6박 7일</div>
+      <div class="stat-label">여행 기간</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5성급</div>
+      <div class="stat-label">전일정 호텔</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3식</div>
+      <div class="stat-label">완전 포함</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">20인</div>
+      <div class="stat-label">소규모 운영</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">한국어</div>
+      <div class="stat-label">전담 가이드</div>
     </div>
   </div>
 </div>
 
-<!-- 예약 프로세스 -->
-<div class="proc-sec" id="process">
-  <div class="sec-inner">
-    <div class="sec-eye">How to Book</div>
-    <h2 class="sec-t">예약 방법</h2>
-    <div class="proc-grid">
-      <div class="proc-item"><div class="proc-num">1</div><div class="proc-t">상품 · 출발일 선택</div><div class="proc-d">원하시는 출발일과 인원을 선택하세요</div></div>
-      <div class="proc-item"><div class="proc-num">2</div><div class="proc-t">예약 신청서 제출</div><div class="proc-d">신청자 정보 입력 후 제출하면 카카오로 안내드립니다</div></div>
-      <div class="proc-item"><div class="proc-num">3</div><div class="proc-t">예약금 입금</div><div class="proc-d">안내된 계좌로 예약금 입금 후 확정됩니다</div></div>
-      <div class="proc-item"><div class="proc-num">4</div><div class="proc-t">여권 제출 → 출발</div><div class="proc-d">마이페이지에서 여권 제출 · 발권 완료 후 출발</div></div>
+<!-- ===== WHY SRI LANKA ===== -->
+<section class="section" id="why">
+  <div class="section-label">WHY SRI LANKA</div>
+  <h2 class="section-title">왜 지금, 스리랑카인가</h2>
+  <p class="section-desc">
+    인도양 한가운데 떠 있는 이 작은 섬에는 놀라운 것들이 숨어 있습니다.
+    한 나라 안에서 정글, 고원, 해변, 고대 유적을 모두 만날 수 있는 곳은 지구상에 흔치 않습니다.
+  </p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-card-img" style="background-image:url('https://images.pexels.com/photos/19808528/pexels-photo-19808528.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-card-body">
+        <div class="why-card-num">8</div>
+        <h3>유네스코 세계유산</h3>
+        <p>시기리아 락, 캔디 불치사, 갈레 포트 — 고대 왕국의 흔적이 섬 곳곳에 살아 숨쉽니다.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-img" style="background-image:url('https://images.pexels.com/photos/3881104/pexels-photo-3881104.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-card-body">
+        <div class="why-card-num">300+</div>
+        <h3>마리의 야생 코끼리</h3>
+        <p>미네리아 국립공원에서 만나는 '코끼리 대집합'. 300마리 이상이 한자리에 모이는 장관은 스리랑카에서만 가능합니다.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-img" style="background-image:url('https://images.pexels.com/photos/1581098/pexels-photo-1581098.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-card-body">
+        <div class="why-card-num">1,868m</div>
+        <h3>고산 차밭의 나라</h3>
+        <p>세계 3대 홍차 산지 누와라엘리야. '작은 영국'이라 불리는 고산 도시에서 실론 티의 향에 취해봅니다.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- 후기 -->
-<div class="sec" id="reviews">
-  <div class="sec-inner">
-    <div class="sec-eye">Reviews</div>
-    <h2 class="sec-t">여행객 후기</h2>
-    <div class="rev-grid">
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-txt">"시기리야는 사진과 완전히 달랐어요. 정상에서 내려다보는 그 순간, 말로 설명이 안 됩니다. Heritance Kandalama에서의 2박도 정말 특별했고요."</p><div class="rev-meta">김○○ · 서울 · 가족여행 · 2026.03</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-txt">"Jetwing Lighthouse 시푸드가 인생 최고 식사였어요. 6인 소그룹이라 이동이 자유롭고, 5성급 전일정이라 피로도가 전혀 달랐습니다."</p><div class="rev-meta">이○○ · 대구 · 부부여행 · 2026.04</div></div>
+<!-- ===== HIGHLIGHT 1: 시기리아 ===== -->
+<section class="highlight-section full-bleed" id="highlights" style="padding: 100px 0;">
+  <div class="hl-grid">
+    <div class="hl-img">
+      <img src="https://images.pexels.com/photos/13391116/pexels-photo-13391116.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="시기리아 락" loading="lazy">
+    </div>
+    <div class="hl-text">
+      <div class="hl-text-label">MUST-SEE</div>
+      <h3>하늘 위의 궁전,<br>시기리아 락 포트리스</h3>
+      <p>
+        5세기에 지어진 이 거대한 바위 궁전은 높이 200m, 1,200개의 계단을 올라야만 만날 수 있습니다.
+        정상에 서면 사방으로 끝없이 펼쳐진 열대 우림과 고대 왕국의 흔적이 한눈에 들어옵니다.
+      </p>
+      <p>
+        세계 8대 불가사의로 꼽히는 이 곳은 스리랑카 여행의 하이라이트이자,
+        인생에서 한 번은 꼭 올라봐야 할 곳입니다.
+      </p>
+      <div class="hl-details">
+        <span class="hl-detail"><span class="hl-detail-icon">📍</span> 시기리아</span>
+        <span class="hl-detail"><span class="hl-detail-icon">⏱</span> 약 2시간</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🏔</span> 해발 370m</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🏛</span> UNESCO 세계유산</span>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CTA 배너 -->
-<div class="cta-sec">
-  <div><div class="cta-eye">NEXT DEPARTURE</div><div class="cta-title" id="ctaTitle">2026년 6월 1일 출발</div><div class="cta-info" id="ctaInfo">스리랑카 완전일주 7박8일 · 잔여 4자리</div></div>
-  <button class="btn-gold" id="ctaBtn" onclick="openDetail(PRODUCTS[0])">지금 예약하기 →</button>
-</div>
+<!-- ===== HIGHLIGHT 2: 나인아치 브릿지 ===== -->
+<section class="full-bleed" style="padding: 100px 0; background:#fff;">
+  <div class="hl-grid reverse">
+    <div class="hl-img">
+      <img src="https://images.pexels.com/photos/4166551/pexels-photo-4166551.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="나인아치 브릿지" loading="lazy">
+    </div>
+    <div class="hl-text">
+      <div class="hl-text-label">ICONIC SCENE</div>
+      <h3>구름 위를 달리다,<br>엘라 나인아치 브릿지</h3>
+      <p>
+        초록빛 차밭 사이를 아홉 개의 아치가 연결하는 이 다리는,
+        영국 식민지 시대에 시멘트 한 톨 없이 벽돌과 돌만으로 지어졌습니다.
+        다리 위를 푸른 기차가 천천히 지나가는 순간, 시간이 멈춘 듯한 풍경이 펼쳐집니다.
+      </p>
+      <p>
+        데모다라역에서 엘라역까지 이어지는 약 15분의 기차 여행은
+        '세계에서 가장 아름다운 열차 노선'으로 불리며, 이 패키지에 포함되어 있습니다.
+      </p>
+      <div class="hl-details">
+        <span class="hl-detail"><span class="hl-detail-icon">📍</span> 엘라</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🚂</span> 기차 탑승 포함</span>
+        <span class="hl-detail"><span class="hl-detail-icon">📸</span> 포토스팟</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🌿</span> 차밭 뷰</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- 푸터 -->
+<!-- ===== HIGHLIGHT 3: 갈레 포트 ===== -->
+<section class="highlight-section full-bleed" style="padding: 100px 0;">
+  <div class="hl-grid">
+    <div class="hl-img">
+      <img src="https://images.pexels.com/photos/4166519/pexels-photo-4166519.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="갈레 포트" loading="lazy">
+    </div>
+    <div class="hl-text">
+      <div class="hl-text-label">SUNSET SPOT</div>
+      <h3>인도양 위의 석양,<br>갈레 포트</h3>
+      <p>
+        16세기 포르투갈이 세운 성벽 위에 서면, 눈앞에 끝없는 인도양이 펼쳐집니다.
+        성벽 안 골목에는 부티크 숍, 카페, 갤러리가 숨어 있어
+        유럽 어느 항구 도시를 걷는 듯한 낭만을 선사합니다.
+      </p>
+      <p>
+        해질녘 성벽 위에서 바라보는 인도양의 일몰은
+        여행의 마지막 밤을 가장 아름답게 장식해줄 것입니다.
+      </p>
+      <div class="hl-details">
+        <span class="hl-detail"><span class="hl-detail-icon">📍</span> 갈레</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🌅</span> 인도양 석양</span>
+        <span class="hl-detail"><span class="hl-detail-icon">🏛</span> UNESCO 세계유산</span>
+        <span class="hl-detail"><span class="hl-detail-icon">☕</span> 카페거리</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DAY-BY-DAY ITINERARY ===== -->
+<section class="itinerary full-bleed" id="itinerary" style="padding: 80px 0;">
+  <div class="section" style="padding-bottom: 40px;">
+    <div class="section-label">ITINERARY</div>
+    <h2 class="section-title">6박 7일, 완벽한 동선</h2>
+    <p class="section-desc">
+      시기리아에서 갈레까지 — 스리랑카의 핵심을 모두 담되, 5성급 호텔에서 충분히 쉬어가는 일정입니다.
+      이동과 관광, 휴식의 밸런스를 고려해 설계했습니다.
+    </p>
+  </div>
+
+  <div class="day-card">
+    <!-- DAY 1 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">01</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>인천 출발 → 콜롬보 → 네곰보</h3>
+        <div class="day-route">인천국제공항 → 반다라나이케 국제공항 → 네곰보</div>
+        <p>
+          스리랑카항공 UL471편으로 인천을 출발합니다.
+          약 9시간의 비행 후 콜롬보 반다라나이케 국제공항에 도착하면,
+          한국어 전담 가이드가 공항에서 바로 맞이합니다.
+          공항에서 15분 거리의 네곰보 5성급 호텔로 이동해 여정의 첫 밤을 편안하게 시작합니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">✈</div>
+            <div class="day-spot-info">
+              <h4>스리랑카항공 직항</h4>
+              <p>UL471 인천 11:45 출발 → 콜롬보 16:30 도착 (약 9시간)</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🏨</div>
+            <div class="day-spot-info">
+              <h4>공항 근접 5성급 호텔</h4>
+              <p>장거리 비행 후 빠르게 체크인. 첫날은 무리 없이 휴식에 집중합니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">석식 포함</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">Jetwing Blue</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=800" alt="네곰보 해변" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">02</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>시기리아 락 등반 · 미네리아 사파리</h3>
+        <div class="day-route">네곰보 → 시기리아 (약 4시간) → 미네리아 국립공원</div>
+        <p>
+          이 여행의 첫 번째 하이라이트입니다.
+          5세기 카샤파 왕이 건설한 시기리아 락은 200m 높이의 거대 바위 위에 세워진 공중 궁전.
+          1,200개의 계단을 올라 정상에 서면, 360도로 펼쳐지는 열대우림의 파노라마가 기다립니다.
+        </p>
+        <p>
+          오후에는 미네리아 국립공원으로 이동해 지프 사파리를 즐깁니다.
+          건기에는 300~700마리의 야생 코끼리가 한자리에 모이는 '코끼리 대집합(The Gathering)'을 볼 수 있으며,
+          이는 아시아 전역에서 가장 큰 코끼리 집합 현상입니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">🏔</div>
+            <div class="day-spot-info">
+              <h4>시기리아 락 포트리스 (UNESCO)</h4>
+              <p>세계 8대 불가사의. 정상까지 약 1.5~2시간 소요. 프레스코 벽화 '시기리아 아가씨'와 사자 발 테라스가 유명합니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🐘</div>
+            <div class="day-spot-info">
+              <h4>미네리아 국립공원 지프 사파리</h4>
+              <p>야생 코끼리, 물소, 악어, 다양한 조류를 전용 지프로 관찰합니다. 사파리 입장료 포함.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식</span>
+          <span class="day-meal">중식</span>
+          <span class="day-meal">석식</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">Jetwing Vil Uyana</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/13391116/pexels-photo-13391116.jpeg?auto=compress&cs=tinysrgb&w=800" alt="시기리아 락" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">03</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>캔디 — 불치사 · 보타닉 가든 · 전통 댄스</h3>
+        <div class="day-route">시기리아 → 캔디 (약 3시간)</div>
+        <p>
+          스리랑카의 마지막 왕조가 자리 잡았던 고도(古都) 캔디.
+          도시 전체가 유네스코 세계유산에 등재된 이곳에서
+          부처님의 치아 사리를 모시고 있는 불치사(달라다 말리가와)를 방문합니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">🙏</div>
+            <div class="day-spot-info">
+              <h4>불치사 (Temple of Sacred Tooth Relic)</h4>
+              <p>부처님의 치아 사리를 모시고 있는 스리랑카 불교의 최고 성지. 화려한 건축과 종교 의식을 직접 볼 수 있습니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🌺</div>
+            <div class="day-spot-info">
+              <h4>페라데니아 보타닉 가든</h4>
+              <p>1821년 설립된 아시아 최대 규모의 식물원. 4,000여 종의 열대 식물과 대왕야자 나무길이 장관입니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">💃</div>
+            <div class="day-spot-info">
+              <h4>캔디안 전통 댄스 공연</h4>
+              <p>2,500년 전통의 캔디안 댄스. 화려한 의상과 북소리의 어울림은 스리랑카 문화의 정수입니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식</span>
+          <span class="day-meal">중식</span>
+          <span class="day-meal">석식</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">Cinnamon Citadel Kandy</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/3312670/pexels-photo-3312670.jpeg?auto=compress&cs=tinysrgb&w=800" alt="캔디 불치사" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">04</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>누와라엘리야 — 차밭 체험 · '작은 영국'</h3>
+        <div class="day-route">캔디 → 누와라엘리야 (약 3시간)</div>
+        <p>
+          해발 1,868m의 고산 도시 누와라엘리야.
+          영국 식민지 시대에 조성된 이 도시는 붉은 벽돌 건물과 영국식 정원, 경마장까지 갖추고 있어
+          '작은 영국(Little England)'이라는 별명으로 불립니다.
+        </p>
+        <p>
+          이동 경로 자체가 절경입니다. 캔디에서 누와라엘리야까지 이어지는 산악 도로를 따라
+          끝없이 이어지는 초록빛 차밭이 눈앞에 펼쳐집니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">🍵</div>
+            <div class="day-spot-info">
+              <h4>실론 티 팩토리 방문 & 시음</h4>
+              <p>세계 3대 홍차 산지에서 직접 차잎을 따보고, 갓 만든 실론 티를 시음합니다. 차 한 잔의 여유.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🏘</div>
+            <div class="day-spot-info">
+              <h4>'작은 영국' 시내 투어</h4>
+              <p>그레고리 호수 산책, 식민지 건축물 탐방, 빅토리아 공원 등 이국적인 고산 도시의 매력을 즐깁니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식</span>
+          <span class="day-meal">중식</span>
+          <span class="day-meal">석식</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">Heritance Tea Factory</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/1581098/pexels-photo-1581098.jpeg?auto=compress&cs=tinysrgb&w=800" alt="누와라엘리야 차밭" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">05</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>엘라 — 나인아치 브릿지 · 세계 최고 열차</h3>
+        <div class="day-route">누와라엘리야 → 호튼플레인즈 → 엘라</div>
+        <p>
+          이른 아침, 호튼플레인즈 국립공원 트레킹으로 하루를 시작합니다.
+          해발 2,000m 고원의 끝자락 '월드엔드(World's End)' 절벽에 서면,
+          발 아래로 880m의 아찔한 절벽과 끝없이 펼쳐지는 평야가 내려다보입니다.
+        </p>
+        <p>
+          하이라이트는 데모다라역에서 엘라역까지 이어지는 열차 탑승.
+          차밭과 산맥 사이를 달리는 이 구간은 '세계에서 가장 아름다운 열차 노선'으로 꼽히며,
+          나인아치 브릿지 위를 천천히 지나가는 순간은 이 여행 최고의 장면이 될 것입니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">🥾</div>
+            <div class="day-spot-info">
+              <h4>호튼플레인즈 · 월드엔드</h4>
+              <p>해발 2,000m 고원 트레킹. 왕복 약 3시간. 도시락 지참. 새벽 출발 시 운해(雲海)를 볼 수 있습니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🚂</div>
+            <div class="day-spot-info">
+              <h4>데모다라 → 엘라 기차 탑승</h4>
+              <p>세계 최고 경치 열차 구간. 약 15분간 차밭과 산맥 사이를 달리는 꿈같은 시간. 좌석 예약 포함.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🌉</div>
+            <div class="day-spot-info">
+              <h4>나인아치 브릿지</h4>
+              <p>초록 차밭 사이 9개의 아치. 시멘트 없이 벽돌과 돌만으로 만든 건축 걸작. 최고의 포토 스팟입니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식 (도시락)</span>
+          <span class="day-meal">중식</span>
+          <span class="day-meal">석식</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">98 Acres Resort & Spa</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/4166551/pexels-photo-4166551.jpeg?auto=compress&cs=tinysrgb&w=800" alt="나인아치 브릿지" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 6 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">06</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>갈레 — 카페 투어 · 인도양 석양</h3>
+        <div class="day-route">엘라 → 아항가마 → 갈레 (약 4시간)</div>
+        <p>
+          엘라를 떠나 남쪽 해안으로 향합니다.
+          아항가마에서 인스타그램에서 보던 그 카페들과 소품샵을 자유롭게 둘러보고,
+          웰리가마에서는 장대 위에 앉아 낚시하는 전통 어부의 모습을 만납니다.
+        </p>
+        <p>
+          여행의 마지막 밤, 갈레 포트 성벽 위에서 바라보는 인도양 석양.
+          16세기 포르투갈이 쌓은 성벽 위에 서서,
+          붉게 물드는 하늘과 바다를 바라보는 이 순간은 여행의 가장 완벽한 마무리가 될 것입니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">☕</div>
+            <div class="day-spot-info">
+              <h4>아항가마 카페 거리</h4>
+              <p>스리랑카 남부 해안의 힙한 카페와 부티크 숍. 인도양을 바라보며 여유로운 시간을 보냅니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🎣</div>
+            <div class="day-spot-info">
+              <h4>웰리가마 전통 장대 낚시</h4>
+              <p>바다 위 장대에 앉아 낚시하는 스리랑카 전통 어부. 스리랑카 하면 떠오르는 상징적인 장면입니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">🌅</div>
+            <div class="day-spot-info">
+              <h4>갈레 포트 석양 (UNESCO)</h4>
+              <p>네덜란드 식민지 시대의 요새 성벽 위에서 인도양 일몰을 감상합니다. 여행 최고의 마무리.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식</span>
+          <span class="day-meal">중식</span>
+          <span class="day-meal">석식</span>
+        </div>
+        <div class="day-hotel">
+          <span class="day-hotel-star">★★★★★</span>
+          <span class="day-hotel-name">Heritance Ahungalla</span>
+          <span class="day-hotel-class">또는 동급</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/4166519/pexels-photo-4166519.jpeg?auto=compress&cs=tinysrgb&w=800" alt="갈레 포트" loading="lazy">
+      </div>
+    </div>
+
+    <!-- DAY 7 -->
+    <div class="day-item">
+      <div class="day-num">
+        <div class="day-num-n">07</div>
+        <div class="day-num-label">DAY</div>
+      </div>
+      <div class="day-content">
+        <h3>콜롬보 시티투어 → 인천 귀국</h3>
+        <div class="day-route">갈레 → 콜롬보 (약 2.5시간) → 반다라나이케 공항</div>
+        <p>
+          마지막 날 아침, 갈레를 떠나 스리랑카의 수도 콜롬보로 향합니다.
+          독립기념관, 갈레 페이스 그린 해변, 펫타 마켓 등 콜롬보의 핵심 명소를 둘러본 후,
+          한식으로 중식을 마치고 공항으로 이동합니다.
+        </p>
+        <div class="day-spots">
+          <div class="day-spot">
+            <div class="day-spot-icon">🏙</div>
+            <div class="day-spot-info">
+              <h4>콜롬보 시티투어</h4>
+              <p>독립기념관, 갈레 페이스 그린, 펫타 마켓, 자미 모스크 등 콜롬보 하이라이트를 돌아봅니다.</p>
+            </div>
+          </div>
+          <div class="day-spot">
+            <div class="day-spot-icon">✈</div>
+            <div class="day-spot-info">
+              <h4>귀국 항공편</h4>
+              <p>UL470편 콜롬보 출발 → 인천 도착. 6박 7일간의 특별한 여정이 마무리됩니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="day-meals">
+          <span class="day-meal">조식</span>
+          <span class="day-meal">중식 (한식)</span>
+        </div>
+      </div>
+      <div class="day-img">
+        <img src="https://images.pexels.com/photos/3574446/pexels-photo-3574446.jpeg?auto=compress&cs=tinysrgb&w=800" alt="콜롬보" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOTELS ===== -->
+<section class="hotel-section full-bleed" id="hotels" style="padding: 80px 0;">
+  <div class="section" style="padding-bottom: 0;">
+    <div class="section-label" style="color: var(--gold);">ACCOMMODATION</div>
+    <h2 class="section-title" style="color: #fff;">전 일정 5성급, 타협 없는 숙박</h2>
+    <p class="section-desc" style="color: rgba(255,255,255,0.6);">
+      Jetwing, Heritance, Cinnamon — 스리랑카를 대표하는 5성급 호텔 체인만 엄선했습니다.
+      여행의 피로는 호텔에서 완벽하게 충전됩니다.
+    </p>
+  </div>
+  <div class="hotel-grid">
+    <div class="hotel-card">
+      <div class="hotel-card-img" style="background-image:url('https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="hotel-card-body">
+        <div class="hotel-card-stars">★★★★★</div>
+        <h4>Jetwing Vil Uyana</h4>
+        <div class="hotel-en">시기리아 · 습지 빌라 리조트</div>
+        <p>시기리아 락 인근 습지 위에 세워진 자연 친화형 빌라 리조트. 야생 새소리와 함께 눈 뜨는 아침.</p>
+        <div class="hotel-amenities">
+          <span class="hotel-amenity">수영장</span>
+          <span class="hotel-amenity">스파</span>
+          <span class="hotel-amenity">습지 산책로</span>
+          <span class="hotel-amenity">자연 정원</span>
+        </div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-card-img" style="background-image:url('https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="hotel-card-body">
+        <div class="hotel-card-stars">★★★★★</div>
+        <h4>Heritance Tea Factory</h4>
+        <div class="hotel-en">누와라엘리야 · 차 공장 개조 호텔</div>
+        <p>실제 차 공장을 개조한 유니크한 호텔. 해발 1,800m에서 바라보는 차밭 풍경이 압권입니다.</p>
+        <div class="hotel-amenities">
+          <span class="hotel-amenity">차밭 뷰</span>
+          <span class="hotel-amenity">수영장</span>
+          <span class="hotel-amenity">스파</span>
+          <span class="hotel-amenity">차 시음</span>
+        </div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-card-img" style="background-image:url('https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=800')"></div>
+      <div class="hotel-card-body">
+        <div class="hotel-card-stars">★★★★★</div>
+        <h4>Heritance Ahungalla</h4>
+        <div class="hotel-en">아훈갈라 · 인도양 비치프론트</div>
+        <p>스리랑카 남서부 해안, 인도양이 눈앞에 펼쳐지는 비치프론트 리조트. 여행 마지막 밤의 완벽한 휴식.</p>
+        <div class="hotel-amenities">
+          <span class="hotel-amenity">프라이빗 비치</span>
+          <span class="hotel-amenity">인피니티풀</span>
+          <span class="hotel-amenity">스파</span>
+          <span class="hotel-amenity">오션뷰</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing-section full-bleed" id="pricing" style="padding: 80px 0;">
+  <div class="section" style="padding-bottom: 0;">
+    <div class="section-label">PRICING</div>
+    <h2 class="section-title">투명한 요금 안내</h2>
+    <p class="section-desc">
+      5성급 호텔, 3식 풀보드, 모든 입장료와 사파리까지 —
+      현지에서 추가로 쓸 돈 걱정 없이, 여행에만 집중할 수 있도록 설계했습니다.
+    </p>
+  </div>
+  <div class="price-card">
+    <div class="price-header">
+      <div style="font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:8px; letter-spacing:1px;">일반 투어 6박 7일 · 1인 출발가</div>
+      <div class="price-amount">2,890,000<span style="font-size:20px;">원~</span></div>
+      <div class="price-per">전일정 5성급 · 3식 풀보드 · 직항 왕복</div>
+    </div>
+    <div class="price-body">
+      <div class="price-includes">
+        <h4>✅ 포함 사항</h4>
+        <div class="inc-grid">
+          <div class="inc-item"><span class="inc-check">✓</span> 인천↔콜롬보 직항 왕복 항공권</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 전일정 5성급 호텔 (2인 1실)</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 조·중·석식 전일정 풀보드</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 전용 에어컨 차량 이동</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 한국어 전담 가이드</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 시기리아 락 입장료</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 미네리아 사파리 (지프 포함)</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 데모다라→엘라 기차 좌석</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 호튼플레인즈 입장료</div>
+          <div class="inc-item"><span class="inc-check">✓</span> 모든 관광지 입장료</div>
+        </div>
+      </div>
+      <div class="price-includes">
+        <h4>❌ 불포함 사항</h4>
+        <div class="exc-items">
+          <div class="exc-item"><span class="inc-x">✗</span> ETA 전자비자 — USD 50</div>
+          <div class="exc-item"><span class="inc-x">✗</span> 여행자 보험 (개별 가입)</div>
+          <div class="exc-item"><span class="inc-x">✗</span> 개인 경비 (기념품, 쇼핑 등)</div>
+          <div class="exc-item"><span class="inc-x">✗</span> 가이드·기사 팁 (자율)</div>
+        </div>
+      </div>
+    </div>
+    <div class="price-cta">
+      <a href="https://pf.kakao.com/" class="btn-primary" style="display:inline-flex;">카카오톡으로 예약 문의하기</a>
+      <p style="font-size:12px; color:var(--text-light); margin-top:12px;">출발 확정 일정 및 정확한 요금은 카카오톡 상담을 통해 안내드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner">
+  <div class="cta-banner-bg"></div>
+  <div class="cta-banner-ov"></div>
+  <div class="cta-banner-content">
+    <h2>아직 고민 중이신가요?</h2>
+    <p>궁금한 점은 편하게 카카오톡으로 문의해 주세요.<br>출발 일정, 1인 출발, 싱글룸 추가 등 모든 궁금증을 해결해 드립니다.</p>
+    <a href="https://pf.kakao.com/" class="btn-primary">카카오톡 상담하기</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
-  <div class="ft-inner">
-    <div class="ft-top">
-      <div><div class="ft-logo">CEYLON JOURNEY</div><div class="ft-tagline">소수 정예 프리미엄 패키지 여행<br>항공 · 호텔 · 가이드 원스톱</div></div>
-      <div class="ft-links">
-        <div><div class="ft-col-t">상품</div><a class="ft-link" onclick="openDetail(PRODUCTS[0])">스리랑카 완전일주 7박8일</a><a class="ft-link" onclick="openDetail(PRODUCTS[1])">베트남 하노이 4박5일</a></div>
-        <div><div class="ft-col-t">고객 지원</div><a class="ft-link">예약 조회 / 마이페이지</a><a class="ft-link">카카오 상담</a><a class="ft-link">자주 묻는 질문</a></div>
-        <div><div class="ft-col-t">법적 고지</div><a class="ft-link">이용약관</a><a class="ft-link">개인정보처리방침</a><a class="ft-link">취소 · 환불 규정</a></div>
-      </div>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">CEYLON JOURNEY</div>
+      <p>스리랑카 프리미엄 패키지 전문.<br>전일정 5성급, 소규모 운영으로<br>특별한 여행 경험을 만듭니다.</p>
     </div>
-    <div class="ft-bottom">
-      <div>CEYLON JOURNEY · 사업자등록번호 · 여행업 등록번호 — 설정 후 자동 반영</div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span>© 2026 CEYLON JOURNEY</span>
-        <a href="admin_final.html" style="font-size:10px;color:rgba(255,255,255,0.08);text-decoration:none;letter-spacing:1px;transition:color .3s;" onmouseover="this.style.color='rgba(201,168,76,0.4)'" onmouseout="this.style.color='rgba(255,255,255,0.08)'">ADMIN</a>
-      </div>
+    <div>
+      <h5>패키지</h5>
+      <a href="#">일반 투어 6박 7일</a>
+      <a href="#">불교 순례 투어 6박 7일</a>
     </div>
+    <div>
+      <h5>고객 서비스</h5>
+      <a href="#">예약 문의</a>
+      <a href="#">취소·환불 안내</a>
+      <a href="#">이용 후기</a>
+    </div>
+    <div>
+      <h5>연락처</h5>
+      <a href="#">카카오톡 상담</a>
+      <a href="#">이메일 문의</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Ceylon Journey. All rights reserved.
   </div>
 </footer>
-</div><!-- /homePage -->
-
-<!-- ════════════════ 상품 상세 ════════════════ -->
-<div id="detPage" class="det-page">
-
-  <!-- 모바일 상단 가격 바 -->
-  <div class="det-price-bar">
-    <div class="det-pb-inner">
-      <div><div style="font-size:10px;color:var(--gold)">상품가</div><div class="det-pb-price" id="dpbPrice">—</div></div>
-      <button class="btn-gold" style="font-size:12px;padding:10px 18px;" onclick="doReserve()">예약 신청</button>
-    </div>
-  </div>
-
-  <!-- 히어로 -->
-  <div class="det-hero" id="detHero">
-    <img id="detImg" src="" alt="">
-    <div class="det-hero-ct">
-      <div class="det-bread"><a onclick="showHome()">홈</a> › <a onclick="showHome();setTimeout(()=>document.querySelector('#products')?.scrollIntoView({behavior:'smooth'}),100)">상품</a> › <span id="detBreadName"></span></div>
-      <div class="det-eye" id="detEye"></div>
-      <h1 class="det-title" id="detTitle"></h1>
-      <p class="det-sub" id="detSub"></p>
-    </div>
-  </div>
-
-  <!-- 본문 + 사이드바 -->
-  <div class="det-body">
-    <div><!-- 메인 콘텐츠 -->
-
-      <div class="summary-badges" id="detBadges"></div>
-
-      <!-- 포함/불포함 -->
-      <div class="det-sec">
-        <h3 class="det-sec-t">포함 · 불포함 사항</h3>
-        <div class="incl-wrap" id="detIncl"></div>
-      </div>
-
-      <!-- 여행 일정 -->
-      <div class="det-sec">
-        <h3 class="det-sec-t">여행 일정</h3>
-        <div class="itin-list" id="detItin"></div>
-      </div>
-
-      <!-- 숙박 호텔 -->
-      <div class="det-sec" id="detHotelSec">
-        <h3 class="det-sec-t">숙박 호텔</h3>
-        <div class="hotel-list" id="detHotels"></div>
-      </div>
-
-      <!-- 이 상품만의 특징 -->
-      <div class="det-sec" id="detWhySec">
-        <h3 class="det-sec-t">이 상품만의 특징</h3>
-        <div class="why-grid-det" id="detWhy"></div>
-      </div>
-
-      <!-- 비자 안내 -->
-      <div class="det-sec">
-        <h3 class="det-sec-t">비자 안내</h3>
-        <div class="visa-panel" id="detVisa"></div>
-      </div>
-
-      <!-- Q&A -->
-      <div class="det-sec" id="detQaSec">
-        <h3 class="det-sec-t">자주 묻는 질문</h3>
-        <div id="detQa"></div>
-      </div>
-
-      <!-- 취소·환불 -->
-      <div class="det-sec">
-        <h3 class="det-sec-t">취소 · 환불 규정</h3>
-        <p style="font-size:12px;color:var(--gray);margin-bottom:16px;">국외여행 표준약관 (공정거래위원회 고시) 적용</p>
-        <table class="pol-table">
-          <thead><tr><th>취소 시점</th><th>위약금</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>출발 30일 이전</td><td style="color:#1B6B3A;font-weight:500">없음</td><td style="font-size:12px;color:var(--gray)">항공 실비 별도</td></tr>
-            <tr><td>출발 20~30일 전</td><td style="color:#8A6500;font-weight:500">10%</td><td style="font-size:12px;color:var(--gray)">총 여행비용 기준</td></tr>
-            <tr><td>출발 10~20일 전</td><td style="color:#8A6500;font-weight:500">15%</td><td></td></tr>
-            <tr><td>출발 8~10일 전</td><td style="color:#E05C40;font-weight:500">20%</td><td></td></tr>
-            <tr><td>출발 1~8일 전</td><td style="color:#E05C40;font-weight:500">30%</td><td></td></tr>
-            <tr><td>당일 취소 / 노쇼</td><td style="color:#E05C40;font-weight:500">50%</td><td></td></tr>
-          </tbody>
-        </table>
-        <p style="font-size:11px;color:var(--gray);margin-top:12px;line-height:1.9">
-          ※ 항공권 발권 후 취소 시 항공사 규정에 따른 취소 수수료가 추가 발생합니다.<br>
-          ※ 최소 출발 인원(6인) 미달 시 출발 30일 전 안내 후 전액 환불됩니다.
-        </p>
-      </div>
-
-      <!-- 유의사항 -->
-      <div class="det-sec">
-        <h3 class="det-sec-t">여행 유의사항</h3>
-        <ul class="notice-ul">
-          <li>여권 유효기간은 출발일 기준 6개월 이상이어야 합니다</li>
-          <li>여권 사진은 출발 45일 전까지 마이페이지에서 제출해 주세요</li>
-          <li>잔금 납부 기한은 출발 60일 전입니다 (미납 시 예약이 취소될 수 있습니다)</li>
-          <li>여행자보험은 회사에서 단체로 가입하여 제공합니다</li>
-          <li>현지 사정에 따라 일정 및 호텔이 변경될 수 있습니다 (동급 대체)</li>
-          <li>개인 질병·부상으로 인한 취소는 의사 소견서가 필요합니다</li>
-          <li>여행 중 분실·도난에 대해서는 회사 책임이 없습니다</li>
-          <li>음주 등 개인 부주의로 인한 사고는 보험 처리가 어려울 수 있습니다</li>
-        </ul>
-      </div>
-
-    </div><!-- /메인 콘텐츠 -->
-
-    <!-- 예약 사이드바 -->
-    <div class="booking-box">
-      <div class="bb-t">출발일 선택</div>
-      <div class="cal-grid" id="bbCal"></div>
-      <div class="sel-box" id="selBox">
-        <div class="sel-date" id="selDate"></div>
-        <div class="sel-info" id="selInfo"></div>
-      </div>
-      <div class="pax-row">
-        <div class="pax-lbl">여행 인원</div>
-        <div class="pax-ctrl">
-          <button class="pax-btn" onclick="chPax(-1)">−</button>
-          <div class="pax-val" id="paxVal">2</div>
-          <button class="pax-btn" onclick="chPax(1)">+</button>
-        </div>
-      </div>
-      <div class="single-row" id="singleRow" style="display:none">
-        <div class="single-lbl">싱글룸 추가 <span style="font-size:10px;color:rgba(255,255,255,.22)" id="singleFeeLabel"></span></div>
-        <button class="tog-btn" id="singleTog" onclick="togSingle()"></button>
-      </div>
-      <div class="price-bk" id="priceBk" style="display:none">
-        <div class="pr-row"><span>상품가 (1인)</span><span id="prPer">—</span></div>
-        <div class="pr-row"><span id="prPaxLbl">× 2인</span><span id="prSub">—</span></div>
-        <div class="pr-row" id="prSingleRow" style="display:none"><span>싱글룸 추가</span><span id="prSingle">—</span></div>
-        <div class="pr-total"><div class="pr-total-lbl">총 상품가</div><div class="pr-total-val" id="prGrand">—</div></div>
-        <div class="pr-dep-note" id="prDep"></div>
-      </div>
-      <button class="res-btn" id="resBtn" disabled onclick="doReserve()">출발일을 선택해주세요</button>
-      <button class="kk-consult" onclick="alert('카카오 채널로 연결됩니다')">💬 카카오로 문의하기</button>
-      <div class="bb-note">예약금은 상품가의 일부입니다<br>잔금은 출발 60일 전 납부<br>최소 출발 인원 6인 (미달 시 전액 환불)</div>
-    </div>
-  </div><!-- /det-body -->
-
-  <!-- 모바일 하단 고정 -->
-  <div class="mob-bar" id="mobBar">
-    <div class="mob-bar-inner">
-      <div class="mob-price-wrap"><div class="mob-price-from">상품가</div><div class="mob-price-val" id="mobPrice">—</div></div>
-      <button class="mob-res-btn" onclick="doReserve()">예약 신청하기 →</button>
-    </div>
-  </div>
-
-</div><!-- /detPage -->
-
-<!-- ════ 카카오 플로팅 — 항상 고정 ════ -->
-<button class="kk-float" onclick="alert('카카오 채널로 연결됩니다.\n설정에서 카카오 채널 링크를 등록해 주세요.')">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="#191919"><path d="M12 3C6.48 3 2 6.69 2 11.25c0 2.91 1.82 5.47 4.57 7L5.5 21.5l5.12-2.73c.46.06.92.1 1.38.1 5.52 0 10-3.69 10-8.25S17.52 3 12 3z"/></svg>
-  카카오 상담
-</button>
-
-<!-- ══════════ 예약 신청 폼 ══════════ -->
-<div id="reservePage" style="display:none;padding-top:62px;">
-<style>
-.rf-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:var(--font-sans);outline:none;color:var(--black);background:#fff;transition:border-color .2s;}
-.rf-input:focus{border-color:var(--gold);}
-.rf-label{display:block;font-size:12px;font-weight:500;color:#5A5550;margin-bottom:5px;}
-.rf-row{margin-bottom:14px;}
-.rf-section{background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:14px;}
-.rf-sec-t{font-size:14px;font-weight:500;color:var(--black);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.rf-agree-row{display:flex;align-items:start;gap:10px;padding:10px 0;border-bottom:1px solid #F5F2EC;cursor:pointer;}
-.rf-agree-row:last-child{border:none;}
-.rf-check{width:18px;height:18px;border-radius:4px;border:1.5px solid #DDD5C0;flex-shrink:0;margin-top:1px;accent-color:var(--gold);}
-.rf-agree-txt{font-size:13px;color:var(--black);line-height:1.6;}
-.rf-agree-link{color:var(--gold);text-decoration:underline;cursor:pointer;font-size:12px;}
-.submit-btn{width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:background .2s;margin-bottom:10px;}
-.submit-btn:hover{background:var(--gold-lt);}
-</style>
-
-<div style="max-width:680px;margin:0 auto;padding:40px 20px;">
-
-  <!-- 브레드크럼 -->
-  <div style="font-size:12px;color:var(--gray);margin-bottom:24px;display:flex;gap:8px;align-items:center;">
-    <a onclick="showHome()" style="cursor:pointer;color:var(--gray);text-decoration:none;">홈</a> ›
-    <a onclick="openDetail(cProd)" style="cursor:pointer;color:var(--gray);text-decoration:none;" id="rf-bread-prod">상품</a> ›
-    <span style="color:var(--black);">예약 신청</span>
-  </div>
-
-  <h1 style="font-family:var(--font-serif);font-size:28px;font-weight:400;margin-bottom:6px;">예약 신청</h1>
-  <p style="font-size:13px;color:var(--gray);margin-bottom:28px;">정확한 정보를 입력해 주세요. 예약 확정 후 카카오로 안내드립니다.</p>
-
-  <!-- 선택 상품 요약 -->
-  <div style="background:var(--black);border-radius:8px;padding:18px 20px;margin-bottom:20px;">
-    <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:8px;">선택하신 상품</div>
-    <div style="font-size:16px;font-weight:500;color:#fff;margin-bottom:6px;" id="rf-prod-name">—</div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px;">
-      <span id="rf-dep-date">—</span>
-      <span>·</span>
-      <span id="rf-pax">—</span>
-      <span>·</span>
-      <span id="rf-season">—</span>
-      <span>·</span>
-      <span id="rf-duration">—</span>
-    </div>
-    <div style="background:rgba(255,255,255,0.06);border-radius:6px;padding:12px 14px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);padding:3px 0;">
-        <span>총 상품가</span><span id="rf-price" style="color:#fff;font-weight:500;">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);padding:3px 0;" id="rf-single-row">
-        <span>싱글룸 추가금</span><span id="rf-single-amt" style="color:rgba(255,255,255,0.7);">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--gold);padding:6px 0 2px;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;font-weight:500;">
-        <span>지금 납부할 예약금 (<span id="rf-dep-pct">—</span>)</span>
-        <span id="rf-dep-amt">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.3);padding:2px 0;">
-        <span>잔금 (출발 60일 전 납부)</span><span id="rf-bal-amt">—</span>
-      </div>
-    </div>
-  </div>
-
-  <div id="rf-form">
-
-    <!-- 신청자 정보 -->
-    <div class="rf-section">
-      <div class="rf-sec-t">신청자 정보</div>
-      <div class="rf-row">
-        <label class="rf-label">이름 *</label>
-        <input class="rf-input" id="rf-name" placeholder="홍길동" maxlength="20">
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="rf-row">
-        <div>
-          <label class="rf-label">연락처 * <span style="font-size:10px;color:var(--gray);">(카카오 알림 수신)</span></label>
-          <input class="rf-input" id="rf-phone" placeholder="010-0000-0000" maxlength="13"
-            oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
-        </div>
-        <div>
-          <label class="rf-label">이메일 *</label>
-          <input class="rf-input" id="rf-email" placeholder="email@example.com" type="email">
-        </div>
-      </div>
-      <div class="rf-row">
-        <label class="rf-label">요청사항 <span style="font-size:10px;color:var(--gray);">(선택)</span></label>
-        <textarea class="rf-input" id="rf-memo" rows="3" placeholder="알레르기 정보, 특별 요청사항 등..." style="resize:vertical;line-height:1.7;"></textarea>
-      </div>
-    </div>
-
-    <!-- 동행자 정보 (2인 이상) -->
-    <div id="rf-companions"></div>
-
-    <!-- 약관 동의 -->
-    <div class="rf-section">
-      <div class="rf-sec-t">약관 동의</div>
-      <label class="rf-agree-row">
-        <input type="checkbox" class="rf-check" id="rf-agree">
-        <div class="rf-agree-txt">
-          <b>[필수]</b> 이용약관에 동의합니다.
-          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
-        </div>
-      </label>
-      <label class="rf-agree-row">
-        <input type="checkbox" class="rf-check" id="rf-agree2">
-        <div class="rf-agree-txt">
-          <b>[필수]</b> 개인정보 수집·이용에 동의합니다. (이름, 연락처, 이메일 — 예약 처리 목적)
-          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
-        </div>
-      </label>
-      <label class="rf-agree-row">
-        <input type="checkbox" class="rf-check" id="rf-agree3">
-        <div class="rf-agree-txt">
-          <b>[선택]</b> 여행 관련 정보·할인 혜택 수신에 동의합니다.
-        </div>
-      </label>
-    </div>
-
-    <!-- 안내 -->
-    <div style="padding:14px 16px;background:#FDF8EE;border:1px solid #F0D890;border-radius:8px;font-size:12px;color:#8A6500;line-height:1.9;margin-bottom:16px;">
-      💡 <b>예약 신청 후 진행 방법</b><br>
-      ① 예약 신청 완료 → ② 담당자 확인 후 카카오로 연락 → ③ 예약금 입금 안내 → ④ 입금 확인 후 예약 확정<br>
-      <span style="color:#9A9590;">예약금 미입금 시 3일 후 자동 취소됩니다.</span>
-    </div>
-
-    <button class="submit-btn" onclick="submitReserve()">예약 신청하기 →</button>
-    <button onclick="openDetail(cProd)" style="width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--gray);cursor:pointer;font-family:var(--font-sans);">← 상품 상세로 돌아가기</button>
-
-  </div><!-- /rf-form -->
-
-  <!-- 신청 완료 화면 -->
-  <div id="rf-complete" style="display:none;text-align:center;padding:40px 0;">
-    <div style="width:64px;height:64px;border-radius:50%;background:#EEF8F2;border:2px solid #A8D8B8;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px;">✓</div>
-    <h2 style="font-family:var(--font-serif);font-size:26px;font-weight:400;margin-bottom:8px;">예약 신청이 완료됐습니다</h2>
-    <p style="font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.8;">
-      담당자가 확인 후 카카오 메시지로 연락드립니다.<br>
-      예약번호를 꼭 저장해 두세요.
-    </p>
-    <div style="background:var(--black);border-radius:10px;padding:24px;margin-bottom:24px;text-align:left;">
-      <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:12px;">예약 정보</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:13px;color:rgba(255,255,255,0.5);">예약번호</span>
-        <span style="font-family:monospace;font-size:20px;font-weight:700;color:var(--gold);" id="rf-complete-id">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:rgba(255,255,255,0.5);">신청자</span>
-        <span style="font-size:12px;color:#fff;" id="rf-complete-name">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:rgba(255,255,255,0.5);">상품·출발일</span>
-        <span style="font-size:12px;color:#fff;" id="rf-complete-dep">—</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);margin-top:6px;">
-        <span style="font-size:13px;color:var(--gold);">납부할 예약금</span>
-        <span style="font-size:15px;font-weight:500;color:var(--gold);" id="rf-complete-dep-amt">—</span>
-      </div>
-    </div>
-    <div style="font-size:13px;color:var(--gray);margin-bottom:24px;line-height:1.9;">
-      예약번호로 언제든지 <b style="color:var(--black);">예약 조회</b>에서 진행 상황을 확인하실 수 있습니다.
-    </div>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <button onclick="showHome()" class="btn-gold">홈으로 돌아가기</button>
-      <button onclick="showLogin()" style="padding:14px 22px;background:transparent;border:1px solid var(--border);border-radius:3px;font-size:13px;color:var(--gray);cursor:pointer;font-family:var(--font-sans);">예약 조회하기</button>
-    </div>
-  </div>
-
-</div><!-- /max-w -->
-</div><!-- /reservePage -->
-
-<!-- ══════════ 로그인 / 예약 조회 ══════════ -->
-<div id="loginPage" style="display:none;padding-top:62px;min-height:80vh;">
-  <div style="max-width:440px;margin:0 auto;padding:60px 20px;">
-    <div style="text-align:center;margin-bottom:36px;">
-      <div style="font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;">MY PAGE</div>
-      <h1 style="font-family:var(--font-serif);font-size:28px;font-weight:400;margin-bottom:8px;">예약 조회</h1>
-      <p style="font-size:13px;color:var(--gray);line-height:1.8;">예약 완료 후 받으신 예약번호와<br>신청자 이름으로 조회하세요</p>
-    </div>
-    <div id="lp-error" style="display:none;background:#FDF3F1;border:1px solid #F5C4B8;border-radius:7px;padding:12px 16px;font-size:13px;color:#C04030;margin-bottom:16px;text-align:center;"></div>
-    <div id="lp-form">
-      <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:14px;">
-        <div style="margin-bottom:14px;">
-          <label style="display:block;font-size:12px;font-weight:500;color:#5A5550;margin-bottom:6px;">예약번호</label>
-          <input id="lp-id" class="rf-input" placeholder="CJ-001" style="font-family:monospace;font-size:15px;letter-spacing:1px;text-transform:uppercase;"
-            oninput="this.value=this.value.toUpperCase()"
-            onkeydown="if(event.key==='Enter')document.getElementById('lp-name').focus()">
-          <div style="font-size:11px;color:var(--gray);margin-top:4px;">예약 확정 카카오 메시지에 포함된 번호입니다</div>
-        </div>
-        <div style="margin-bottom:20px;">
-          <label style="display:block;font-size:12px;font-weight:500;color:#5A5550;margin-bottom:6px;">신청자 이름</label>
-          <input id="lp-name" class="rf-input" placeholder="홍길동"
-            onkeydown="if(event.key==='Enter')doMyLogin()">
-        </div>
-        <button onclick="doMyLogin()" style="width:100%;padding:14px;background:var(--black);color:var(--gold);border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-serif);letter-spacing:1px;">조회하기</button>
-      </div>
-      <div style="text-align:center;font-size:12px;color:var(--gray);line-height:1.9;">
-        예약번호를 모르시나요?<br>
-        <span style="color:var(--gold);cursor:pointer;" onclick="alert('카카오 채널로 문의해 주세요')">💬 카카오 채널로 문의</span>
-      </div>
-      <div style="text-align:center;margin-top:20px;">
-        <button onclick="showHome()" style="font-size:12px;color:var(--gray);background:none;border:none;cursor:pointer;text-decoration:underline;">← 홈으로</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ 마이페이지 ══════════ -->
-<div id="myPage" style="display:none;"></div>
-
-<!-- ══════════ 출발 전 체크리스트 페이지 ══════════ -->
-<div id="checklistPage" style="display:none;padding-top:62px;"></div>
 
 <script>
-// ════════════════════════════════════
-// 데이터
-// ════════════════════════════════════
-const PRODUCTS=[
-  {id:'SL01',country:'LK',flag:'🇱🇰',countryName:'스리랑카',name:'스리랑카 완전일주 7박8일',short:'스리랑카 완전일주',duration:'7박8일',minPax:6,price:5000000,depPct:20,
-   shortDesc:'시기리야·캔디·갈레·콜롬보 — 스리랑카 핵심 전부',
-   imgUrl:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1400&q=80',
-   heroTags:['왕복 항공 포함','5성급 전일정','소수 정예 6인','여행자보험 포함'],
-   incl:['왕복 항공권 (인천↔콜롬보)','5성급 호텔 전일정 (7박)','한국인 전담 가이드','전 일정 전용 차량','주요 명소 입장료','여행자보험 (단체 가입)'],
-   excl:['도착비자 (USD 60/인 현장 결제)','유류할증료','가이드 팁 (권장 USD 10/일)','개인 쇼핑·음료','싱글룸 추가요금 (선택 시)'],
-   hotels:[
-     {range:'1일차',name:'Heritance Negombo',loc:'네곰보',star:'★★★★★'},
-     {range:'2~3일차',name:'Heritance Kandalama',loc:'담불라',star:'★★★★★'},
-     {range:'4일차',name:"Jetwing St. Andrew's",loc:'누와라엘리야',star:'★★★★★'},
-     {range:'5~6일차',name:'Jetwing Lighthouse',loc:'갈레',star:'★★★★★'},
-     {range:'7일차',name:'Cinnamon Grand Colombo',loc:'콜롬보',star:'★★★★★'},
-   ],
-   itinerary:[
-     {day:'1일차',title:'인천 출발 → 네곰보 도착',desc:'스리랑카항공 UL471편 탑승. 콜롬보 도착 후 네곰보로 이동. Heritance Negombo 체크인.',hotel:'Heritance Negombo'},
-     {day:'2일차',title:'시기리야 사자바위 → 미네리야 사파리',desc:'스리랑카 최고 명소 시기리야 바위 요새 등반. 오후 미네리야 국립공원에서 야생 코끼리 무리 사파리.',hotel:'Heritance Kandalama'},
-     {day:'3일차',title:'담불라 석굴사원 → 캔디 불치사',desc:'담불라 황금 석굴사원. 캔디로 이동, 부처의 치아 유물을 모신 불치사 방문. 저녁 캔디 전통 무용 공연.',hotel:'Heritance Kandalama'},
-     {day:'4일차',title:'캔디 식물원 → 고산 기차 → 누와라엘리야',desc:'퍼라데니야 왕립식물원. 캔디발 고산 기차 탑승 (스리랑카 최고 절경 구간). 누와라엘리야 도착, 차밭 산책.',hotel:"Jetwing St. Andrew's"},
-     {day:'5일차',title:'엘라 → 리틀아담스피크 → 갈레',desc:'엘라 리틀아담스피크 트레킹. 9개 아치 다리 포토존. 갈레로 이동.',hotel:'Jetwing Lighthouse'},
-     {day:'6일차',title:'갈레 포트 → 남부 해안',desc:'유네스코 세계유산 갈레 포트 성벽 투어. 남부 해안 드라이브. 자유 시간.',hotel:'Jetwing Lighthouse'},
-     {day:'7일차',title:'콜롬보 시내 관광',desc:'갈레페이스 그린 · 독립기념관 · 베티아 마켓 · 쇼핑. Cinnamon Grand 체크인.',hotel:'Cinnamon Grand Colombo'},
-     {day:'8일차',title:'콜롬보 공항 출발 → 인천',desc:'오전 자유 시간. 콜롬보 공항으로 이동. UL470편 탑승 → 인천 도착.'},
-   ],
-   why:[
-     {icon:'👥',title:'6인 이하 소그룹',desc:'대형 버스가 아닌 전용 차량. 여행의 밀도가 달라집니다.'},
-     {icon:'🏨',title:'5성급 호텔 전일정',desc:'Heritance · Jetwing 최고급 체인 전일정. 숙박도 경험입니다.'},
-     {icon:'✈',title:'왕복 항공 포함',desc:'스리랑카항공 직항. 한 가격으로 모두 해결됩니다.'},
-     {icon:'🛡',title:'여행자보험 포함',desc:'출발부터 귀국까지 단체 여행자보험 포함.'},
-   ],
-   visaType:'도착비자 (Visa On Arrival)',visaCost:'USD 60 / 인 (현장 결제)',
-   visaNote:'콜롬보 공항 도착 후 Visa On Arrival 창구에서 현금 또는 카드로 결제합니다. 별도 사전 신청 불필요.',
-   visaTip:'달러 현금을 미리 준비하시면 더 편리합니다. 카드 결제도 가능하나 간혹 네트워크 지연이 있을 수 있습니다.',
-   qa:[
-     {q:'여권은 언제까지 제출해야 하나요?',a:'출발 45일 전까지 마이페이지에서 여권 사진을 제출해 주세요. 항공 발권 및 비자 신청에 사용됩니다.'},
-     {q:'최소 출발 인원은 몇 명인가요?',a:'6인 이상 확정 시 출발합니다. 인원 미달 시 출발 30일 전에 연락드리며, 이 경우 전액 환불됩니다.'},
-     {q:'비자는 어떻게 받나요?',a:'스리랑카는 도착비자입니다. 공항 도착 후 Visa On Arrival 창구에서 USD 60을 결제하시면 됩니다. 별도 사전 신청이 필요 없습니다.'},
-     {q:'싱글룸 이용이 가능한가요?',a:'가능합니다. 예약 시 싱글룸을 선택하시면 1박당 5만원의 추가요금이 자동 계산됩니다.'},
-     {q:'식사는 어떻게 제공되나요?',a:'호텔 조식은 매일 포함됩니다. 투어 중 점심은 현지 레스토랑을 이용하며, 석식은 개인 부담입니다.'},
-     {q:'짐은 얼마나 가져갈 수 있나요?',a:'스리랑카항공 기준 위탁 23kg, 기내 7kg (1인)입니다. 출발 전 항공사 규정을 확인해 주세요.'},
-   ],
-   singleFee:50000,public:true,booking:true,mainFeatured:true},
-
-  {id:'VN01',country:'VN',flag:'🇻🇳',countryName:'베트남',name:'베트남 하노이 프리미엄 4박5일',short:'하노이 4박5일',duration:'4박5일',minPax:6,price:1900000,depPct:20,
-   shortDesc:'하노이 구시가지 + 하롱베이 1박 크루즈 · 5성급',
-   imgUrl:'https://images.unsplash.com/photo-1557750255-c76072a7aad1?w=1400&q=80',
-   heroTags:['왕복 항공 포함','하롱베이 1박 크루즈','5성급 전일정','여행자보험 포함'],
-   incl:['왕복 항공권','5성급 호텔 (3박)','하롱베이 럭셔리 크루즈 (1박)','하롱베이 카약·동굴 탐험','여행자보험'],
-   excl:['e-Visa (USD 25/인 온라인 신청)','유류할증료','팁','개인 음료·쇼핑'],
-   hotels:[
-     {range:'1·3·4일차',name:'JW Marriott Hanoi',loc:'하노이',star:'★★★★★'},
-     {range:'2일차',name:'하롱베이 럭셔리 크루즈',loc:'하롱베이',star:'★★★★★'},
-   ],
-   itinerary:[
-     {day:'1일차',title:'인천 출발 → 하노이 도착',desc:'베트남항공 탑승. 하노이 도착 후 호안끼엠 호수 저녁 산책.',hotel:'JW Marriott Hanoi'},
-     {day:'2일차',title:'하노이 → 하롱베이 크루즈',desc:'호찌민 묘소 · 문묘 관람. 오후 하롱베이 이동, 럭셔리 크루즈 승선.',hotel:'하롱베이 럭셔리 크루즈'},
-     {day:'3일차',title:'하롱베이 카약 · 동굴 탐험 → 하노이',desc:'오전 카약, 항풍 동굴 탐험. 하노이 귀환.',hotel:'JW Marriott Hanoi'},
-     {day:'4일차',title:'하노이 자유 일정',desc:'동수언 시장 · 자유 쇼핑 · 현지 카페 탐방.',hotel:'JW Marriott Hanoi'},
-     {day:'5일차',title:'하노이 공항 출발 → 인천',desc:'공항으로 이동. 인천 도착.'},
-   ],
-   why:[
-     {icon:'🚢',title:'하롱베이 1박 크루즈',desc:'유네스코 세계유산에서의 특별한 하룻밤'},
-     {icon:'🏨',title:'JW Marriott 전일정',desc:'하노이 최고급 호텔 숙박'},
-     {icon:'🍜',title:'현지 미식 투어',desc:'베트남 정통 요리부터 고급 레스토랑까지'},
-     {icon:'👥',title:'소그룹 맞춤 일정',desc:'자유도 높은 소그룹 여행'},
-   ],
-   visaType:'e-Visa (온라인 사전 발급)',visaCost:'USD 25 / 인',
-   visaNote:'출발 전 베트남 e-Visa를 온라인에서 직접 신청하셔야 합니다. 예약 확정 후 신청 링크와 상세 방법을 카카오로 안내드립니다.',
-   visaTip:'e-Visa 처리 기간은 약 3~5 영업일입니다. 출발 최소 2주 전에 신청하시길 권장합니다.',
-   qa:[
-     {q:'베트남 e-Visa 신청이 어렵나요?',a:'온라인에서 20~30분이면 완료됩니다. 예약 확정 후 단계별 안내 자료를 카카오로 보내드립니다.'},
-     {q:'하롱베이 크루즈 등급은요?',a:'5성급 럭셔리 크루즈입니다. 개인 발코니, 욕조 객실 등이 포함됩니다.'},
-   ],
-   singleFee:30000,public:true,booking:true,mainFeatured:false},
-];
-
-const CAL_DATA=[
-  {prodId:'SL01',date:'2026-06-01',price:5000000,pax:10,depPct:20,season:'비수기',status:'open',reserved:6},
-  {prodId:'SL01',date:'2026-08-09',price:6200000,pax:10,depPct:20,season:'성수기',status:'open',reserved:4},
-  {prodId:'SL01',date:'2026-09-21',price:4800000,pax:6,depPct:15,season:'비수기',status:'open',reserved:2},
-  {prodId:'SL01',date:'2026-10-05',price:5200000,pax:10,depPct:20,season:'비수기',status:'open',reserved:2},
-  {prodId:'SL01',date:'2026-11-14',price:5000000,pax:10,depPct:20,season:'비수기',status:'open',reserved:1},
-  {prodId:'SL01',date:'2026-12-20',price:7200000,pax:10,depPct:30,season:'극성수기',status:'open',reserved:2},
-  {prodId:'VN01',date:'2026-07-10',price:1900000,pax:10,depPct:20,season:'성수기',status:'open',reserved:2},
-  {prodId:'VN01',date:'2026-09-05',price:1700000,pax:10,depPct:20,season:'비수기',status:'open',reserved:0},
-];
-
-// ════════════════════════════════════
-// 히어로 슬라이드 — 상품별 텍스트+이미지 완전 연동
-// ════════════════════════════════════
-const SLIDES = [
-  {
-    prodId:'SL01',
-    bg:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1600&q=80',
-    eye:'🇱🇰 스리랑카 · 7박8일',
-    title:'스리랑카 완전일주 7박8일',
-    sub:'시기리야·캔디·갈레·콜롬보 — 스리랑카 핵심 전부',
-    tags:['왕복 항공 포함','5성급 전일정','소수 정예 6인','여행자보험 포함'],
-  },
-  {
-    prodId:'VN01',
-    bg:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&q=80',
-    eye:'🇻🇳 베트남 · 4박5일',
-    title:'베트남 하노이 프리미엄 4박5일',
-    sub:'하노이 구시가지 + 하롱베이 1박 크루즈 · 5성급',
-    tags:['왕복 항공 포함','하롱베이 1박 크루즈','5성급 전일정','여행자보험 포함'],
-  },
-];
-
-let cur=0, stmr=null;
-
-function initHero(){
-  const slides=document.getElementById('heroSlides');
-  slides.innerHTML=SLIDES.map((s,i)=>
-    `<div class="hero-slide ${i===0?'on':''}" style="background-image:url('${s.bg}')"></div>`
-  ).join('');
-
-  document.getElementById('heroDots').innerHTML=SLIDES.map((_,i)=>
-    `<button class="hero-dot ${i===0?'on':''}" onclick="goSlide(${i})"></button>`
-  ).join('');
-
-  // 상품명 탭 (클릭하면 해당 슬라이드로 이동)
-  document.getElementById('heroProdTabs').innerHTML=SLIDES.map((s,i)=>{
-    const p=PRODUCTS.find(x=>x.id===s.prodId);
-    return`<button class="hero-prod-tab ${i===0?'on':''}" onclick="goSlide(${i})">${p.flag} ${p.short||p.name}</button>`;
-  }).join('');
-
-  setContent(0);
-  stmr=setInterval(()=>goSlide((cur+1)%SLIDES.length),6000);
-}
-
-function setContent(n){
-  const s=SLIDES[n];
-  const ct=document.getElementById('heroContent');
-  ct.style.transition='opacity .35s,transform .35s';
-  ct.style.opacity='0';ct.style.transform='translateY(10px)';
-  setTimeout(()=>{
-    document.getElementById('hEye').textContent=s.eye;
-    document.getElementById('hTitle').textContent=s.title;
-    document.getElementById('hSub').textContent=s.sub;
-    document.getElementById('hTags').innerHTML=(s.tags||[]).map(t=>`<span class="hero-tag">✓ ${t}</span>`).join('');
-    document.getElementById('hBtns').innerHTML=
-      `<button class="btn-gold" onclick="openDetail(PRODUCTS.find(p=>p.id==='${s.prodId}'))">상품 상세 보기 →</button>
-       <button class="btn-ghost" onclick="alert('카카오 채널로 연결됩니다')">💬 카카오 상담</button>`;
-    ct.style.opacity='1';ct.style.transform='none';
-  },180);
-}
-
-function goSlide(n){
-  document.querySelectorAll('.hero-slide').forEach((el,i)=>el.classList.toggle('on',i===n));
-  document.querySelectorAll('.hero-dot').forEach((el,i)=>el.classList.toggle('on',i===n));
-  document.querySelectorAll('.hero-prod-tab').forEach((el,i)=>el.classList.toggle('on',i===n));
-  cur=n; setContent(n);
-  clearInterval(stmr); stmr=setInterval(()=>goSlide((cur+1)%SLIDES.length),6000);
-}
-function moveSlide(d){goSlide((cur+d+SLIDES.length)%SLIDES.length);}
-
-// ════════════════════════════════════
-// 홈 — 상품 그리드
-// ════════════════════════════════════
-function renderProdGrid(){
-  const grid=document.getElementById('prodGrid');
-  grid.innerHTML=PRODUCTS.filter(p=>p.public).map(p=>{
-    const cals=CAL_DATA.filter(d=>d.prodId===p.id&&d.status==='open').sort((a,b)=>a.date.localeCompare(b.date));
-    const minP=cals.length?Math.min(...cals.map(c=>c.price)):p.price;
-    const seats=cals.length?cals[0].pax-cals[0].reserved:0;
-    const dHtml=cals.slice(0,5).map(c=>{
-      const s=c.pax-c.reserved;
-      const cls=s<=0?'dep dep-f':c.season.includes('성수기')?'dep dep-p':'dep dep-n';
-      const lbl=c.date.slice(5).replace('-','/');
-      const sl=c.season==='성수기'?' 성수기':c.season==='극성수기'?' 특가':'';
-      return`<span class="${cls}" onclick="event.stopPropagation();openDetail(PRODUCTS.find(x=>x.id==='${p.id}'),'${c.date}')">${lbl}${sl}</span>`;
-    }).join('');
-    const th=p.imgUrl?`<img src="${p.imgUrl}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'prod-fallback\\'>${p.flag}</div>'">`:`<div class="prod-fallback">${p.flag}</div>`;
-    return`<div class="prod-card" onclick="openDetail(PRODUCTS.find(x=>x.id==='${p.id}'))">
-      <div class="prod-thumb">${th}
-        ${p.mainFeatured?'<span class="prod-badge">인기 상품</span>':''}
-        ${seats>0&&seats<=4?`<span class="prod-seat-tag">잔여 ${seats}자리</span>`:''}
-        <span class="prod-ctag">${p.flag} ${p.countryName} · ${p.duration}</span>
-      </div>
-      <div class="prod-body">
-        <div class="prod-dur">${p.duration} · 소수 정예 소그룹</div>
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-desc-txt">${p.shortDesc}</div>
-        <div class="prod-deps">${dHtml}</div>
-        <div class="prod-foot">
-          <div><div class="prod-from">상품가 (1인)</div><div class="prod-price">${(minP/10000).toFixed(0)}만원~</div><div class="prod-psub">항공 · 호텔 · 보험 포함</div></div>
-          <button class="btn-gold" style="font-size:12px;padding:10px 18px;">자세히 →</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderWhy(){
-  const p=PRODUCTS.find(x=>x.public&&x.why&&x.why.length)||PRODUCTS[0];
-  document.getElementById('whyList').innerHTML=(p.why||[]).map(w=>`
-    <div class="why-row"><div class="why-ico">${w.icon}</div><div><div class="why-t">${w.title}</div><div class="why-d">${w.desc}</div></div></div>`).join('');
-  const imgs=[
-    {u:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=75',l:'시기리야'},
-    {u:'https://images.unsplash.com/photo-1586611292717-f828b167408c?w=600&q=75',l:'갈레'},
-    {u:'https://images.unsplash.com/photo-1557750255-c76072a7aad1?w=600&q=75',l:'하롱베이'},
-  ];
-  document.getElementById('mosaic').innerHTML=imgs.map(s=>`
-    <div class="mosaic-cell"><img src="${s.u}" alt="${s.l}" loading="lazy"><div class="mosaic-lbl">${s.l}</div></div>`).join('');
-}
-
-function goSection(id){
-  const el=document.querySelector('#'+id);
-  if(!el)return;
-  showHome();
-  setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),50);
-}
-
-// ════════════════════════════════════
-// 상품 상세
-// ════════════════════════════════════
-let cProd=null,cCal=null,cPax=2,singleOn=false;
-
-function openDetail(prod,selDate){
-  if(!prod)return;
-  cProd=prod;cPax=2;singleOn=false;cCal=null;
-  clearInterval(stmr);
-  showOnly('detPage');
-  window.scrollTo(0,0);
-
-  // 히어로
-  const img=document.getElementById('detImg');
-  img.src=prod.imgUrl||''; img.style.display=prod.imgUrl?'':'none';
-  document.getElementById('detHero').style.background=prod.imgUrl?``:
-    `linear-gradient(135deg,${prod.country==='VN'?'#0d1a24,#1e3042':'#0d2416,#1e4228'})`;
-  document.getElementById('detBreadName').textContent=prod.short||prod.name;
-  document.getElementById('detEye').textContent=`${prod.flag} ${prod.countryName} · ${prod.duration}`;
-  document.getElementById('detTitle').textContent=prod.name;
-  document.getElementById('detSub').textContent=prod.shortDesc;
-
-  // 모바일 가격
-  const cals=CAL_DATA.filter(d=>d.prodId===prod.id&&d.status==='open').sort((a,b)=>a.date.localeCompare(b.date));
-  const minP=cals.length?Math.min(...cals.map(c=>c.price)):prod.price;
-  document.getElementById('dpbPrice').textContent=(minP/10000).toFixed(0)+'만원~';
-  document.getElementById('mobPrice').textContent=(minP/10000).toFixed(0)+'만원~';
-
-  // 요약 뱃지
-  document.getElementById('detBadges').innerHTML=[
-    '✈ 왕복 항공 포함','🏨 5성급 전일정','🛡 여행자보험 포함',`👥 소수 정예 ${prod.minPax}인 이상`
-  ].map(t=>`<span class="sum-badge">${t}</span>`).join('');
-
-  // 포함/불포함
-  document.getElementById('detIncl').innerHTML=`
-    <div><div class="incl-col-t" style="color:#1B6B3A">포함 사항</div>${prod.incl.map(t=>`<div class="incl-item"><span class="i-chk" style="color:#1B6B3A">✓</span><span>${t}</span></div>`).join('')}</div>
-    <div><div class="incl-col-t" style="color:var(--gray)">불포함 사항</div>${prod.excl.map(t=>`<div class="incl-item"><span class="i-chk" style="color:var(--gray)">✕</span><span style="color:var(--gray)">${t}</span></div>`).join('')}</div>`;
-
-  // 일정표
-  document.getElementById('detItin').innerHTML=prod.itinerary.map(d=>`
-    <div class="itin-row"><div class="itin-day">${d.day}</div>
-    <div><div class="itin-t">${d.title}</div><div class="itin-d">${d.desc}</div>${d.hotel?`<div class="itin-h">🏨 ${d.hotel}</div>`:''}</div></div>`).join('');
-
-  // 호텔
-  if(prod.hotels&&prod.hotels.length){
-    document.getElementById('detHotelSec').style.display='block';
-    document.getElementById('detHotels').innerHTML=prod.hotels.map(h=>`
-      <div class="hotel-row"><div class="hotel-range">${h.range}</div>
-      <div><div class="hotel-name">${h.name}</div><div class="hotel-loc">📍 ${h.loc}</div><div class="hotel-star">${h.star}</div></div></div>`).join('');
-  } else document.getElementById('detHotelSec').style.display='none';
-
-  // WHY
-  if(prod.why&&prod.why.length){
-    document.getElementById('detWhySec').style.display='block';
-    document.getElementById('detWhy').innerHTML=prod.why.map(w=>`
-      <div class="why-card"><div class="why-card-ico">${w.icon}</div><div class="why-card-t">${w.title}</div><div class="why-card-d">${w.desc}</div></div>`).join('');
-  } else document.getElementById('detWhySec').style.display='none';
-
-  // 비자
-  document.getElementById('detVisa').innerHTML=`
-    <div class="visa-badge">${prod.visaType}</div>
-    <div class="visa-cost">${prod.visaCost}</div>
-    <div class="visa-note">${prod.visaNote}</div>
-    ${prod.visaTip?`<div class="visa-tip">💡 ${prod.visaTip}</div>`:''}`;
-
-  // Q&A
-  if(prod.qa&&prod.qa.length){
-    document.getElementById('detQaSec').style.display='block';
-    document.getElementById('detQa').innerHTML=prod.qa.map((q,i)=>`
-      <div class="qa-item" id="qi${i}">
-        <button class="qa-q" onclick="tQa(${i})">${q.q}<span class="qa-arr">▼</span></button>
-        <div class="qa-a">${q.a}</div>
-      </div>`).join('');
-  } else document.getElementById('detQaSec').style.display='none';
-
-  // 싱글룸
-  const sr=document.getElementById('singleRow');
-  if(prod.singleFee>0){sr.style.display='flex';document.getElementById('singleFeeLabel').textContent=`+${prod.singleFee.toLocaleString()}원/1박`;}
-  else sr.style.display='none';
-
-  // 캘린더
-  renderBbCal(prod);
-  if(selDate)selCal(selDate);
-}
-
-function renderBbCal(prod){
-  const cals=CAL_DATA.filter(d=>d.prodId===prod.id&&d.status==='open').sort((a,b)=>a.date.localeCompare(b.date));
-  document.getElementById('bbCal').innerHTML=cals.map(c=>{
-    const seats=c.pax-c.reserved,isFull=seats<=0;
-    const p=c.date.split('-');
-    return`<div class="cal-cell ${c.season.includes('성수기')?'peak':''} ${isFull?'full':''}" id="cc_${c.date}" onclick="${isFull?'':'selCal(\''+c.date+'\')'}">
-      <div class="cc-dt">${parseInt(p[1])}월 ${parseInt(p[2])}일</div>
-      <div class="cc-sea">${c.season}</div>
-      <div class="cc-pr">${(c.price/10000).toFixed(0)}만원</div>
-      <div class="cc-st">${isFull?'마감':`잔여 ${seats}석`}</div>
-    </div>`;
-  }).join('');
-}
-
-function selCal(date){
-  cCal=CAL_DATA.find(d=>d.prodId===cProd.id&&d.date===date);
-  if(!cCal)return;
-  document.querySelectorAll('.cal-cell').forEach(el=>el.classList.remove('sel'));
-  document.getElementById('cc_'+date)?.classList.add('sel');
-  const p=date.split('-');
-  document.getElementById('selBox').style.display='block';
-  document.getElementById('selDate').textContent=`${parseInt(p[1])}월 ${parseInt(p[2])}일 출발`;
-  document.getElementById('selInfo').textContent=`${cCal.season} · 잔여 ${cCal.pax-cCal.reserved}자리`;
-  updPrice();
-}
-
-function chPax(d){
-  const mx=cCal?cCal.pax-cCal.reserved:20;
-  cPax=Math.max(1,Math.min(mx,cPax+d));
-  document.getElementById('paxVal').textContent=cPax;
-  updPrice();
-}
-
-function togSingle(){
-  singleOn=!singleOn;
-  document.getElementById('singleTog').classList.toggle('on',singleOn);
-  document.getElementById('prSingleRow').style.display=singleOn?'flex':'none';
-  updPrice();
-}
-
-function updPrice(){
-  if(!cCal)return;
-  const nights=parseInt(cProd.duration)||7;
-  const base=cCal.price*cPax;
-  const sAdd=singleOn?(cProd.singleFee||0)*nights:0;
-  const grand=base+sAdd;
-  const dep=Math.round(grand*cCal.depPct/100);
-  document.getElementById('priceBk').style.display='block';
-  document.getElementById('prPer').textContent=cCal.price.toLocaleString()+'원';
-  document.getElementById('prPaxLbl').textContent=`× ${cPax}인`;
-  document.getElementById('prSub').textContent=base.toLocaleString()+'원';
-  document.getElementById('prSingle').textContent=sAdd.toLocaleString()+'원';
-  document.getElementById('prGrand').textContent=grand.toLocaleString()+'원';
-  document.getElementById('prDep').textContent=`예약금 ${dep.toLocaleString()}원 (${cCal.depPct}%) · 잔금 ${(grand-dep).toLocaleString()}원`;
-  document.getElementById('mobPrice').textContent=grand.toLocaleString()+'원';
-  const btn=document.getElementById('resBtn');
-  btn.disabled=false;btn.textContent='예약 신청하기 →';
-}
-
-function tQa(i){document.getElementById('qi'+i).classList.toggle('open');}
-
-function doReserve(){
-  if(!cCal){alert('출발일을 먼저 선택해주세요.');return;}
-  openReserveForm();
-}
-
-// ══════════════════════════════════════════
-// 📝 예약 신청 폼
-// ══════════════════════════════════════════
-function openReserveForm(){
-  clearInterval(stmr);
-  showOnly('reservePage');
-  window.scrollTo(0,0);
-
-  // 선택 정보 채우기
-  const p=cCal.date.split('-');
-  const nights=parseInt(cProd.duration)||7;
-  const base=cCal.price*cPax;
-  const sAdd=singleOn?(cProd.singleFee||0)*nights:0;
-  const grand=base+sAdd;
-  const dep=Math.round(grand*cCal.depPct/100);
-
-  document.getElementById('rf-prod-name').textContent=cProd.name;
-  document.getElementById('rf-dep-date').textContent=`${parseInt(p[1])}월 ${parseInt(p[2])}일 출발`;
-  document.getElementById('rf-pax').textContent=`총 ${cPax}명`;
-  document.getElementById('rf-season').textContent=cCal.season;
-  document.getElementById('rf-duration').textContent=cProd.duration;
-
-  // 금액: 1인당 × 인원수 방식
-  const perPerson=cCal.price;
-  document.getElementById('rf-price').textContent=`${perPerson.toLocaleString()}원 × ${cPax}명 = ${grand.toLocaleString()}원`;
-  document.getElementById('rf-dep-amt').textContent=`${Math.round(dep/cPax).toLocaleString()}원 × ${cPax}명 = ${dep.toLocaleString()}원`;
-  document.getElementById('rf-bal-amt').textContent=(grand-dep).toLocaleString()+'원';
-  document.getElementById('rf-dep-pct').textContent=cCal.depPct+'%';
-  document.getElementById('rf-single-row').style.display=singleOn?'flex':'none';
-  document.getElementById('rf-single-amt').textContent=sAdd.toLocaleString()+'원';
-
-  // 인원만큼 동행자 입력 필드 생성
-  renderCompanionFields(cPax);
-}
-
-function renderCompanionFields(n){
-  const el=document.getElementById('rf-companions');
-  if(n<=1){el.innerHTML='';return;}
-  el.innerHTML=`
-    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:14px;">
-      <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:4px;padding-bottom:10px;border-bottom:1px solid var(--border);">동행자 정보</div>
-      <div style="font-size:12px;color:var(--gray);margin-bottom:14px;">여권 발권을 위해 동행자 이름이 필요합니다. 연락처는 선택사항입니다.</div>
-      ${Array.from({length:n-1},(_,i)=>`
-        <div style="padding:14px;background:#F8F6F2;border-radius:8px;margin-bottom:8px;">
-          <div style="font-size:12px;font-weight:500;color:#5A5550;margin-bottom:10px;">동행자 ${i+2}</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <div>
-              <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">이름 *</label>
-              <input class="rf-input" id="companion-name-${i}" placeholder="홍길동" required>
-            </div>
-            <div>
-              <label style="font-size:11px;color:#9A9590;display:block;margin-bottom:4px;">연락처 (선택)</label>
-              <input class="rf-input" id="companion-ph-${i}" placeholder="010-0000-0000">
-            </div>
-          </div>
-        </div>`).join('')}
-    </div>`;
-}
-
-function submitReserve(){
-  // 필수 입력 체크
-  const name=document.getElementById('rf-name').value.trim();
-  const ph=document.getElementById('rf-phone').value.trim();
-  const em=document.getElementById('rf-email').value.trim();
-  const agree=document.getElementById('rf-agree').checked;
-  const agree2=document.getElementById('rf-agree2').checked;
-
-  if(!name){alert('신청자 이름을 입력해주세요.');document.getElementById('rf-name').focus();return;}
-  if(!ph){alert('연락처를 입력해주세요.');document.getElementById('rf-phone').focus();return;}
-  if(!em){alert('이메일을 입력해주세요.');document.getElementById('rf-email').focus();return;}
-  if(!agree||!agree2){alert('약관에 동의해주세요.');return;}
-
-  // 동행자 정보 수집
-  const companions=[];
-  for(let i=0;i<cPax-1;i++){
-    const cname=document.getElementById(`companion-name-${i}`)?.value.trim()||'';
-    const cph=document.getElementById(`companion-ph-${i}`)?.value.trim()||'';
-    if(!cname){alert(`동행자 ${i+2}의 이름을 입력해주세요.`);return;}
-    companions.push({name:cname,ph:cph,pass:'none'});
-  }
-  const existingIds=JSON.parse(localStorage.getItem('cj_reservations')||'[]').map(r=>r.id);
-  const nextNum=existingIds.length+101;
-  const resId=`CJ-${String(nextNum).padStart(3,'0')}`;
-  const now=new Date().toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-
-  const nights=parseInt(cProd.duration)||7;
-  const base=cCal.price*cPax;
-  const sAdd=singleOn?(cProd.singleFee||0)*nights:0;
-  const grand=base+sAdd;
-  const dep=Math.round(grand*cCal.depPct/100);
-
-  const reservation={
-    id:resId, country:cProd.country, prodId:cProd.id,
-    name, ph, em,
-    dep:cCal.date.replace(/-/g,'.'),
-    pax:cPax, price:grand, pdep:dep, pbal:grand-dep,
-    singleRoom:singleOn,
-    companions,
-    st:'w', pass:'none', passName:'', passNo:'', passExp:'',
-    appl:now.slice(0,10).replace(/\./g,'-'),
-    memo:`소비자 사이트 신청 ${now}`,
-    createdAt:now,
-    log:[{c:'dn',i:'✓',t:`예약 신청 완료 — ${cProd.name} · ${cPax}명`,m:now.slice(5,10)}]
-  };
-
-  // localStorage에 저장 (관리자 동기화용)
-  const list=JSON.parse(localStorage.getItem('cj_reservations')||'[]');
-  list.push(reservation);
-  localStorage.setItem('cj_reservations',JSON.stringify(list));
-
-  // 완료 화면 표시
-  document.getElementById('rf-form').style.display='none';
-  document.getElementById('rf-complete').style.display='block';
-  document.getElementById('rf-complete-id').textContent=resId;
-  document.getElementById('rf-complete-name').textContent=name;
-  document.getElementById('rf-complete-dep').textContent=`${cProd.name} · ${cCal.date.slice(5).replace('-','/')} 출발`;
-  document.getElementById('rf-complete-dep-amt').textContent=dep.toLocaleString()+'원';
-  window.scrollTo(0,0);
-}
-
-function showHome(){
-  showOnly('homePage');
-  initHero();
-}
-
-function showLogin(){
-  showOnly('loginPage');
-  clearInterval(stmr);
-  // 폼 초기화
-  document.getElementById('lp-id').value='';
-  document.getElementById('lp-name').value='';
-  document.getElementById('lp-error').style.display='none';
-  document.getElementById('lp-form').style.display='block';
-  window.scrollTo(0,0);
-}
-
-function doMyLogin(){
-  const resId = document.getElementById('lp-id').value.trim().toUpperCase();
-  const name  = document.getElementById('lp-name').value.trim();
-  const errEl = document.getElementById('lp-error');
-  if(!resId||!name){errEl.textContent='예약번호와 이름을 모두 입력해주세요.';errEl.style.display='block';return;}
-
-  // localStorage에서 예약 검색
-  const list = JSON.parse(localStorage.getItem('cj_reservations')||'[]');
-  const res  = list.find(r=>r.id===resId && r.name===name);
-  if(!res){errEl.textContent='예약 정보를 찾을 수 없습니다. 예약번호와 이름을 확인해주세요.';errEl.style.display='block';return;}
-
-  showMyPageWithRes(res);
-}
-
-function showMyPageWithRes(res){
-  sessionStorage.setItem('cj_my_res', JSON.stringify(res));
-  showOnly('myPage');
-  renderMyPage(res);
-}
-
-function fmtDep(dep){
-  // "2026.06.01" → "2026년 6월 1일"
-  const parts=dep.replace(/-/g,'.').split('.');
-  if(parts.length<3) return dep;
-  return `${parts[0]}년 ${parseInt(parts[1])}월 ${parseInt(parts[2])}일`;
-}
-
-function renderMyPage(res){
-  const prod=PRODUCTS.find(p=>p.id===res.prodId)||{name:res.prodId,flag:'🌍',duration:'',visaType:'도착비자',visaCost:'현장 결제'};
-  const companions=res.companions||[];
-  const totalPax=res.pax||1;
-  const perPerson=res.price?Math.round(res.price/totalPax):0;
-  const memberList=[{name:res.name,role:'대표',passState:res.pass||'none'},...companions.map(c=>({name:c.name,role:'동행',passState:c.pass||'none'}))];
-  const passOkCount=memberList.filter(m=>m.passState==='ok').length;
-  const passPct=Math.round(passOkCount/totalPax*100);
-
-  // 단계 계산
-  const depPaid=['k','d','b'].includes(res.st);
-  const confirmed=['k','d','b'].includes(res.st);
-  const ticketed=res.tk==='d';
-  const steps=[
-    {label:'예약\n신청',done:true},
-    {label:'예약금\n입금',done:depPaid},
-    {label:'예약\n확정',done:confirmed},
-    {label:'출발\n준비',done:ticketed&&passOkCount===totalPax},
-    {label:'출발',done:false},
-  ];
-  const curStepIdx=steps.filter(s=>s.done).length;
-
-  // 지금 해야 할 것 자동 계산
-  const todoList=[];
-  if(!depPaid) todoList.push({n:todoList.length+1,text:`예약금 ${res.pdep.toLocaleString()}원 입금 (3일 이내)`,urgent:true});
-  memberList.forEach((m,i)=>{if(m.passState==='none'||m.passState==='bad') todoList.push({n:todoList.length+1,text:`${m.name}님 여권 사진 제출 (출발 45일 전까지)`,urgent:false,passIdx:i});});
-  if(!ticketed&&depPaid&&passOkCount===totalPax) todoList.push({n:todoList.length+1,text:'항공 발권 진행 중 — 완료 시 카카오 알림 발송',urgent:false});
-  if(res.pbal>0&&depPaid) todoList.push({n:todoList.length+1,text:`잔금 ${res.pbal.toLocaleString()}원 납부 (출발 60일 전)`,urgent:false});
-
-  // SITE_CONFIG 계좌 (localStorage)
-  let bankInfo={bank:'설정 필요',account:'설정 필요',depositor:'설정 필요'};
-  try{const cfg=JSON.parse(localStorage.getItem('cj_site_config')||'{}');if(cfg.bank)bankInfo=cfg;}catch(e){}
-
-  document.getElementById('myPage').innerHTML=`
-  <div style="padding-top:62px;max-width:720px;margin:0 auto;padding:80px 20px 80px;">
-
-    <!-- 헤더 -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div>
-        <div style="font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:4px;">MY RESERVATION</div>
-        <h1 style="font-family:var(--font-serif);font-size:22px;font-weight:400;">${res.name}님의 예약</h1>
-      </div>
-      <button onclick="doMyLogout()" style="font-size:12px;color:var(--gray);background:none;border:1px solid var(--border);border-radius:5px;padding:6px 14px;cursor:pointer;font-family:var(--font-sans);">로그아웃</button>
-    </div>
-
-    <!-- ① 예약 메인 카드 (검정) -->
-    <div style="background:var(--black);border-radius:12px;padding:22px;margin-bottom:12px;">
-
-      <!-- 상품명 + 예약번호 -->
-      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:4px;gap:8px;flex-wrap:wrap;">
-        <div style="font-size:12px;font-weight:500;color:var(--gold);">${prod.flag} ${prod.name}</div>
-        <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.1);padding:5px 12px;border-radius:5px;border:1px solid rgba(201,168,76,0.2);flex-shrink:0;">${res.id}</div>
-      </div>
-      <div style="font-size:20px;font-weight:500;color:#fff;margin-bottom:4px;">${fmtDep(res.dep)} 출발</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
-        ${memberList.map(m=>`<span style="font-size:11px;padding:3px 10px;border-radius:100px;${m.role==='대표'?'background:rgba(201,168,76,0.15);color:var(--gold);':'background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);'}">${m.role==='대표'?'👤':'·'} ${m.name}</span>`).join('')}
-        <span style="font-size:11px;color:rgba(255,255,255,0.3);padding:3px 6px;">총 ${totalPax}명 · ${prod.duration}</span>
-      </div>
-
-      <!-- 전체 진행 단계 -->
-      <div style="font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:1.5px;margin-bottom:10px;">전체 진행 단계</div>
-      <div style="display:flex;align-items:center;gap:2px;margin-bottom:18px;">
-        ${steps.map((s,i)=>{
-          const isCur=i===curStepIdx;
-          const done=s.done;
-          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-            <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;margin-bottom:5px;
-              ${done?'background:var(--gold);color:var(--black);':isCur?'background:#E05C40;color:#fff;':'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.07);'}">
-              ${done?'✓':isCur?'→':i+1}
-            </div>
-            <div style="font-size:9px;text-align:center;white-space:pre-line;line-height:1.3;color:${done?'var(--gold)':isCur?'#FF8870':'rgba(255,255,255,0.22)'};">${s.label}</div>
-          </div>${i<steps.length-1?`<div style="height:1px;flex:0 0 10px;background:${steps[i+1].done?'rgba(201,168,76,0.4)':'rgba(255,255,255,0.07)'};margin-bottom:18px;"></div>`:''}`;
-        }).join('')}
-      </div>
-
-      <!-- 지금 해야 할 것 -->
-      ${todoList.length>0?`
-      <div style="background:rgba(224,92,64,0.1);border:1px solid rgba(224,92,64,0.2);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div style="font-size:12px;font-weight:500;color:#FF8870;margin-bottom:10px;">🔴 지금 해야 할 것</div>
-        ${todoList.map(t=>`
-        <div style="display:flex;align-items:start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-          <div style="width:18px;height:18px;border-radius:50%;background:rgba(224,92,64,0.25);color:#FF8870;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">${t.n}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6;flex:1;">${t.text}${t.passIdx!==undefined?` <span onclick="openPassportUpload(${t.passIdx})" style="color:var(--gold);cursor:pointer;font-size:11px;text-decoration:underline;">제출하기</span>`:''}</div>
-        </div>`).join('')}
-      </div>`:`
-      <div style="background:rgba(46,155,85,0.1);border:1px solid rgba(46,155,85,0.2);border-radius:8px;padding:12px;margin-bottom:12px;text-align:center;font-size:13px;color:#A8D8B8;">
-        ✅ 현재 단계에서 할 일이 모두 완료됐습니다
-      </div>`}
-
-      <!-- 예약금 입금 계좌 (미납 시에만) -->
-      ${!depPaid?`
-      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;letter-spacing:1px;">💳 예약금 입금 계좌</div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;"><span style="color:rgba(255,255,255,0.4);">은행</span><span style="color:#fff;font-weight:500;">${bankInfo.bank}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;"><span style="color:rgba(255,255,255,0.4);">계좌번호</span><span style="color:#fff;font-weight:500;font-family:monospace;">${bankInfo.account}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;"><span style="color:rgba(255,255,255,0.4);">예금주</span><span style="color:#fff;font-weight:500;">${bankInfo.depositor}</span></div>
-        <div style="font-size:18px;font-weight:600;color:var(--gold);margin-top:10px;padding-top:10px;border-top:1px solid rgba(201,168,76,0.15);">${res.pdep.toLocaleString()}원</div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;">⚠ 3일 이내 미입금 시 자동 취소됩니다</div>
-      </div>`:''}
-
-      <!-- 서류 다운로드 (발권 완료 시) -->
-      ${ticketed?`
-      <div style="background:rgba(255,255,255,0.04);border-radius:7px;padding:12px;">
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:8px;">📎 서류 다운로드</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="alert('항공 바우처 다운로드 — 파일 연동 후 자동 제공')" style="padding:6px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:5px;font-size:11px;color:rgba(255,255,255,0.65);cursor:pointer;font-family:var(--font-sans);">✈ 항공 바우처</button>
-          ${res.visa&&res.visa.st==='ok'?`<button onclick="alert('비자 승인서 다운로드')" style="padding:6px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:5px;font-size:11px;color:rgba(255,255,255,0.65);cursor:pointer;font-family:var(--font-sans);">🌐 비자 승인서</button>`:''}
-          <button onclick="alert('최종 안내서 다운로드')" style="padding:6px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:5px;font-size:11px;color:rgba(255,255,255,0.65);cursor:pointer;font-family:var(--font-sans);">📋 최종 안내서</button>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.18);margin-top:8px;">이메일로도 발송됩니다. 여기서 언제든 재다운로드 가능합니다.</div>
-      </div>`:''}
-
-      <!-- 금액 요약 -->
-      <div style="background:rgba(255,255,255,0.04);border-radius:7px;padding:12px;margin-top:12px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);padding:3px 0;">
-          <span>1인 상품가 × ${totalPax}명</span><span>${perPerson.toLocaleString()}원 × ${totalPax} = ${res.price.toLocaleString()}원</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);padding:3px 0;">
-          <span>납부한 예약금</span><span style="color:#A8D8B8;">${depPaid?res.pdep.toLocaleString()+'원':'-'}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 0 2px;border-top:1px solid rgba(255,255,255,0.06);margin-top:4px;">
-          <span style="color:rgba(255,255,255,0.5);">남은 잔금</span><span style="color:${res.pbal>0?'#FF8870':'#A8D8B8'};font-weight:500;">${res.pbal>0?res.pbal.toLocaleString()+'원':'완납'}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ② 여권 제출 현황 -->
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-size:13px;font-weight:500;">🛂 여권 제출 현황</div>
-        <div style="font-size:12px;color:${passPct===100?'#1B6B3A':'#E05C40'};font-weight:500;">${passOkCount}/${totalPax} 완료</div>
-      </div>
-      <div style="height:4px;background:#F0EDE8;border-radius:2px;overflow:hidden;margin-bottom:14px;">
-        <div style="width:${passPct}%;height:100%;background:${passPct===100?'#2E9B55':'var(--gold)'};border-radius:2px;"></div>
-      </div>
-      ${memberList.map((m,i)=>`
-      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:${i<memberList.length-1?'1px solid #F5F2EC':'none'};">
-        <div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;
-          ${m.role==='대표'?'background:var(--black);color:var(--gold);':'background:#F0EDE8;color:var(--gray);'}">${m.name.slice(-1)}</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${m.name} <span style="font-size:10px;color:var(--gray);font-weight:400;">${m.role}</span></div></div>
-        <div>
-          ${m.passState==='ok'
-            ?'<span style="font-size:11px;padding:3px 10px;border-radius:100px;background:#EEF8F2;color:#1B6B3A;border:1px solid #A8D8B8;">✓ 확인 완료</span>'
-            :m.passState==='review'
-            ?'<span style="font-size:11px;padding:3px 10px;border-radius:100px;background:#FDF8EE;color:#8A6500;border:1px solid #F0D890;">검토 중</span>'
-            :`<button onclick="openPassportUpload(${i})" style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--gold);color:var(--black);border:none;cursor:pointer;font-family:var(--font-sans);">제출하기 →</button>`}
-        </div>
-      </div>`).join('')}
-      <div style="font-size:11px;color:var(--gray);margin-top:10px;line-height:1.9;">
-        📌 출발 45일 전까지 전원 제출 완료<br>
-        📌 여권 유효기간 출발일 기준 6개월 이상 필수
-      </div>
-    </div>
-
-    <!-- ③ 여권 업로드 패널 -->
-    <div id="passport-upload-section" style="display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:12px;">
-      <div style="font-size:14px;font-weight:500;margin-bottom:4px;">🛂 여권 제출</div>
-      <div style="font-size:12px;color:var(--gold);margin-bottom:14px;" id="passport-upload-for"></div>
-      <div style="padding:12px;background:#F8F6F2;border-radius:6px;font-size:12px;color:var(--gray);line-height:1.9;margin-bottom:14px;">
-        📌 여권 정보면(사진+개인정보 페이지) 전체 촬영<br>
-        📌 유효기간 출발일 기준 6개월 이상 필수<br>
-        📌 JPG, PNG, PDF · 10MB 이하
-      </div>
-      <div style="border:2px dashed #DDD5C0;border-radius:8px;padding:28px;text-align:center;cursor:pointer;margin-bottom:12px;" onclick="document.getElementById('passport-file').click()">
-        <div style="font-size:28px;margin-bottom:6px;">📷</div>
-        <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:3px;">클릭하여 파일 선택</div>
-        <div style="font-size:11px;color:var(--gray);">JPG · PNG · PDF</div>
-        <input type="file" id="passport-file" accept="image/*,.pdf" style="display:none" onchange="handlePassportFile(this)">
-      </div>
-      <div id="passport-preview" style="display:none;margin-bottom:12px;text-align:center;">
-        <img id="passport-img" style="max-width:100%;max-height:180px;border-radius:6px;border:1px solid var(--border);" alt="">
-        <div id="passport-filename" style="font-size:11px;color:var(--gray);margin-top:5px;"></div>
-      </div>
-      <button onclick="submitPassport()" style="width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-bottom:8px;">여권 제출하기</button>
-      <button onclick="closePassportUpload()" style="width:100%;padding:9px;background:transparent;border:none;color:var(--gray);font-size:12px;cursor:pointer;font-family:var(--font-sans);">취소</button>
-    </div>
-
-    <!-- ④ 예약 진행 로그 -->
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:12px;">
-      <div style="font-size:13px;font-weight:500;margin-bottom:14px;">📋 예약 진행 내역</div>
-      ${(res.log||[]).map(l=>`
-      <div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #F5F2EC;align-items:start;">
-        <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;
-          background:${l.c==='dn'?'#EEF8F2':l.c==='pd'?'#FDF3F1':'#EEF4FB'};
-          color:${l.c==='dn'?'#1B6B3A':l.c==='pd'?'#C04030':'#2460A0'};">${l.i}</div>
-        <div style="flex:1;"><div style="font-size:13px;">${l.t}</div><div style="font-size:11px;color:var(--gray);margin-top:1px;">${l.m}</div></div>
-      </div>`).join('')}
-    </div>
-
-    <!-- 체크리스트 + 문의 버튼 -->
-    <div style="text-align:center;padding:16px 0 20px;">
-      <button onclick="openChecklist()" style="display:block;width:100%;max-width:400px;margin:0 auto 12px;padding:14px;background:var(--black);color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-serif);letter-spacing:1px;">📋 출발 전 체크리스트 보기 →</button>
-      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">궁금한 점이 있으신가요?<br><span style="font-size:11px;">예약번호 <b>${res.id}</b>를 알려주시면 빠르게 도와드립니다</span></div>
-      <button onclick="alert('카카오 채널로 연결됩니다')" style="padding:12px 28px;background:#FEE500;color:#191919;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">💬 카카오로 문의하기</button>
-    </div>
-  </div>`;
-
-  window._passportUploadIdx=null;
-}
-
-function openPassportUpload(memberIdx){
-  window._passportUploadIdx = memberIdx||0;
-  const saved=sessionStorage.getItem('cj_my_res');
-  if(!saved) return;
-  const res=JSON.parse(saved);
-  const companions=res.companions||[];
-  const memberList=[{name:res.name,role:'대표'},...companions.map(c=>({name:c.name,role:'동행'}))];
-  const target=memberList[memberIdx]||memberList[0];
-  const sec=document.getElementById('passport-upload-section');
-  const lbl=document.getElementById('passport-upload-for');
-  if(lbl) lbl.textContent=`${target.name}님의 여권을 제출합니다`;
-  if(sec){
-    sec.style.display='block';
-    sec.scrollIntoView({behavior:'smooth',block:'center'});
-  }
-}
-function closePassportUpload(){
-  const sec=document.getElementById('passport-upload-section');
-  if(sec) sec.style.display='none';
-}
-function handlePassportFile(input){
-  const file=input.files[0]; if(!file) return;
-  document.getElementById('passport-filename').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)';
-  if(file.type.startsWith('image/')){
-    const reader=new FileReader();
-    reader.onload=e=>{
-      document.getElementById('passport-img').src=e.target.result;
-      document.getElementById('passport-preview').style.display='block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    document.getElementById('passport-preview').style.display='block';
-    document.getElementById('passport-img').style.display='none';
-  }
-}
-function submitPassport(){
-  const file=document.getElementById('passport-file').files[0];
-  if(!file){alert('파일을 선택해주세요.');return;}
-  // 실제 업로드 연동 전 — 제출 완료 처리
-  const saved=sessionStorage.getItem('cj_my_res');
-  if(!saved) return;
-  const res=JSON.parse(saved);
-  res.pass='review';
-  res.log=res.log||[];
-  res.log.push({c:'pd',i:'🛂',t:'여권 사진 제출 완료 — 검토 중',m:new Date().toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})});
-  sessionStorage.setItem('cj_my_res',JSON.stringify(res));
-  // localStorage도 업데이트
-  const list=JSON.parse(localStorage.getItem('cj_reservations')||'[]');
-  const idx=list.findIndex(r=>r.id===res.id);
-  if(idx>=0){list[idx]=res;localStorage.setItem('cj_reservations',JSON.stringify(list));}
-  alert('여권이 제출됐습니다.\n담당자 확인 후 카카오로 안내드립니다.');
-  showMyPage(res);
-}
-// ══════════════════════════════════════════
-// 📋 출발 전 체크리스트 페이지
-// ══════════════════════════════════════════
-function openChecklist(){
-  const saved=sessionStorage.getItem('cj_my_res');
-  if(!saved){showLogin();return;}
-  const res=JSON.parse(saved);
-  showOnly('checklistPage');
-  window.scrollTo(0,0);
-  renderChecklist(res);
-}
-
-function renderChecklist(res){
-  const prod=PRODUCTS.find(p=>p.id===res.prodId)||{name:res.prodId,flag:'🌍',duration:''};
-  const companions=res.companions||[];
-  const totalPax=res.pax||1;
-  const memberList=[
-    {name:res.name,role:'대표',passState:res.pass||'none'},
-    ...companions.map(c=>({name:c.name,role:'동행',passState:c.pass||'none'}))
-  ];
-  const depPaid=['k','d','b'].includes(res.st);
-  const ticketed=res.tk==='d';
-  const passAllOk=memberList.every(m=>m.passState==='ok');
-
-  // 각 단계 완료 여부
-  const steps=[
-    {
-      id:'deposit', icon:'💳', title:'예약금 입금',
-      subtitle:'예약을 확정하기 위한 첫 번째 단계',
-      done:depPaid,
-      imgSrc:'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=600&q=70',
-      imgAlt:'은행 입금',
-      desc:depPaid?'입금이 확인됐습니다. 예약이 확정됩니다.':'아래 계좌로 예약금을 입금해 주세요.',
-      action:depPaid?null:{label:'입금 계좌 확인',fn:'showDepositInfo()'},
-      detail:depPaid?
-        `<div style="padding:12px 14px;background:#EEF8F2;border-radius:7px;font-size:13px;color:#1B6B3A;display:flex;align-items:center;gap:8px;"><span>✅</span> 예약금 ${res.pdep.toLocaleString()}원 입금 완료</div>`
-        :`<div style="padding:14px;background:#FDF8EE;border:1px solid #F0D890;border-radius:7px;font-size:13px;color:#8A6500;line-height:2.1;">
-          입금 금액: <b>${res.pdep.toLocaleString()}원</b><br>
-          은행: <b id="cl-bank">—</b><br>
-          계좌번호: <b id="cl-acct" style="font-family:monospace;">—</b><br>
-          예금주: <b id="cl-dep">—</b>
-        </div>`,
-    },
-    {
-      id:'passport', icon:'🛂', title:'여권 사진 제출',
-      subtitle:`여행객 전원 여권을 출발 45일 전까지 제출`,
-      done:passAllOk,
-      imgSrc:'https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=600&q=70',
-      imgAlt:'여권',
-      desc:passAllOk?'전원 여권 제출이 완료됐습니다.':'아래에서 각 여행객별로 여권 사진을 제출해 주세요.',
-      action:null,
-      detail:`<div style="display:flex;flex-direction:column;gap:8px;">
-        ${memberList.map((m,i)=>`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#F8F6F2;border-radius:7px;border:1px solid ${m.passState==='ok'?'#A8D8B8':'#DDD5C0'};">
-          <div style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
-            ${m.role==='대표'?'background:var(--black);color:var(--gold);':'background:#E8E0D0;color:var(--gray);'}">${m.name.slice(-1)}</div>
-          <div style="flex:1;">
-            <div style="font-size:13px;font-weight:500;">${m.name} <span style="font-size:10px;color:var(--gray);">${m.role}</span></div>
-            <div style="font-size:11px;color:${m.passState==='ok'?'#1B6B3A':m.passState==='review'?'#8A6500':'#E05C40'};margin-top:2px;">
-              ${m.passState==='ok'?'✓ 확인 완료':m.passState==='review'?'검토 중':'제출 필요'}
-            </div>
-          </div>
-          ${m.passState!=='ok'&&m.passState!=='review'?
-            `<button onclick="openPassportUploadCL(${i})" style="padding:7px 14px;background:var(--gold);color:var(--black);border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;">제출하기 →</button>`
-            :''}
-        </div>`).join('')}
-      </div>
-      <!-- 여권 업로드 패널 -->
-      <div id="cl-passport-panel" style="display:none;margin-top:12px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:8px;">
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">📷 여권 사진 업로드</div>
-        <div style="font-size:12px;color:var(--gold);margin-bottom:12px;" id="cl-passport-for"></div>
-        <div style="background:#F8F6F2;border-radius:6px;padding:10px 12px;font-size:12px;color:var(--gray);line-height:1.9;margin-bottom:12px;">
-          📌 여권 정보면 전체가 보이도록 촬영<br>
-          📌 유효기간 출발일 기준 6개월 이상<br>
-          📌 JPG, PNG, PDF · 10MB 이하
-        </div>
-        <div style="border:2px dashed #DDD5C0;border-radius:7px;padding:24px;text-align:center;cursor:pointer;margin-bottom:10px;" onclick="document.getElementById('cl-passport-file').click()">
-          <div style="font-size:24px;margin-bottom:5px;">📷</div>
-          <div style="font-size:13px;font-weight:500;margin-bottom:2px;">클릭하여 파일 선택</div>
-          <div style="font-size:11px;color:var(--gray);">JPG · PNG · PDF</div>
-          <input type="file" id="cl-passport-file" accept="image/*,.pdf" style="display:none" onchange="handleCLPassportFile(this)">
-        </div>
-        <div id="cl-passport-preview" style="display:none;text-align:center;margin-bottom:10px;">
-          <img id="cl-passport-img" style="max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);" alt="">
-          <div id="cl-passport-filename" style="font-size:11px;color:var(--gray);margin-top:5px;"></div>
-        </div>
-        <button onclick="submitCLPassport()" style="width:100%;padding:12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-bottom:6px;">제출하기</button>
-        <button onclick="document.getElementById('cl-passport-panel').style.display='none'" style="width:100%;padding:8px;background:transparent;border:none;color:var(--gray);font-size:12px;cursor:pointer;font-family:var(--font-sans);">취소</button>
-      </div>`,
-    },
-    {
-      id:'balance', icon:'💰', title:'잔금 납부',
-      subtitle:`출발 60일 전까지 납부`,
-      done:res.st==='k',
-      imgSrc:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=70',
-      imgAlt:'잔금 납부',
-      desc:res.st==='k'?'잔금 납부가 완료됐습니다.':'출발 60일 전까지 잔금을 납부해 주세요.',
-      action:null,
-      detail:res.st==='k'?
-        `<div style="padding:12px 14px;background:#EEF8F2;border-radius:7px;font-size:13px;color:#1B6B3A;display:flex;align-items:center;gap:8px;"><span>✅</span> 잔금 ${res.pbal.toLocaleString()}원 납부 완료</div>`
-        :`<div style="padding:14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--black);line-height:2.1;">
-          납부 금액: <b>${res.pbal.toLocaleString()}원</b><br>
-          납부 기한: <b>출발 60일 전</b><br>
-          <span style="font-size:11px;color:var(--gray);">예약금과 동일 계좌로 입금해 주세요</span>
-        </div>`,
-    },
-    {
-      id:'ticket', icon:'✈', title:'항공 발권 확인',
-      subtitle:'발권 완료 후 카카오·이메일로 안내',
-      done:ticketed,
-      imgSrc:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=70',
-      imgAlt:'항공기',
-      desc:ticketed?`발권이 완료됐습니다. PNR: ${res.pnr||'—'}`:'여권 확인 후 발권이 진행됩니다.',
-      action:null,
-      detail:ticketed?
-        `<div style="padding:14px;background:#EEF8F2;border:1px solid #A8D8B8;border-radius:7px;">
-          <div style="font-size:12px;color:#1B6B3A;margin-bottom:6px;">✈ 항공권 발권 완료</div>
-          <div style="font-family:monospace;font-size:20px;font-weight:700;color:var(--black);margin-bottom:8px;">PNR: ${res.pnr||'—'}</div>
-          <button onclick="alert('항공 바우처 다운로드')" style="padding:8px 16px;background:var(--black);color:var(--gold);border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);">✈ 바우처 다운로드</button>
-        </div>`
-        :`<div style="padding:12px 14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--gray);">여권 제출 완료 후 담당자가 발권을 진행합니다.<br>발권 완료 시 카카오와 이메일로 안내드립니다.</div>`,
-    },
-    {
-      id:'final', icon:'📋', title:'최종 안내서 확인',
-      subtitle:'출발 7일 전 발송 — 집결 장소·일정 포함',
-      done:false,
-      imgSrc:'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=70',
-      imgAlt:'여행 준비',
-      desc:'출발 7일 전에 카카오와 이메일로 최종 안내서를 발송합니다.',
-      action:null,
-      detail:`<div style="padding:12px 14px;background:#F8F6F2;border-radius:7px;font-size:13px;color:var(--gray);line-height:1.9;">
-        📌 집결 장소 · 시간<br>
-        📌 현지 가이드 연락처<br>
-        📌 호텔 체크인 일정<br>
-        📌 준비물 최종 체크리스트
-      </div>`,
-    },
-  ];
-
-  const doneCount=steps.filter(s=>s.done).length;
-
-  document.getElementById('checklistPage').innerHTML=`
-  <div style="max-width:680px;margin:0 auto;padding:40px 20px 80px;">
-
-    <!-- 헤더 -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-      <button onclick="showMyPage()" style="background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer;padding:4px;">←</button>
-      <div>
-        <div style="font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:3px;">DEPARTURE CHECKLIST</div>
-        <h1 style="font-family:var(--font-serif);font-size:22px;font-weight:400;">출발 전 체크리스트</h1>
-      </div>
-    </div>
-
-    <!-- 상품 + 예약번호 요약 -->
-    <div style="background:var(--black);border-radius:10px;padding:16px 18px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-      <div>
-        <div style="font-size:11px;color:var(--gold);">${prod.flag} ${prod.name}</div>
-        <div style="font-size:15px;font-weight:500;color:#fff;margin-top:3px;">${fmtDep(res.dep)} 출발 · ${totalPax}명</div>
-      </div>
-      <div style="font-family:monospace;font-size:13px;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.1);padding:6px 14px;border-radius:5px;border:1px solid rgba(201,168,76,0.2);">${res.id}</div>
-    </div>
-
-    <!-- 전체 진행률 -->
-    <div style="margin-bottom:28px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:6px;">
-        <span>전체 완료 현황</span>
-        <span style="font-weight:500;color:${doneCount===steps.length?'#1B6B3A':'var(--black)'};">${doneCount} / ${steps.length} 완료</span>
-      </div>
-      <div style="height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden;">
-        <div style="width:${Math.round(doneCount/steps.length*100)}%;height:100%;background:${doneCount===steps.length?'#2E9B55':'var(--gold)'};border-radius:3px;transition:width .4s;"></div>
-      </div>
-    </div>
-
-    <!-- 단계별 카드 -->
-    ${steps.map((s,i)=>`
-    <div style="margin-bottom:16px;border-radius:10px;overflow:hidden;border:1.5px solid ${s.done?'#A8D8B8':'var(--border)'};">
-
-      <!-- 이미지 -->
-      <div style="height:180px;position:relative;overflow:hidden;background:#0d2416;">
-        <img src="${s.imgSrc}" alt="${s.imgAlt}" loading="lazy"
-          style="width:100%;height:100%;object-fit:cover;opacity:${s.done?0.5:0.85};"
-          onerror="this.style.display='none'">
-        <!-- 오버레이 -->
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,20,16,.85) 0%,rgba(14,20,16,.1) 60%);">
-        </div>
-        <!-- 완료 배지 -->
-        ${s.done?`<div style="position:absolute;top:14px;right:14px;background:#2E9B55;color:#fff;font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;">✓ 완료</div>`
-          :i===steps.findIndex(x=>!x.done)?`<div style="position:absolute;top:14px;right:14px;background:#E05C40;color:#fff;font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;">🔴 지금 단계</div>`
-          :`<div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.6);font-size:11px;padding:5px 12px;border-radius:100px;">대기 중</div>`}
-        <!-- 단계 번호 + 제목 -->
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;">
-          <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-bottom:4px;">STEP ${i+1} ${s.icon}</div>
-          <div style="font-size:18px;font-weight:500;color:#fff;">${s.title}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px;">${s.subtitle}</div>
-        </div>
-      </div>
-
-      <!-- 내용 -->
-      <div style="padding:16px 18px;background:#fff;">
-        <p style="font-size:13px;color:var(--black);line-height:1.7;margin-bottom:14px;">${s.desc}</p>
-        ${s.detail}
-        ${s.action&&!s.done?`<button onclick="${s.action.fn}" style="margin-top:12px;width:100%;padding:11px;background:var(--gold);color:var(--black);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);">${s.action.label} →</button>`:''}
-      </div>
-    </div>`).join('')}
-
-    <!-- 마이페이지 돌아가기 -->
-    <div style="text-align:center;margin-top:8px;">
-      <button onclick="showMyPage()" style="font-size:13px;color:var(--gray);background:none;border:none;cursor:pointer;text-decoration:underline;">← 마이페이지로 돌아가기</button>
-    </div>
-  </div>`;
-
-  // 계좌 정보 채우기
-  try{
-    const cfg=JSON.parse(localStorage.getItem('cj_site_config')||'{}');
-    const bankEl=document.getElementById('cl-bank');
-    const acctEl=document.getElementById('cl-acct');
-    const depEl=document.getElementById('cl-dep');
-    if(bankEl) bankEl.textContent=cfg.bank||'설정 필요';
-    if(acctEl) acctEl.textContent=cfg.account||'설정 필요';
-    if(depEl) depEl.textContent=cfg.depositor||'설정 필요';
-  }catch(e){}
-}
-
-let _clPassportIdx=0;
-
-function openPassportUploadCL(idx){
-  _clPassportIdx=idx;
-  const saved=sessionStorage.getItem('cj_my_res');
-  if(!saved) return;
-  const res=JSON.parse(saved);
-  const companions=res.companions||[];
-  const memberList=[{name:res.name,role:'대표'},...companions.map(c=>({name:c.name,role:'동행'}))];
-  const target=memberList[idx];
-  const panel=document.getElementById('cl-passport-panel');
-  const lbl=document.getElementById('cl-passport-for');
-  if(lbl) lbl.textContent=`${target?.name}님의 여권을 업로드해 주세요`;
-  if(panel){
-    panel.style.display='block';
-    panel.scrollIntoView({behavior:'smooth',block:'center'});
-  }
-  // 미리보기 초기화
-  document.getElementById('cl-passport-preview').style.display='none';
-  document.getElementById('cl-passport-file').value='';
-}
-
-function handleCLPassportFile(input){
-  const file=input.files[0]; if(!file) return;
-  document.getElementById('cl-passport-filename').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)';
-  if(file.type.startsWith('image/')){
-    const reader=new FileReader();
-    reader.onload=e=>{
-      document.getElementById('cl-passport-img').src=e.target.result;
-      document.getElementById('cl-passport-preview').style.display='block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    document.getElementById('cl-passport-preview').style.display='block';
-    document.getElementById('cl-passport-img').style.display='none';
-  }
-}
-
-function submitCLPassport(){
-  const file=document.getElementById('cl-passport-file').files[0];
-  if(!file){alert('파일을 선택해주세요.');return;}
-  const saved=sessionStorage.getItem('cj_my_res');
-  if(!saved) return;
-  const res=JSON.parse(saved);
-
-  // 대표 또는 동행자 상태 업데이트
-  if(_clPassportIdx===0){
-    res.pass='review';
-  } else {
-    if(!res.companions) res.companions=[];
-    if(res.companions[_clPassportIdx-1]) res.companions[_clPassportIdx-1].pass='review';
-  }
-  res.log=res.log||[];
-  const memberList=[{name:res.name},...(res.companions||[])];
-  const mName=memberList[_clPassportIdx]?.name||'';
-  res.log.push({c:'pd',i:'🛂',t:`${mName}님 여권 제출 완료 — 검토 중`,m:new Date().toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})});
-
-  sessionStorage.setItem('cj_my_res',JSON.stringify(res));
-  const list=JSON.parse(localStorage.getItem('cj_reservations')||'[]');
-  const idx=list.findIndex(r=>r.id===res.id);
-  if(idx>=0){list[idx]=res;localStorage.setItem('cj_reservations',JSON.stringify(list));}
-
-  document.getElementById('cl-passport-panel').style.display='none';
-  alert(`${mName}님 여권이 제출됐습니다.\n담당자 확인 후 카카오로 안내드립니다.`);
-  renderChecklist(res);
-}
-
-function showMyPage(){
-  const saved=sessionStorage.getItem('cj_my_res');
-  showOnly('myPage');
-  if(saved) renderMyPage(JSON.parse(saved));
-}
-
-function doMyLogout(){
-  sessionStorage.removeItem('cj_my_res');
-  showHome();
-}
-
-// ── 페이지 전환 통합 헬퍼 ──
-const ALL_PAGES=['homePage','detPage','reservePage','loginPage','myPage','checklistPage'];
-function showOnly(pageId){
-  ALL_PAGES.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.style.display=(id===pageId?'block':'none');
+const nav = document.getElementById('stickyNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 100);
+});
+
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = ['why','highlights','itinerary','hotels','pricing'];
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
   });
-  window.scrollTo(0,0);
-}
-
-// 초기화
-initHero();
-renderProdGrid();
-renderWhy();
-
-// 테스트용 샘플 예약 데이터 (없을 때만 삽입)
-if(!localStorage.getItem('cj_reservations')){
-  localStorage.setItem('cj_reservations', JSON.stringify([
-    {id:'CJ-001',country:'LK',prodId:'SL01',name:'김민준',ph:'010-1234-5678',em:'kim@email.com',
-     dep:'2026.06.01',pax:2,price:10000000,pdep:1000000,pbal:9000000,
-     companions:[{name:'김영희',ph:'010-9999-8888',pass:'none'}],
-     st:'k',pass:'ok',passName:'KIM MIN JUN',passNo:'M12345678',passExp:'2030.01.01',
-     tk:'d',pnr:'ABCDEF',singleRoom:false,
-     visaType:'도착비자 (Visa On Arrival)',visaCost:'USD 60 / 인',
-     createdAt:'2026.03.10',
-     log:[
-       {c:'dn',i:'✓',t:'예약 신청 완료',m:'03.10'},
-       {c:'dn',i:'✓',t:'예약금 1,000,000원 입금 확인',m:'03.11'},
-       {c:'dn',i:'✓',t:'예약 확정',m:'03.11'},
-       {c:'dn',i:'🛂',t:'여권 확인 완료',m:'03.12'},
-       {c:'tk',i:'✈',t:'항공 발권 완료 — PNR: ABCDEF',m:'03.15'},
-     ]},
-    {id:'CJ-002',country:'LK',prodId:'SL01',name:'이수진',ph:'010-2345-6789',em:'lee@email.com',
-     dep:'2026.06.01',pax:4,price:20000000,pdep:2000000,pbal:18000000,
-     st:'d',pass:'none',tk:'n',pnr:'',singleRoom:false,
-     visaType:'도착비자 (Visa On Arrival)',visaCost:'USD 60 / 인',
-     createdAt:'2026.03.12',
-     log:[
-       {c:'dn',i:'✓',t:'예약 신청 완료',m:'03.12'},
-       {c:'dn',i:'✓',t:'예약금 2,000,000원 입금 확인',m:'03.13'},
-       {c:'dn',i:'✓',t:'예약 확정',m:'03.13'},
-       {c:'pd',i:'🛂',t:'여권 제출 요청 발송',m:'03.15'},
-     ]},
-  ]));
-}
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
 </script>
+
 </body>
 </html>
