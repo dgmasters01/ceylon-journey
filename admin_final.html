@@ -4870,10 +4870,16 @@ const ADMIN_ACCOUNTS = {
 let currentUser = null;
 
 function initLogin(){
-  const saved = sessionStorage.getItem('cj_user');
+  const saved = localStorage.getItem('cj_user');
   if(saved){
     currentUser = JSON.parse(saved);
     applyLoginUI();
+    // URL hash support: open specific page from new tab
+    const hash = window.location.hash;
+    if(hash && hash.startsWith('#p-')){
+      const pid = hash.replace('#p-','');
+      setTimeout(()=>goP(pid), 300);
+    }
     return;
   }
   document.getElementById('loginScreen').style.display='flex';
@@ -4894,6 +4900,7 @@ function doLogin(){
   errEl.style.display='none';
   currentUser = {id, name:acct.name, role:acct.role, avatar:acct.avatar};
   sessionStorage.setItem('cj_user', JSON.stringify(currentUser));
+  localStorage.setItem('cj_user', JSON.stringify(currentUser));
   document.getElementById('loginScreen').style.display='none';
   document.querySelector('.app').style.display='';
   applyLoginUI();
@@ -4903,6 +4910,7 @@ function doLogin(){
 
 function doLogout(){
   sessionStorage.removeItem('cj_user');
+  localStorage.removeItem('cj_user');
   currentUser = null;
   document.getElementById('loginScreen').style.display='flex';
   document.querySelector('.app').style.display='none';
@@ -5207,7 +5215,7 @@ function renderPageGallery() {
         <div class="pg-card-desc">${p.purpose}</div>
         <div class="pg-card-actions">
           ${isAdminPage ?
-            `<button onclick="goP('${pid}')">🔗 페이지 열기</button>` :
+            `<button onclick="window.open('/admin_final.html#p-${pid}','_blank')">🔗 페이지 열기</button>` :
             (p.status === 'live' ? `<button onclick="window.open('${liveUrl}','_blank')">🔗 새 탭 열기</button>` : '<button disabled style="opacity:.4;">🔗 미배포</button>')
           }
           ${p.thumb ?
