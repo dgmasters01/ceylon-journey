@@ -4883,6 +4883,8 @@ function initLogin(){
   const saved = localStorage.getItem('cj_user');
   if(saved){
     currentUser = JSON.parse(saved);
+    document.getElementById('loginScreen').style.display='none';
+    document.querySelector('.app').style.display='';
     applyLoginUI();
     const hash = window.location.hash;
     if(hash && hash.startsWith('#p-')){
