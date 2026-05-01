@@ -6,6 +6,7 @@
   "routes": [
     { "src": "/", "dest": "/consumer_site.html" },
     { "src": "/admin", "dest": "/admin_final.html" },
+    { "src": "/terms", "dest": "/terms.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }

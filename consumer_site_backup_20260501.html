@@ -432,16 +432,14 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
       <div><div class="ft-logo">CEYLON JOURNEY</div><div class="ft-tagline">소수 정예 프리미엄 패키지 여행<br>항공 · 호텔 · 가이드 원스톱</div></div>
       <div class="ft-links">
         <div><div class="ft-col-t">상품</div><a class="ft-link" onclick="openDetail(PRODUCTS[0])">스리랑카 완전일주 7박8일</a><a class="ft-link" onclick="openDetail(PRODUCTS[1])">베트남 하노이 4박5일</a></div>
-        <div><div class="ft-col-t">고객 지원</div><a class="ft-link">예약 조회 / 마이페이지</a><a class="ft-link" href="https://pf.kakao.com/PLACEHOLDER" target="_blank" rel="noopener">카카오 상담</a><a class="ft-link">자주 묻는 질문</a></div>
-        <div><div class="ft-col-t">법적 고지</div><a class="ft-link" href="/terms">이용약관</a><a class="ft-link" href="/privacy">개인정보처리방침</a><a class="ft-link" href="/terms#cancel">취소 · 환불 규정</a><a class="ft-link" href="/about#legal">사업자 정보</a></div>
+        <div><div class="ft-col-t">고객 지원</div><a class="ft-link">예약 조회 / 마이페이지</a><a class="ft-link">카카오 상담</a><a class="ft-link">자주 묻는 질문</a></div>
+        <div><div class="ft-col-t">법적 고지</div><a class="ft-link">이용약관</a><a class="ft-link">개인정보처리방침</a><a class="ft-link">취소 · 환불 규정</a></div>
       </div>
     </div>
     <div class="ft-bottom">
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-        <span>© 2026 CEYLON JOURNEY</span>
-        <a href="/about" class="ft-link" style="margin:0;font-size:11px;">회사 소개</a>
-      </div>
+      <div>CEYLON JOURNEY · 사업자등록번호 · 여행업 등록번호 — 설정 후 자동 반영</div>
       <div style="display:flex;align-items:center;gap:16px;">
+        <span>© 2026 CEYLON JOURNEY</span>
         <a href="admin_final.html" style="font-size:10px;color:rgba(255,255,255,0.08);text-decoration:none;letter-spacing:1px;transition:color .3s;" onmouseover="this.style.color='rgba(201,168,76,0.4)'" onmouseout="this.style.color='rgba(255,255,255,0.08)'">ADMIN</a>
       </div>
     </div>
@@ -595,10 +593,10 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
 </div><!-- /detPage -->
 
 <!-- ════ 카카오 플로팅 — 항상 고정 ════ -->
-<a class="kk-float" href="https://pf.kakao.com/PLACEHOLDER" target="_blank" rel="noopener" style="text-decoration:none;">
+<button class="kk-float" onclick="alert('카카오 채널로 연결됩니다.\n설정에서 카카오 채널 링크를 등록해 주세요.')">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="#191919"><path d="M12 3C6.48 3 2 6.69 2 11.25c0 2.91 1.82 5.47 4.57 7L5.5 21.5l5.12-2.73c.46.06.92.1 1.38.1 5.52 0 10-3.69 10-8.25S17.52 3 12 3z"/></svg>
   카카오 상담
-</a>
+</button>
 
 <!-- ══════════ 예약 신청 폼 ══════════ -->
 <div id="reservePage" style="display:none;padding-top:62px;">
