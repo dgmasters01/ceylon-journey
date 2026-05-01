@@ -2,6 +2,30 @@
 
 ---
 
+## 2026-05-01 (4순위: 회사 소개 페이지)
+
+### [about.html 신규 생성 — 회사 소개 + 사업자 정보 #legal]
+- **변경:** 럭셔리 톤 풀 페이지 신규 작성. 7개 섹션 구성 (hero / story / value / promise / metric / legal / cta).
+- **HERO:** 풀스크린 다크 + 골드 라디얼 그라디언트 + 그레인 텍스처. 4개 핵심 지표(8년+ / 5★ Hotels Only / Max 20인 / 100% Korean Guide) 메타 표기.
+- **OUR STORY:** 4:5 이미지 + 스토리 텍스트 2단 그리드. 첫 단락 드롭캡(첫 글자 64px 골드) + 이탤릭 강조. "We craft Sri Lanka, slowly" 영문 카피.
+- **WHY (차별점 6카드):** 3×2 그리드. 5성급 / 20인 소수정예 / 한국어 가이드 / 3식 풀보드 / 직항 / 8년 노하우. hover 시 골드 라인 애니메이션.
+- **OUR PROMISE:** 큰 인용구 + 4단계 약속(I~IV 로마자, 출발 전 / 현지 / 호텔 / 귀국 후).
+- **METRICS:** 4분할 숫자 카드 (2018 Founded / 6개국 / 5★ / 100%).
+- **#legal 섹션:** 사업자 정보 11행 표. 상호·대표자·등록번호·소재지·연락처·개인정보책임자·호스팅 등. **본문 placeholder 7개는 추후 실제 값으로 1:1 교체 가능한 구조** (이지형 대표·카카오 채널·Vercel 호스팅 등 확정 항목은 즉시 표시).
+- **CTA:** "이제, 당신의 차례입니다" 골드 primary 버튼 + 카카오 secondary 버튼.
+- **톤:** "We/우리" 강조 (우리 23회), 팀 기반 프리미엄 여행 스튜디오 인상. 1인 사업 표시 없음.
+- **디자인:** terms / privacy / consumer_site와 100% 동일한 디자인 토큰 (#0E1410 다크 + #C9A84C 골드, Cormorant Garamond + Noto Sans KR), nav/footer 완전 일치.
+- **반응형:** 980px / 768px 2단계 미디어 쿼리. 모바일에서 사업자정보 표는 th/td 세로 적층.
+- **앵커:** `#legal` 스크롤 마진 80px (nav 가림 방지).
+- **관련 파일:** about.html (신규, 약 410줄)
+
+### [vercel.json — /about 라우팅 추가]
+- **변경:** routes 배열에 `{ "src": "/about", "dest": "/about.html" }` 추가.
+- **이유:** terms·privacy·consumer_site 푸터에 이미 걸린 `/about` 및 `/about#legal` 링크 정상 작동을 위해.
+- **관련 파일:** vercel.json
+
+---
+
 ## 2026-05-01 (3순위: 개인정보처리방침 + 예약폼 제3자 동의)
 
 ### [privacy.html 신규 생성 — 개인정보처리방침 전문]

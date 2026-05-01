@@ -11,7 +11,11 @@
 - [ ] admin_final.html에 Business Docs 메뉴 추가
 - [ ] admin_final.html에 Page Gallery 메뉴 추가
 - [ ] admin_final.html에 작업 기록 탭 추가
-- [ ] CHANGELOG.md 가동
+- [x] CHANGELOG.md 가동
+- [x] terms.html 신규 (이용약관 전문)
+- [x] privacy.html 신규 (개인정보처리방침)
+- [x] about.html 신규 (회사 소개 + #legal 사업자 정보)
+- [x] 예약폼 제3자 제공 동의(필수) 추가
 
 ## P1 — 단기 (1~2주)
 
