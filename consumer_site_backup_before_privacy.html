@@ -696,25 +696,18 @@ body{font-family:var(--font-sans);background:#fff;color:var(--black);overflow-x:
         <input type="checkbox" class="rf-check" id="rf-agree">
         <div class="rf-agree-txt">
           <b>[필수]</b> 이용약관에 동의합니다.
-          <a class="rf-agree-link" href="/terms" target="_blank" rel="noopener" onclick="event.stopPropagation()">약관 보기</a>
+          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
         </div>
       </label>
       <label class="rf-agree-row">
         <input type="checkbox" class="rf-check" id="rf-agree2">
         <div class="rf-agree-txt">
           <b>[필수]</b> 개인정보 수집·이용에 동의합니다. (이름, 연락처, 이메일 — 예약 처리 목적)
-          <a class="rf-agree-link" href="/privacy" target="_blank" rel="noopener" onclick="event.stopPropagation()">방침 보기</a>
+          <span class="rf-agree-link" onclick="event.preventDefault()">약관 보기</span>
         </div>
       </label>
       <label class="rf-agree-row">
         <input type="checkbox" class="rf-check" id="rf-agree3">
-        <div class="rf-agree-txt">
-          <b>[필수]</b> 개인정보 제3자 제공에 동의합니다. (항공사·현지 호텔·지상 수배사·결제대행사 등 — 여행 수배·이행 목적)
-          <a class="rf-agree-link" href="/privacy#a4" target="_blank" rel="noopener" onclick="event.stopPropagation()">상세 보기</a>
-        </div>
-      </label>
-      <label class="rf-agree-row">
-        <input type="checkbox" class="rf-check" id="rf-agree4">
         <div class="rf-agree-txt">
           <b>[선택]</b> 여행 관련 정보·할인 혜택 수신에 동의합니다.
         </div>
@@ -1249,12 +1242,11 @@ function submitReserve(){
   const em=document.getElementById('rf-email').value.trim();
   const agree=document.getElementById('rf-agree').checked;
   const agree2=document.getElementById('rf-agree2').checked;
-  const agree3=document.getElementById('rf-agree3').checked;
 
   if(!name){alert('신청자 이름을 입력해주세요.');document.getElementById('rf-name').focus();return;}
   if(!ph){alert('연락처를 입력해주세요.');document.getElementById('rf-phone').focus();return;}
   if(!em){alert('이메일을 입력해주세요.');document.getElementById('rf-email').focus();return;}
-  if(!agree||!agree2||!agree3){alert('필수 약관 3개에 모두 동의해주세요.');return;}
+  if(!agree||!agree2){alert('약관에 동의해주세요.');return;}
 
   // 동행자 정보 수집
   const companions=[];
